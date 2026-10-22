@@ -80,14 +80,16 @@ object PhotoCrop {
 }
 
 /**
- * How much to shrink a photo while it's opened, as a power of two, so its long side ends up
- * between [maxSide] and twice that. Phone photos are often 4000 pixels or more across.
+ * How much to shrink a photo while it's opened, as a power of two, so its long side ends up at
+ * most [maxSide], and about half of it or more. Phone photos are often 4000 pixels or more
+ * across, and a photo twice the size held in memory can run a small phone out of it. Rounded up,
+ * as the decoder may round a side up.
  */
 fun sampleSizeFor(width: Int, height: Int, maxSide: Int): Int {
     var sample = 1
     val long = max(width, height)
     if (maxSide <= 0) return sample
-    while (long / (sample * 2) >= maxSide) sample *= 2
+    while ((long + sample - 1) / sample > maxSide) sample *= 2
     return sample
 }
 

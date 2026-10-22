@@ -80,7 +80,7 @@ object PersonPhotos {
     }
 
     /**
-     * Opens a photo for cropping: shrunk so its long side is at most about [WORKING_SIZE] pixels
+     * Opens a photo for cropping: shrunk so its long side is at most [WORKING_SIZE] pixels
      * and turned upright from its EXIF orientation. Null if it isn't a photo Android can read.
      */
     fun openForCrop(context: Context, uri: Uri): Bitmap? = runCatching {
