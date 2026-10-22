@@ -14,6 +14,7 @@
     <string name="hint_call_permission">Calls aren\'t allowed yet. Tap a face, then choose Allow.</string>
     <string name="hint_call_blocked">Calls are turned off for Niko Dialer. A helper can turn them on in the phone\'s settings.</string>
     <string name="hint_call_failed">The call didn\'t start. Try again in a moment.</string>
+    <string name="hint_silencing_lost">Calls from unsaved numbers ring again. A helper can fix this in Settings.</string>
     <string name="hint_needs_attention">Calls may stop working later. A helper can fix this in Settings.</string>
 
     <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
@@ -69,6 +70,27 @@
     <!-- Phone health. %1$s is the app's name. -->
     <string name="health_calls">Phone calls</string>
     <string name="health_calls_value">Allow %1$s to make phone calls</string>
+    <string name="health_silencing">Only ring for saved contacts</string>
+    <string name="health_silencing_value">Calls from unsaved numbers ring again. Allow %1$s to silence them.</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">Only ring for saved contacts</string>
+    <string name="silence_value">Calls from people not saved in the phone won\'t ring. They still show as missed calls.</string>
+    <string name="info_silence">Calls from numbers that aren\'t saved in the phone\'s contacts don\'t ring. They still show as missed calls, so a call from a clinic isn\'t lost. The phone decides who is saved, using all its contacts, not just the people in Niko Dialer. Hidden numbers don\'t ring either.</string>
+    <string name="silence_needs_android_10">Off. This needs Android 10 or newer.</string>
+    <string name="silence_not_on_this_phone">Off. This phone doesn\'t let apps silence calls.</string>
+    <string name="silence_not_allowed">Not turned on. The phone didn\'t allow Niko Dialer to silence calls. Tap to try again.</string>
+    <string name="silence_restricted_steps">If the phone didn\'t ask, or said the setting is restricted:\n1. Tap Open app info below.\n2. Tap the three dots at the top.\n3. Tap Allow restricted settings.\n4. Come back here and turn this on again.</string>
+    <string name="open_app_info">Open app info</string>
+    <string name="open_app_info_value">The phone\'s page for Niko Dialer</string>
+    <string name="last_silenced">Last silenced call</string>
+    <string name="last_silenced_none">None yet</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">Today, %1$s</string>
+    <string name="last_silenced_yesterday">Yesterday, %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s, %2$s</string>
+    <string name="info_last_silenced">When a call from a number not saved in the phone last came in without ringing. Only the time is kept, not the number. The phone\'s missed calls show who it was.</string>
 
     <!-- People editor -->
     <string name="editor_add_title">Add a person</string>
@@ -129,6 +151,7 @@
     <string name="calls_allowed">Allowed</string>
     <string name="calls_not_allowed">Not allowed yet. Tap to allow.</string>
     <string name="calls_turned_off">Turned off. Tap to open the phone\'s settings for Niko Dialer.</string>
+    <string name="setup_silence_reason">Calls from strangers can be kept quiet, so only people saved in the phone ring. The phone asks once to let Niko Dialer silence calls. This can be changed later in Settings.</string>
     <string name="setup_phone_ok">These settings are fine.</string>
     <string name="setup_sim">Calling SIM</string>
     <string name="setup_sim_value">If the phone has two SIMs, choose one for calls, so the phone doesn\'t ask which one each time.</string>

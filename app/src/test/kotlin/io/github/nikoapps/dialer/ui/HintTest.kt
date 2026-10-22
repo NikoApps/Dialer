@@ -70,4 +70,31 @@ class HintTest {
             hintFor(hasPeople = true, canCall = false, callsBlocked = false, lastCallFailed = false, needsAttention = true),
         )
     }
+
+    @Test
+    fun `lost silencing comes after voice and calls, before other phone settings`() {
+        assertEquals(
+            Hint.SilencingLost,
+            hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, silencingLost = true, needsAttention = true),
+        )
+        assertEquals(
+            Hint.CallPermission,
+            hintFor(hasPeople = true, canCall = false, callsBlocked = false, lastCallFailed = false, silencingLost = true, needsAttention = true),
+        )
+        assertEquals(
+            Hint.Voice,
+            hintFor(
+                hasPeople = true,
+                canCall = true,
+                callsBlocked = false,
+                lastCallFailed = false,
+                voice = VoiceStatus.NoVoice,
+                silencingLost = true,
+            ),
+        )
+        assertEquals(
+            Hint.NoPeople,
+            hintFor(hasPeople = false, canCall = true, callsBlocked = false, lastCallFailed = false, silencingLost = true),
+        )
+    }
 }

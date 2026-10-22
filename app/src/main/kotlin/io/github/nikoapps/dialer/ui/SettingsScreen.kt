@@ -28,6 +28,7 @@ import io.github.nikoapps.dialer.call.VoiceState
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.dialer.speech.VOICE_LANGUAGES
+import java.time.Instant
 import io.github.nikoapps.commons.R as CommonsR
 
 /**
@@ -40,6 +41,9 @@ fun SettingsScreen(
     people: List<Person>,
     voice: VoiceState,
     problems: List<HealthCheck>,
+    silencing: SilencingState,
+    lastSilencedAt: Instant?,
+    onTurnOnSilencing: () -> Unit,
     onUpdate: ((DialerSettings) -> DialerSettings) -> Unit,
     onFix: (HealthCheck) -> Unit,
     onEditPlace: (Int) -> Unit,
@@ -80,6 +84,16 @@ fun SettingsScreen(
                     PeopleOnScreenRow(settings, onUpdate)
                     WaitBeforeCallingRow(settings, onUpdate)
                     ThemeRow(settings, onUpdate)
+                }
+
+                SettingsGroup(stringResource(R.string.section_calls)) {
+                    SilencingRows(
+                        state = silencing,
+                        lastSilencedAt = lastSilencedAt,
+                        showLast = true,
+                        onTurnOn = onTurnOnSilencing,
+                        onTurnOff = { onUpdate { it.copy(onlySavedContacts = false) } },
+                    )
                 }
 
                 SettingsGroup(stringResource(R.string.section_voice)) {

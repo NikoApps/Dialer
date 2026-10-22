@@ -22,7 +22,7 @@ import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.commons.R as CommonsR
 
 /**
- * First-run setup for the helper: people, calls, PIN and phone. The frame with Next, Skip and
+ * First-run setup for the helper: people, calls, only ringing for saved contacts, PIN and phone. The frame with Next, Skip and
  * Back is shared with other Niko apps; these are Dialer's steps, using the same rows as settings.
  * [step] is kept by the caller so it survives a trip to the PIN screen or the people editor.
  */
@@ -34,6 +34,8 @@ fun SetupScreen(
     people: List<Person>,
     callsAllowed: CallsAllowed,
     problems: List<HealthCheck>,
+    silencing: SilencingState,
+    onTurnOnSilencing: () -> Unit,
     onUpdate: ((DialerSettings) -> DialerSettings) -> Unit,
     onEditPlace: (Int) -> Unit,
     onAllowCalls: () -> Unit,
@@ -53,12 +55,23 @@ fun SetupScreen(
             CallPermissionRow(callsAllowed, onAllowCalls)
             WaitBeforeCallingRow(settings, onUpdate)
         },
+        // Skippable like every step: Next leaves it off.
+        SetupStep(stringResource(R.string.setting_silence)) {
+            StepText(stringResource(R.string.setup_silence_reason))
+            SilencingRows(
+                state = silencing,
+                lastSilencedAt = null,
+                showLast = false,
+                onTurnOn = onTurnOnSilencing,
+                onTurnOff = { onUpdate { it.copy(onlySavedContacts = false) } },
+            )
+        },
         SetupStep(stringResource(CommonsR.string.section_pin)) {
             PinRows(settings.helperPinHash != null, stringResource(R.string.info_pin), onSetPin, onRemovePin)
         },
         SetupStep(stringResource(R.string.section_phone)) {
-            // Calls have their own step, so only the other phone settings are listed here.
-            val phoneProblems = problems.filterNot { it === DialerHealth.CallPermission }
+            // Calls and silencing have their own steps, so only the other phone settings are listed here.
+            val phoneProblems = problems.filterNot { it === DialerHealth.CallPermission || it === DialerHealth.Silencing }
             if (phoneProblems.isEmpty()) StepText(stringResource(R.string.setup_phone_ok)) else HealthRows(phoneProblems)
             PhoneMakerRow(stringResource(R.string.info_phone_maker))
             CallingSimRow()
