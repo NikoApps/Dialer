@@ -26,8 +26,10 @@ import java.io.File
 import java.time.Instant
 import java.util.UUID
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -41,6 +43,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     /** Held while recorded names and their ringtones change, so a save and a check never overlap. */
     private val recordedNames = Mutex()
+
+    private val _recordedNameNotSet = MutableStateFlow(false)
+
+    /** The last check found a recorded name that isn't its contact's ringtone and couldn't be put back quietly. */
+    val recordedNameNotSet: StateFlow<Boolean> = _recordedNameNotSet.asStateFlow()
 
     /** Null until the stored settings have loaded, so the screen never flashes defaults. */
     val settings: StateFlow<DialerSettings?> = settingsRepository.settings
@@ -128,8 +135,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     withContext(Dispatchers.IO) { RecordedNames.clearContact(app, before, before.contactLink) }
                 }
                 linkContact(personId, mayCreate = true)
-                syncRecordedName(personId, fix = true)
+                if (syncRecordedName(personId, fix = true) is RecordedNames.Outcome.NotSet) _recordedNameNotSet.value = true
             }
+            // Brings the health check up to date for everyone, now this person is done.
+            checkRecordedNames()
         }
     }
 
@@ -183,6 +192,36 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     /**
+     * Checks each recorded name still rings for its contact, and quietly puts back what's
+     * missing: the copy in Ringtones, or the contact's ringtone, such as after moving to a new
+     * phone. A ringtone chosen in the contacts app is left alone and reported. Run each time
+     * Dialer comes to the front; skipped while a save or another check is running.
+     *
+     * With [fix], as when the helper taps the problem in settings, it also saves people with no
+     * contact in the phone's contacts and sets recorded names over other ringtones.
+     */
+    fun checkRecordedNames(fix: Boolean = false) {
+        if (!fix && recordedNames.isLocked) return
+        val app = getApplication<Application>()
+        viewModelScope.launch {
+            recordedNames.withLock {
+                var notSet = false
+                for (person in peopleRepository.current().filter { it.hasRecording }) {
+                    val outcome = syncRecordedName(person.id, fix) as? RecordedNames.Outcome.NotSet ?: continue
+                    if (outcome.reason == RecordedNames.Reason.NoMaster) {
+                        // The recording's file is gone, so there's nothing to ring with. The editor then offers Record again.
+                        withContext(Dispatchers.IO) { RecordedNames.clearContact(app, outcome.person, outcome.person.contactLink) }
+                        peopleRepository.update { setRecording(it, person.id, hasRecording = false) }
+                    } else {
+                        notSet = true
+                    }
+                }
+                _recordedNameNotSet.value = notSet
+            }
+        }
+    }
+
+    /**
      * Removes a person from the grid and deletes their photo and recorded name. Their contact
      * stays in the phone's contacts, back on the phone's default ringtone. Nobody else moves.
      */
@@ -198,6 +237,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             PhotoCache.forget(person.id)
+            checkRecordedNames()
         }
     }
 }
