@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">Réglages</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">Appeler %1$s</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">Touchez un visage pour appeler.</string>
+    <string name="hint_no_people">Il n\'y a encore personne ici. Un proche peut ajouter des personnes dans les réglages.</string>
+    <string name="hint_call_permission">Les appels ne sont pas encore autorisés. Touchez un visage, puis choisissez Autoriser.</string>
+    <string name="hint_call_blocked">Les appels sont désactivés pour Niko Dialer. Un proche peut les activer dans les réglages du téléphone.</string>
+    <string name="hint_call_failed">L\'appel n\'a pas démarré. Réessayez dans un instant.</string>
+    <string name="hint_silencing_lost">Les appels des numéros non enregistrés sonnent de nouveau. Un proche peut corriger cela dans les réglages.</string>
+    <string name="hint_recorded_names">Les noms enregistrés risquent de ne pas passer quand on appelle. Un proche peut corriger cela dans les réglages.</string>
+    <string name="hint_needs_attention">Les appels risquent de ne plus marcher plus tard. Un proche peut corriger cela dans les réglages.</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">J\'appelle %1$s</string>
+    <string name="stop">Arrêter</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">Maman</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">À vérifier</string>
+    <string name="section_people">Personnes</string>
+    <string name="section_screen">Écran</string>
+    <string name="section_voice">Voix</string>
+    <string name="section_helper">Proche</string>
+    <string name="section_calls">Appels</string>
+    <string name="section_phone">Téléphone</string>
+    <string name="section_recorded_names">Noms enregistrés</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">Le visage à l\'écran</string>
+    <string name="place_top">En haut</string>
+    <string name="place_bottom">En bas</string>
+    <string name="place_top_left">En haut à gauche</string>
+    <string name="place_top_right">En haut à droite</string>
+    <string name="place_middle_left">Au milieu à gauche</string>
+    <string name="place_middle_right">Au milieu à droite</string>
+    <string name="place_bottom_left">En bas à gauche</string>
+    <string name="place_bottom_right">En bas à droite</string>
+    <string name="place_empty">Vide</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">Personnes à l\'écran</string>
+    <plurals name="people_count">
+        <item quantity="one">%d personne</item>
+        <item quantity="many">%d personnes</item>
+        <item quantity="other">%d personnes</item>
+    </plurals>
+    <string name="info_people_on_screen">Le nombre de visages que l\'écran principal peut afficher. Personne ne change de place quand ce nombre change. Les personnes qui ne tiennent pas reviennent quand il y a de nouveau de la place.</string>
+    <string name="setting_wait">Attendre avant d\'appeler</string>
+    <string name="wait_call_now">Appeler tout de suite</string>
+    <string name="wait_3s">Attendre 3 secondes</string>
+    <string name="wait_ask">Demander d\'abord</string>
+    <string name="info_wait">Quand on touche un visage, le nom est dit à voix haute. Attendre 3 secondes laisse le temps d\'appuyer sur Arrêter avant que l\'appel parte. Demander d\'abord affiche un grand bouton Appeler sur lequel appuyer.</string>
+    <string name="setting_theme">Thème</string>
+    <string name="theme_phone">Comme le téléphone</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="setting_screen_language">Langue de l\'écran</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">Un code à 4 chiffres évite de changer les personnes et les réglages par erreur. Les appels marchent toujours sans lui.</string>
+    <string name="setup_again">Configurer étape par étape</string>
+    <string name="setup_again_value">Revoir les réglages principaux</string>
+    <string name="info_phone_maker">Certains téléphones arrêtent les applis qu\'ils croient inutilisées et leur retirent leurs autorisations. Cela peut empêcher les appels. Gardez Niko Dialer autorisé dans les réglages du fabricant.</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">Appels téléphoniques</string>
+    <string name="health_calls_value">Autorisez %1$s à passer des appels</string>
+    <string name="health_silencing">Sonner seulement pour les contacts enregistrés</string>
+    <string name="health_silencing_value">Les appels des numéros non enregistrés sonnent de nouveau. Autorisez %1$s à les rendre silencieux.</string>
+    <string name="health_recorded_contacts">Contacts pour les noms enregistrés</string>
+    <string name="health_recorded_contacts_value">Autorisez %1$s à utiliser les contacts, pour que les noms enregistrés passent quand on appelle</string>
+    <string name="health_ringer">Sonnerie</string>
+    <string name="health_ringer_value">La sonnerie est coupée, sur vibreur ou trop basse, donc on n\'entend pas les noms enregistrés. Montez le volume de la sonnerie.</string>
+    <string name="health_recorded_not_set">Sonneries des noms enregistrés</string>
+    <string name="health_recorded_not_set_value">Un nom enregistré n\'est pas la sonnerie de son contact. Touchez pour la remettre.</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">Sonner seulement pour les contacts enregistrés</string>
+    <string name="silence_value">Les appels des personnes non enregistrées dans le téléphone ne sonnent pas. Ils restent dans les appels manqués.</string>
+    <string name="info_silence">Les appels des numéros qui ne sont pas dans les contacts du téléphone ne sonnent pas. Ils restent dans les appels manqués, donc un appel du cabinet médical n\'est pas perdu. Le téléphone décide qui est enregistré, avec tous ses contacts, pas seulement les personnes de Niko Dialer. Les numéros masqués ne sonnent pas non plus.</string>
+    <string name="silence_needs_android_10">Désactivé. Il faut Android 10 ou plus récent.</string>
+    <string name="silence_not_on_this_phone">Désactivé. Ce téléphone ne laisse pas les applis rendre les appels silencieux.</string>
+    <string name="silence_not_allowed">Pas activé. Le téléphone n\'a pas autorisé Niko Dialer à rendre les appels silencieux. Touchez pour réessayer.</string>
+    <string name="silence_restricted_steps">Si le téléphone n\'a rien demandé, ou a dit que le paramètre est restreint :\n1. Touchez Ouvrir les infos de l\'appli plus bas.\n2. Touchez les trois points en haut.\n3. Touchez Autoriser les paramètres restreints.\n4. Revenez ici et activez de nouveau ce réglage.</string>
+    <string name="open_app_info">Ouvrir les infos de l\'appli</string>
+    <string name="open_app_info_value">La page du téléphone pour Niko Dialer</string>
+    <string name="last_silenced">Dernier appel rendu silencieux</string>
+    <string name="last_silenced_none">Aucun pour l\'instant</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">Aujourd\'hui, %1$s</string>
+    <string name="last_silenced_yesterday">Hier, %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s, %2$s</string>
+    <string name="info_last_silenced">La dernière fois qu\'un appel d\'un numéro non enregistré dans le téléphone est arrivé sans sonner. Seule l\'heure est gardée, pas le numéro. Les appels manqués du téléphone montrent qui c\'était.</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">Ajouter une personne</string>
+    <string name="editor_change_title">Modifier une personne</string>
+    <string name="editor_from_contacts">Choisir dans les contacts</string>
+    <string name="editor_name">Nom</string>
+    <string name="editor_number">Numéro de téléphone</string>
+    <string name="editor_name_missing">Ajoutez un nom, pour qu\'il puisse être affiché et dit à voix haute.</string>
+    <string name="editor_number_missing">Ajoutez un numéro de téléphone à appeler.</string>
+    <string name="editor_emergency">C\'est un numéro d\'urgence. Toucher le visage ouvre le clavier du téléphone avec le numéro prêt, car Android ne laisse pas les autres applis l\'appeler directement.</string>
+    <string name="editor_place">Place à l\'écran</string>
+    <string name="editor_place_taken">Quelqu\'un est déjà à cette place. Choisissez une autre place.</string>
+    <string name="editor_save">Enregistrer</string>
+    <string name="editor_remove">Retirer de l\'écran</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">Retirer %1$s de l\'écran ?</string>
+    <string name="editor_remove_confirm">Retirer %1$s</string>
+    <string name="editor_keep">Garder %1$s</string>
+    <string name="editor_contact_unreadable">Ce contact n\'a pas pu être lu. Réessayez, ou tapez le nom et le numéro.</string>
+    <string name="editor_no_contacts_app">Ce téléphone n\'a pas d\'appli de contacts où choisir. Tapez plutôt le nom et le numéro.</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">cette personne</string>
+    <string name="editor_typed_note">Niko Dialer enregistre aussi %1$s dans les contacts du téléphone, sur le téléphone et pas sur la carte SIM. Ainsi un nom enregistré peut passer quand %1$s appelle, et Sonner seulement pour les contacts enregistrés laisse l\'appel sonner.</string>
+    <string name="editor_typed_note_ask">Niko Dialer enregistre aussi %1$s dans les contacts du téléphone, sur le téléphone et pas sur la carte SIM. Ainsi un nom enregistré peut passer quand %1$s appelle, et Sonner seulement pour les contacts enregistrés laisse l\'appel sonner. Après Enregistrer, le téléphone demande d\'autoriser les contacts.</string>
+    <string name="editor_sim_note">%1$s est enregistré sur la carte SIM. Un contact de la SIM ne peut pas avoir sa propre sonnerie, donc un nom enregistré ne peut pas passer quand %1$s appelle. Copiez %1$s sur le téléphone pour corriger cela.</string>
+    <string name="editor_sim_copy">Copier sur le téléphone</string>
+    <string name="editor_sim_copied">%1$s est maintenant enregistré sur le téléphone.</string>
+    <string name="editor_sim_copy_failed">%1$s n\'a pas pu être copié sur le téléphone. Réessayez.</string>
+    <string name="editor_sim_needs_contacts">Pour copier, il faut les contacts du téléphone. Touchez Copier sur le téléphone, puis choisissez Autoriser.</string>
+    <string name="editor_saved_title">%1$s est enregistré</string>
+    <string name="editor_saved_no_contacts">%1$s est dans Niko Dialer, mais pas dans les contacts du téléphone. Un nom enregistré ne peut passer quand %1$s appelle que si la personne est dans les contacts. Sonner seulement pour les contacts enregistrés peut aussi rendre ses appels silencieux. Pour changer cela, ouvrez de nouveau %1$s, touchez Enregistrer et choisissez Autoriser.</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">Photo</string>
+    <string name="editor_photo_missing">Une photo aide. Un visage se trouve plus facilement qu\'un nom.</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">La photo du visage</string>
+    <string name="editor_photo_take">Prendre une photo</string>
+    <string name="editor_photo_choose">Choisir une photo</string>
+    <string name="editor_photo_contact">Utiliser la photo du contact</string>
+    <string name="editor_photo_remove">Retirer la photo</string>
+    <string name="editor_photo_unreadable">Cette photo n\'a pas pu être ouverte. Essayez-en une autre.</string>
+    <string name="editor_no_camera_app">Ce téléphone n\'a pas d\'appli d\'appareil photo pour prendre une photo. Choisissez plutôt une photo.</string>
+    <string name="editor_no_photo_app">Ce téléphone n\'a pas d\'appli pour choisir une photo. Prenez plutôt une photo.</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">Nom enregistré</string>
+    <string name="editor_recording_how">Quand %1$s appelle, le téléphone passe ceci à la place de la sonnerie. Touchez Enregistrer le nom et dites \"%1$s appelle\" avec vos propres mots et dans votre langue. L\'enregistrement s\'arrête tout seul après 5 secondes.</string>
+    <string name="editor_recording_kept">L\'enregistrement apparaît dans la liste des sonneries du téléphone, et reste sur le téléphone si Niko Dialer est désinstallé.</string>
+    <string name="editor_recording_none">Pas encore d\'enregistrement.</string>
+    <string name="editor_recording_ready">Enregistré. Touchez Écouter pour l\'entendre.</string>
+    <string name="editor_recording_new">Enregistré. Il est gardé quand vous touchez Enregistrer.</string>
+    <string name="editor_recording_removed">L\'enregistrement est supprimé quand vous touchez Enregistrer.</string>
+    <string name="editor_recording_now">Enregistrement en cours. Dites les mots, puis touchez Arrêter.</string>
+    <string name="editor_recording_too_short">Rien n\'a été enregistré. Touchez Enregistrer le nom, attendez un instant, puis parlez.</string>
+    <string name="editor_recording_failed">Le micro n\'a pas pu être utilisé. Fermez les autres applis qui l\'utilisent peut-être, puis réessayez.</string>
+    <string name="editor_recording_needs_mic">Pour enregistrer, il faut le micro. Touchez Enregistrer le nom, puis choisissez Autoriser.</string>
+    <string name="editor_recording_mic_off">Le micro est désactivé pour Niko Dialer. Activez-le dans les réglages du téléphone pour Niko Dialer.</string>
+    <string name="editor_recording_needs_contacts">L\'enregistrement est gardé, mais il ne peut pas sonner pour %1$s tant que les contacts ne sont pas autorisés.</string>
+    <string name="editor_recording_needs_storage">L\'enregistrement est gardé, mais il ne peut pas aller dans les sonneries du téléphone tant que le stockage n\'est pas autorisé.</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">Le téléphone demande d\'autoriser le micro, pour enregistrer.</string>
+    <string name="editor_recording_ask_contacts">Il demande les contacts, pour mettre l\'enregistrement comme sonnerie de %1$s.</string>
+    <string name="editor_recording_ask_storage">Il demande le stockage, pour mettre l\'enregistrement avec les sonneries du téléphone.</string>
+    <string name="editor_record">Enregistrer le nom</string>
+    <string name="editor_record_stop">Arrêter</string>
+    <string name="editor_record_play">Écouter</string>
+    <string name="editor_record_stop_playing">Arrêter l\'écoute</string>
+    <string name="editor_record_again">Enregistrer de nouveau</string>
+    <string name="editor_record_delete">Supprimer l\'enregistrement</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s appelle - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">Quelqu\'un</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">Placez le visage dans le carré</string>
+    <string name="crop_opening">Ouverture de la photo.</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">La photo telle qu\'elle sera sur le visage</string>
+    <string name="crop_help">Faites glisser la photo pour la déplacer, et pincez pour zoomer. Les boutons font la même chose.</string>
+    <string name="crop_zoom_in">Agrandir</string>
+    <string name="crop_zoom_out">Réduire</string>
+    <string name="crop_move_left">Déplacer à gauche</string>
+    <string name="crop_move_right">Déplacer à droite</string>
+    <string name="crop_move_up">Déplacer vers le haut</string>
+    <string name="crop_move_down">Déplacer vers le bas</string>
+    <string name="crop_fit_whole">Voir toute la photo</string>
+    <string name="crop_use">Utiliser cette photo</string>
+    <string name="crop_save_failed">La photo n\'a pas pu être enregistrée. Réessayez.</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">Touchez une place pour y ajouter quelqu\'un.</string>
+    <string name="setup_photos_info">Une photo aide. Un visage se trouve plus facilement qu\'un nom. Ces personnes n\'ont pas encore de photo.</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">Ajouter une photo de %1$s</string>
+    <string name="setup_record_info">Un nom enregistré passe quand cette personne appelle, à la place de la sonnerie, avec une voix que la personne connaît. Touchez quelqu\'un pour enregistrer son nom. Cela peut aussi se faire plus tard dans les réglages.</string>
+    <string name="setup_record_no_people">Ajoutez des personnes à l\'étape précédente, puis enregistrez leurs noms ici.</string>
+    <string name="setup_recorded">Enregistré</string>
+    <string name="setup_not_recorded">Pas encore enregistré. Touchez pour enregistrer.</string>
+    <string name="setup_calls_reason">Niko Dialer doit être autorisé à passer des appels, pour qu\'un toucher sur un visage lance l\'appel.</string>
+    <string name="setup_calls_allow">Autoriser les appels</string>
+    <string name="calls_allowed">Autorisé</string>
+    <string name="calls_not_allowed">Pas encore autorisé. Touchez pour autoriser.</string>
+    <string name="calls_turned_off">Désactivé. Touchez pour ouvrir les réglages du téléphone pour Niko Dialer.</string>
+    <string name="setup_silence_reason">Les appels d\'inconnus peuvent rester silencieux, pour que seules les personnes enregistrées dans le téléphone sonnent. Le téléphone demande une fois de laisser Niko Dialer rendre les appels silencieux. Cela peut se changer plus tard dans les réglages.</string>
+    <string name="setup_phone_ok">Ces réglages sont bons.</string>
+    <string name="setup_sim">SIM pour appeler</string>
+    <string name="setup_sim_value">Si le téléphone a deux cartes SIM, choisissez-en une pour les appels, pour que le téléphone ne demande pas laquelle à chaque fois.</string>
+</resources>

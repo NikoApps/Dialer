@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">الإعدادات</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">اتصل بـ %1$s</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">المس وجهًا للاتصال.</string>
+    <string name="hint_no_people">لا يوجد أحد هنا بعد. يمكن لمساعد إضافة أشخاص من الإعدادات.</string>
+    <string name="hint_call_permission">الاتصال غير مسموح به بعد. المس وجهًا، ثم اختر «السماح».</string>
+    <string name="hint_call_blocked">الاتصال متوقف لـ Niko Dialer. يمكن لمساعد تشغيله من إعدادات الهاتف.</string>
+    <string name="hint_call_failed">لم يبدأ الاتصال. حاول مرة أخرى بعد لحظة.</string>
+    <string name="hint_silencing_lost">المكالمات من الأرقام غير المحفوظة ترن مرة أخرى. يمكن لمساعد إصلاح ذلك من الإعدادات.</string>
+    <string name="hint_recorded_names">قد لا تعمل الأسماء المسجّلة عندما يتصل الناس. يمكن لمساعد إصلاح ذلك من الإعدادات.</string>
+    <string name="hint_needs_attention">قد يتوقف الاتصال عن العمل لاحقًا. يمكن لمساعد إصلاح ذلك من الإعدادات.</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">جارٍ الاتصال بـ %1$s</string>
+    <string name="stop">إيقاف</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">ماما</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">يحتاج إلى انتباه</string>
+    <string name="section_people">الأشخاص</string>
+    <string name="section_screen">الشاشة</string>
+    <string name="section_voice">الصوت</string>
+    <string name="section_helper">المساعد</string>
+    <string name="section_calls">المكالمات</string>
+    <string name="section_phone">الهاتف</string>
+    <string name="section_recorded_names">الأسماء المسجّلة</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">الوجه على الشاشة</string>
+    <string name="place_top">أعلى</string>
+    <string name="place_bottom">أسفل</string>
+    <string name="place_top_left">أعلى اليسار</string>
+    <string name="place_top_right">أعلى اليمين</string>
+    <string name="place_middle_left">وسط اليسار</string>
+    <string name="place_middle_right">وسط اليمين</string>
+    <string name="place_bottom_left">أسفل اليسار</string>
+    <string name="place_bottom_right">أسفل اليمين</string>
+    <string name="place_empty">فارغ</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">الأشخاص على الشاشة</string>
+    <plurals name="people_count">
+        <item quantity="zero">%d شخص</item>
+        <item quantity="one">%d شخص</item>
+        <item quantity="two">%d شخصان</item>
+        <item quantity="few">%d أشخاص</item>
+        <item quantity="many">%d شخصًا</item>
+        <item quantity="other">%d شخص</item>
+    </plurals>
+    <string name="info_people_on_screen">عدد الوجوه التي تتسع لها الشاشة الرئيسية. لا يتحرك أحد عند تغيير ذلك. من لا يتسع له المكان يعود عندما يتوفر مكان مرة أخرى.</string>
+    <string name="setting_wait">الانتظار قبل الاتصال</string>
+    <string name="wait_call_now">الاتصال فورًا</string>
+    <string name="wait_3s">الانتظار 3 ثوانٍ</string>
+    <string name="wait_ask">السؤال أولًا</string>
+    <string name="info_wait">بعد لمس وجه، يُقال الاسم. الانتظار 3 ثوانٍ يترك وقتًا للضغط على «إيقاف» قبل أن يبدأ الاتصال. السؤال أولًا يعرض زر اتصال كبيرًا للضغط عليه.</string>
+    <string name="setting_theme">المظهر</string>
+    <string name="theme_phone">مثل الهاتف</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="setting_screen_language">لغة الشاشة</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">رمز من 4 أرقام يمنع تغيير الأشخاص والإعدادات بالخطأ. الاتصال يعمل دائمًا بدونه.</string>
+    <string name="setup_again">الإعداد خطوة بخطوة</string>
+    <string name="setup_again_value">راجع الإعدادات الرئيسية مرة أخرى</string>
+    <string name="info_phone_maker">بعض الهواتف توقف التطبيقات التي تظنها غير مستخدمة وتسحب أذوناتها. قد يوقف ذلك الاتصال. أبقِ Niko Dialer مسموحًا به في إعدادات الشركة المصنّعة.</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">المكالمات الهاتفية</string>
+    <string name="health_calls_value">اسمح لـ %1$s بإجراء المكالمات الهاتفية</string>
+    <string name="health_silencing">الرنين لجهات الاتصال المحفوظة فقط</string>
+    <string name="health_silencing_value">المكالمات من الأرقام غير المحفوظة ترن مرة أخرى. اسمح لـ %1$s بإسكاتها.</string>
+    <string name="health_recorded_contacts">جهات الاتصال للأسماء المسجّلة</string>
+    <string name="health_recorded_contacts_value">اسمح لـ %1$s باستخدام جهات الاتصال، لتعمل الأسماء المسجّلة عندما يتصل الناس</string>
+    <string name="health_ringer">الرنين</string>
+    <string name="health_ringer_value">الرنين صامت أو على الاهتزاز أو منخفض، فلا تُسمع الأسماء المسجّلة. ارفع مستوى صوت الرنين.</string>
+    <string name="health_recorded_not_set">نغمات الأسماء المسجّلة</string>
+    <string name="health_recorded_not_set_value">أحد الأسماء المسجّلة ليس نغمة رنين لجهة الاتصال الخاصة به. المس لضبطه مرة أخرى.</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">الرنين لجهات الاتصال المحفوظة فقط</string>
+    <string name="silence_value">المكالمات من أشخاص غير محفوظين في الهاتف لن ترن. تظهر مع ذلك كمكالمات فائتة.</string>
+    <string name="info_silence">المكالمات من أرقام غير محفوظة في جهات اتصال الهاتف لا ترن. تظهر مع ذلك كمكالمات فائتة، فلا تضيع مكالمة من عيادة. الهاتف يقرر من هو المحفوظ، باستخدام كل جهات الاتصال فيه، وليس فقط الأشخاص في Niko Dialer. الأرقام المخفية لا ترن أيضًا.</string>
+    <string name="silence_needs_android_10">متوقف. يحتاج هذا إلى Android 10 أو أحدث.</string>
+    <string name="silence_not_on_this_phone">متوقف. هذا الهاتف لا يسمح للتطبيقات بإسكات المكالمات.</string>
+    <string name="silence_not_allowed">غير مفعّل. لم يسمح الهاتف لـ Niko Dialer بإسكات المكالمات. المس للمحاولة مرة أخرى.</string>
+    <string name="silence_restricted_steps">إذا لم يسأل الهاتف، أو قال إن الإعداد محظور:\n1. المس «فتح معلومات التطبيق» أدناه.\n2. المس النقاط الثلاث في الأعلى.\n3. المس «السماح بالإعدادات المحظورة».\n4. ارجع إلى هنا وشغّل هذا الإعداد مرة أخرى.</string>
+    <string name="open_app_info">فتح معلومات التطبيق</string>
+    <string name="open_app_info_value">صفحة Niko Dialer في الهاتف</string>
+    <string name="last_silenced">آخر مكالمة صامتة</string>
+    <string name="last_silenced_none">لا يوجد بعد</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">اليوم، %1$s</string>
+    <string name="last_silenced_yesterday">أمس، %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s، %2$s</string>
+    <string name="info_last_silenced">متى وصلت آخر مرة مكالمة من رقم غير محفوظ في الهاتف دون رنين. يُحفظ الوقت فقط، لا الرقم. المكالمات الفائتة في الهاتف تُظهر من كان المتصل.</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">إضافة شخص</string>
+    <string name="editor_change_title">تغيير شخص</string>
+    <string name="editor_from_contacts">الاختيار من جهات الاتصال</string>
+    <string name="editor_name">الاسم</string>
+    <string name="editor_number">رقم الهاتف</string>
+    <string name="editor_name_missing">أضف اسمًا، ليظهر ويُقال.</string>
+    <string name="editor_number_missing">أضف رقم هاتف للاتصال به.</string>
+    <string name="editor_emergency">هذا رقم طوارئ. لمس الوجه يفتح تطبيق الاتصال في الهاتف والرقم جاهز، لأن Android لا يسمح للتطبيقات الأخرى بالاتصال به مباشرة.</string>
+    <string name="editor_place">المكان على الشاشة</string>
+    <string name="editor_place_taken">هذا المكان فيه شخص الآن. اختر مكانًا آخر.</string>
+    <string name="editor_save">حفظ</string>
+    <string name="editor_remove">إزالة من الشاشة</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">هل تريد إزالة %1$s من الشاشة؟</string>
+    <string name="editor_remove_confirm">إزالة %1$s</string>
+    <string name="editor_keep">إبقاء %1$s</string>
+    <string name="editor_contact_unreadable">تعذّرت قراءة جهة الاتصال هذه. حاول مرة أخرى، أو اكتب الاسم والرقم.</string>
+    <string name="editor_no_contacts_app">لا يوجد في هذا الهاتف تطبيق جهات اتصال للاختيار منه. اكتب الاسم والرقم بدلًا من ذلك.</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">هذا الشخص</string>
+    <string name="editor_typed_note">يحفظ Niko Dialer أيضًا %1$s في جهات اتصال الهاتف، على الهاتف وليس على شريحة SIM. بعدها يمكن أن يعمل الاسم المسجّل عندما يتصل %1$s، ويسمح «الرنين لجهات الاتصال المحفوظة فقط» للمكالمة بأن ترن.</string>
+    <string name="editor_typed_note_ask">يحفظ Niko Dialer أيضًا %1$s في جهات اتصال الهاتف، على الهاتف وليس على شريحة SIM. بعدها يمكن أن يعمل الاسم المسجّل عندما يتصل %1$s، ويسمح «الرنين لجهات الاتصال المحفوظة فقط» للمكالمة بأن ترن. بعد «حفظ»، يطلب الهاتف السماح بجهات الاتصال.</string>
+    <string name="editor_sim_note">%1$s محفوظ على شريحة SIM. جهة الاتصال على الشريحة لا يمكن أن تكون لها نغمة خاصة، فلا يمكن أن يعمل الاسم المسجّل عندما يتصل %1$s. انسخ %1$s إلى الهاتف لإصلاح ذلك.</string>
+    <string name="editor_sim_copy">نسخ إلى الهاتف</string>
+    <string name="editor_sim_copied">%1$s محفوظ على الهاتف الآن.</string>
+    <string name="editor_sim_copy_failed">تعذّر نسخ %1$s إلى الهاتف. حاول مرة أخرى.</string>
+    <string name="editor_sim_needs_contacts">النسخ يحتاج إلى جهات اتصال الهاتف. المس «نسخ إلى الهاتف»، ثم اختر «السماح».</string>
+    <string name="editor_saved_title">تم حفظ %1$s</string>
+    <string name="editor_saved_no_contacts">%1$s موجود في Niko Dialer، لكنه ليس في جهات اتصال الهاتف. لا يعمل الاسم المسجّل عندما يتصل %1$s إلا إذا كان في جهات الاتصال. وقد يُبقي «الرنين لجهات الاتصال المحفوظة فقط» مكالماته صامتة أيضًا. لتغيير ذلك، افتح %1$s مرة أخرى، والمس «حفظ» واختر «السماح».</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">الصورة</string>
+    <string name="editor_photo_missing">الصورة تساعد. الوجه أسهل في الإيجاد من الاسم.</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">الصورة على الوجه</string>
+    <string name="editor_photo_take">التقاط صورة</string>
+    <string name="editor_photo_choose">اختيار صورة</string>
+    <string name="editor_photo_contact">استخدام صورة جهة الاتصال</string>
+    <string name="editor_photo_remove">إزالة الصورة</string>
+    <string name="editor_photo_unreadable">تعذّر فتح هذه الصورة. جرّب صورة أخرى.</string>
+    <string name="editor_no_camera_app">لا يوجد في هذا الهاتف تطبيق كاميرا لالتقاط صورة. اختر صورة بدلًا من ذلك.</string>
+    <string name="editor_no_photo_app">لا يوجد في هذا الهاتف تطبيق لاختيار صورة منه. التقط صورة بدلًا من ذلك.</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">الاسم المسجّل</string>
+    <string name="editor_recording_how">عندما يتصل %1$s، يشغّل الهاتف هذا التسجيل بدلًا من نغمة الرنين. المس «تسجيل» وقل \"%1$s يتصل\" بكلماتك ولغتك. يتوقف وحده بعد 5 ثوانٍ.</string>
+    <string name="editor_recording_kept">يظهر التسجيل في قائمة نغمات الرنين في الهاتف، ويبقى على الهاتف إذا أُزيل Niko Dialer.</string>
+    <string name="editor_recording_none">لا يوجد تسجيل بعد.</string>
+    <string name="editor_recording_ready">تم التسجيل. المس «تشغيل» لسماعه.</string>
+    <string name="editor_recording_new">تم التسجيل. يُحفظ عندما تلمس «حفظ».</string>
+    <string name="editor_recording_removed">يُحذف التسجيل عندما تلمس «حفظ».</string>
+    <string name="editor_recording_now">جارٍ التسجيل. قل الكلمات، ثم المس «إيقاف».</string>
+    <string name="editor_recording_too_short">لم يُسجَّل شيء. المس «تسجيل»، وانتظر لحظة، ثم تكلّم.</string>
+    <string name="editor_recording_failed">تعذّر استخدام الميكروفون. أغلق التطبيقات الأخرى التي قد تستخدمه، ثم حاول مرة أخرى.</string>
+    <string name="editor_recording_needs_mic">التسجيل يحتاج إلى الميكروفون. المس «تسجيل»، ثم اختر «السماح».</string>
+    <string name="editor_recording_mic_off">الميكروفون متوقف لـ Niko Dialer. شغّله من إعدادات الهاتف الخاصة بـ Niko Dialer.</string>
+    <string name="editor_recording_needs_contacts">التسجيل محفوظ، لكنه لا يمكن أن يرن لـ %1$s حتى يُسمح بجهات الاتصال.</string>
+    <string name="editor_recording_needs_storage">التسجيل محفوظ، لكنه لا يمكن أن يُضاف إلى نغمات الهاتف حتى يُسمح بالتخزين.</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">يطلب الهاتف السماح بالميكروفون، للتسجيل.</string>
+    <string name="editor_recording_ask_contacts">ويطلب جهات الاتصال، لضبط التسجيل كنغمة رنين لـ %1$s.</string>
+    <string name="editor_recording_ask_storage">ويطلب التخزين، لوضع التسجيل مع نغمات الرنين في الهاتف.</string>
+    <string name="editor_record">تسجيل</string>
+    <string name="editor_record_stop">إيقاف</string>
+    <string name="editor_record_play">تشغيل</string>
+    <string name="editor_record_stop_playing">إيقاف التشغيل</string>
+    <string name="editor_record_again">تسجيل مرة أخرى</string>
+    <string name="editor_record_delete">حذف التسجيل</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s يتصل - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">شخص ما</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">ضع الوجه داخل المربع</string>
+    <string name="crop_opening">جارٍ فتح الصورة.</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">الصورة كما ستظهر على الوجه</string>
+    <string name="crop_help">اسحب الصورة لتحريكها، وباعد بين إصبعين للتكبير. الأزرار تفعل الشيء نفسه.</string>
+    <string name="crop_zoom_in">تكبير</string>
+    <string name="crop_zoom_out">تصغير</string>
+    <string name="crop_move_left">تحريك لليسار</string>
+    <string name="crop_move_right">تحريك لليمين</string>
+    <string name="crop_move_up">تحريك للأعلى</string>
+    <string name="crop_move_down">تحريك للأسفل</string>
+    <string name="crop_fit_whole">إظهار الصورة كاملة</string>
+    <string name="crop_use">استخدام هذه الصورة</string>
+    <string name="crop_save_failed">تعذّر حفظ الصورة. حاول مرة أخرى.</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">المس مكانًا لإضافة شخص إليه.</string>
+    <string name="setup_photos_info">الصورة تساعد. الوجه أسهل في الإيجاد من الاسم. هؤلاء الأشخاص ليست لهم صورة بعد.</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">أضف صورة لـ %1$s</string>
+    <string name="setup_record_info">يعمل الاسم المسجّل عندما يتصل ذلك الشخص، بدلًا من نغمة الرنين، بصوت يعرفه. المس شخصًا لتسجيل اسمه. يمكن فعل ذلك لاحقًا من الإعدادات أيضًا.</string>
+    <string name="setup_record_no_people">أضف أشخاصًا في الخطوة السابقة، ثم سجّل أسماءهم هنا.</string>
+    <string name="setup_recorded">مسجّل</string>
+    <string name="setup_not_recorded">لم يُسجَّل بعد. المس للتسجيل.</string>
+    <string name="setup_calls_reason">يحتاج Niko Dialer إلى السماح بإجراء المكالمات الهاتفية، حتى يبدأ الاتصال عند لمس وجه.</string>
+    <string name="setup_calls_allow">السماح بالمكالمات</string>
+    <string name="calls_allowed">مسموح</string>
+    <string name="calls_not_allowed">غير مسموح بعد. المس للسماح.</string>
+    <string name="calls_turned_off">متوقف. المس لفتح إعدادات الهاتف الخاصة بـ Niko Dialer.</string>
+    <string name="setup_silence_reason">يمكن إبقاء مكالمات الغرباء صامتة، فلا يرن الهاتف إلا للأشخاص المحفوظين فيه. يطلب الهاتف مرة واحدة السماح لـ Niko Dialer بإسكات المكالمات. يمكن تغيير ذلك لاحقًا من الإعدادات.</string>
+    <string name="setup_phone_ok">هذه الإعدادات سليمة.</string>
+    <string name="setup_sim">شريحة الاتصال</string>
+    <string name="setup_sim_value">إذا كان في الهاتف شريحتا SIM، فاختر واحدة للمكالمات، حتى لا يسأل الهاتف أيهما في كل مرة.</string>
+</resources>

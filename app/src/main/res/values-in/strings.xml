@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">Pengaturan</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">Telepon %1$s</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">Ketuk wajah untuk menelepon.</string>
+    <string name="hint_no_people">Belum ada siapa pun di sini. Pendamping bisa menambahkan orang di Pengaturan.</string>
+    <string name="hint_call_permission">Telepon belum diizinkan. Ketuk wajah, lalu pilih Izinkan.</string>
+    <string name="hint_call_blocked">Telepon dimatikan untuk Niko Dialer. Pendamping bisa menyalakannya di pengaturan ponsel.</string>
+    <string name="hint_call_failed">Panggilan tidak tersambung. Coba lagi sebentar lagi.</string>
+    <string name="hint_silencing_lost">Panggilan dari nomor yang tidak tersimpan berdering lagi. Pendamping bisa memperbaikinya di Pengaturan.</string>
+    <string name="hint_recorded_names">Nama rekaman mungkin tidak berbunyi saat ada yang menelepon. Pendamping bisa memperbaikinya di Pengaturan.</string>
+    <string name="hint_needs_attention">Telepon mungkin berhenti bekerja nanti. Pendamping bisa memperbaikinya di Pengaturan.</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">Sedang menelepon %1$s</string>
+    <string name="stop">Berhenti</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">Ibu</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">Perlu diperiksa</string>
+    <string name="section_people">Orang</string>
+    <string name="section_screen">Layar</string>
+    <string name="section_voice">Suara</string>
+    <string name="section_helper">Pendamping</string>
+    <string name="section_calls">Panggilan</string>
+    <string name="section_phone">Ponsel</string>
+    <string name="section_recorded_names">Nama rekaman</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">Wajah di layar</string>
+    <string name="place_top">Atas</string>
+    <string name="place_bottom">Bawah</string>
+    <string name="place_top_left">Kiri atas</string>
+    <string name="place_top_right">Kanan atas</string>
+    <string name="place_middle_left">Kiri tengah</string>
+    <string name="place_middle_right">Kanan tengah</string>
+    <string name="place_bottom_left">Kiri bawah</string>
+    <string name="place_bottom_right">Kanan bawah</string>
+    <string name="place_empty">Kosong</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">Orang di layar</string>
+    <plurals name="people_count">
+        <item quantity="other">%d orang</item>
+    </plurals>
+    <string name="info_people_on_screen">Berapa banyak wajah yang muat di layar utama. Tidak ada yang berpindah saat ini diubah. Orang yang tidak muat akan kembali saat ada tempat lagi.</string>
+    <string name="setting_wait">Tunggu sebelum menelepon</string>
+    <string name="wait_call_now">Langsung telepon</string>
+    <string name="wait_3s">Tunggu 3 detik</string>
+    <string name="wait_ask">Tanya dulu</string>
+    <string name="info_wait">Setelah wajah diketuk, namanya diucapkan. Tunggu 3 detik memberi waktu untuk menekan Berhenti sebelum panggilan keluar. Tanya dulu menampilkan tombol Telepon besar untuk ditekan.</string>
+    <string name="setting_theme">Tema</string>
+    <string name="theme_phone">Sama dengan ponsel</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="setting_screen_language">Bahasa layar</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">PIN 4 angka mencegah orang dan pengaturan berubah tanpa sengaja. Menelepon selalu bisa tanpa PIN.</string>
+    <string name="setup_again">Atur langkah demi langkah</string>
+    <string name="setup_again_value">Ulangi pengaturan utama</string>
+    <string name="info_phone_maker">Beberapa ponsel menghentikan aplikasi yang dianggap tidak dipakai dan mencabut izinnya. Itu bisa menghentikan panggilan. Pastikan Niko Dialer tetap diizinkan di pengaturan merek ponsel.</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">Panggilan telepon</string>
+    <string name="health_calls_value">Izinkan %1$s melakukan panggilan telepon</string>
+    <string name="health_silencing">Hanya berdering untuk kontak tersimpan</string>
+    <string name="health_silencing_value">Panggilan dari nomor yang tidak tersimpan berdering lagi. Izinkan %1$s membisukannya.</string>
+    <string name="health_recorded_contacts">Kontak untuk nama rekaman</string>
+    <string name="health_recorded_contacts_value">Izinkan %1$s memakai kontak, supaya nama rekaman berbunyi saat ada yang menelepon</string>
+    <string name="health_ringer">Dering</string>
+    <string name="health_ringer_value">Dering dalam mode senyap, getar atau terlalu pelan, jadi nama rekaman tidak terdengar. Besarkan volume dering.</string>
+    <string name="health_recorded_not_set">Nada dering nama rekaman</string>
+    <string name="health_recorded_not_set_value">Ada nama rekaman yang belum dipasang sebagai nada dering kontaknya. Ketuk untuk memasangnya lagi.</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">Hanya berdering untuk kontak tersimpan</string>
+    <string name="silence_value">Panggilan dari orang yang tidak tersimpan di ponsel tidak akan berdering. Panggilannya tetap muncul sebagai panggilan tak terjawab.</string>
+    <string name="info_silence">Panggilan dari nomor yang tidak tersimpan di kontak ponsel tidak berdering. Panggilannya tetap muncul sebagai panggilan tak terjawab, jadi telepon dari klinik tidak hilang. Ponsel yang menentukan siapa yang tersimpan, dari semua kontaknya, bukan hanya orang di Niko Dialer. Nomor tersembunyi juga tidak berdering.</string>
+    <string name="silence_needs_android_10">Nonaktif. Ini perlu Android 10 atau yang lebih baru.</string>
+    <string name="silence_not_on_this_phone">Nonaktif. Ponsel ini tidak mengizinkan aplikasi membisukan panggilan.</string>
+    <string name="silence_not_allowed">Belum aktif. Ponsel belum mengizinkan Niko Dialer membisukan panggilan. Ketuk untuk mencoba lagi.</string>
+    <string name="silence_restricted_steps">Jika ponsel tidak bertanya, atau bilang setelan ini dibatasi:\n1. Ketuk Buka info aplikasi di bawah.\n2. Ketuk tiga titik di atas.\n3. Ketuk Izinkan setelan terbatas.\n4. Kembali ke sini dan aktifkan ini lagi.</string>
+    <string name="open_app_info">Buka info aplikasi</string>
+    <string name="open_app_info_value">Halaman ponsel untuk Niko Dialer</string>
+    <string name="last_silenced">Panggilan terakhir yang dibisukan</string>
+    <string name="last_silenced_none">Belum ada</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">Hari ini, %1$s</string>
+    <string name="last_silenced_yesterday">Kemarin, %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s, %2$s</string>
+    <string name="info_last_silenced">Kapan terakhir kali panggilan dari nomor yang tidak tersimpan di ponsel masuk tanpa berdering. Hanya waktunya yang disimpan, bukan nomornya. Panggilan tak terjawab di ponsel menunjukkan siapa itu.</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">Tambah orang</string>
+    <string name="editor_change_title">Ubah orang</string>
+    <string name="editor_from_contacts">Pilih dari kontak</string>
+    <string name="editor_name">Nama</string>
+    <string name="editor_number">Nomor telepon</string>
+    <string name="editor_name_missing">Tambahkan nama, supaya bisa ditampilkan dan diucapkan.</string>
+    <string name="editor_number_missing">Tambahkan nomor telepon untuk ditelepon.</string>
+    <string name="editor_emergency">Ini nomor darurat. Mengetuk wajahnya membuka aplikasi telepon dengan nomor yang sudah siap, karena Android tidak mengizinkan aplikasi lain meneleponnya langsung.</string>
+    <string name="editor_place">Tempat di layar</string>
+    <string name="editor_place_taken">Tempat itu sekarang sudah terisi. Pilih tempat lain.</string>
+    <string name="editor_save">Simpan</string>
+    <string name="editor_remove">Hapus dari layar</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">Hapus %1$s dari layar?</string>
+    <string name="editor_remove_confirm">Hapus %1$s</string>
+    <string name="editor_keep">Simpan %1$s</string>
+    <string name="editor_contact_unreadable">Kontak itu tidak bisa dibaca. Coba lagi, atau ketik nama dan nomornya.</string>
+    <string name="editor_no_contacts_app">Ponsel ini tidak punya aplikasi kontak untuk dipilih. Ketik saja nama dan nomornya.</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">orang ini</string>
+    <string name="editor_typed_note">Niko Dialer juga menyimpan %1$s di kontak ponsel, di ponsel, bukan di SIM. Dengan begitu nama rekaman bisa berbunyi saat %1$s menelepon, dan Hanya berdering untuk kontak tersimpan membiarkan panggilannya berdering.</string>
+    <string name="editor_typed_note_ask">Niko Dialer juga menyimpan %1$s di kontak ponsel, di ponsel, bukan di SIM. Dengan begitu nama rekaman bisa berbunyi saat %1$s menelepon, dan Hanya berdering untuk kontak tersimpan membiarkan panggilannya berdering. Setelah Simpan, ponsel meminta izin untuk kontak.</string>
+    <string name="editor_sim_note">%1$s tersimpan di kartu SIM. Kontak SIM tidak bisa punya nada dering sendiri, jadi nama rekaman tidak bisa berbunyi saat %1$s menelepon. Salin %1$s ke ponsel untuk memperbaikinya.</string>
+    <string name="editor_sim_copy">Salin ke ponsel</string>
+    <string name="editor_sim_copied">%1$s sekarang tersimpan di ponsel.</string>
+    <string name="editor_sim_copy_failed">%1$s tidak bisa disalin ke ponsel. Coba lagi.</string>
+    <string name="editor_sim_needs_contacts">Menyalin perlu kontak ponsel. Ketuk Salin ke ponsel, lalu pilih Izinkan.</string>
+    <string name="editor_saved_title">%1$s sudah tersimpan</string>
+    <string name="editor_saved_no_contacts">%1$s ada di Niko Dialer, tapi tidak ada di kontak ponsel. Nama rekaman hanya bisa berbunyi saat %1$s menelepon jika ada di kontak. Hanya berdering untuk kontak tersimpan juga bisa membuat panggilannya diam. Untuk mengubahnya, buka %1$s lagi, ketuk Simpan dan pilih Izinkan.</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">Foto</string>
+    <string name="editor_photo_missing">Foto membantu. Wajah lebih mudah dicari daripada nama.</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">Foto di wajah</string>
+    <string name="editor_photo_take">Ambil foto</string>
+    <string name="editor_photo_choose">Pilih foto</string>
+    <string name="editor_photo_contact">Pakai foto kontak</string>
+    <string name="editor_photo_remove">Hapus foto</string>
+    <string name="editor_photo_unreadable">Foto itu tidak bisa dibuka. Coba foto lain.</string>
+    <string name="editor_no_camera_app">Ponsel ini tidak punya aplikasi kamera untuk mengambil foto. Pilih foto saja.</string>
+    <string name="editor_no_photo_app">Ponsel ini tidak punya aplikasi untuk memilih foto. Ambil foto saja.</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">Nama rekaman</string>
+    <string name="editor_recording_how">Saat %1$s menelepon, ponsel memutar ini sebagai ganti nada dering. Ketuk Rekam dan ucapkan \"%1$s menelepon\" dengan kata-kata dan bahasa Anda sendiri. Rekaman berhenti sendiri setelah 5 detik.</string>
+    <string name="editor_recording_kept">Rekaman muncul di daftar nada dering ponsel, dan tetap ada di ponsel jika Niko Dialer dihapus.</string>
+    <string name="editor_recording_none">Belum ada rekaman.</string>
+    <string name="editor_recording_ready">Sudah direkam. Ketuk Putar untuk mendengarnya.</string>
+    <string name="editor_recording_new">Sudah direkam. Rekaman disimpan saat Anda mengetuk Simpan.</string>
+    <string name="editor_recording_removed">Rekaman dihapus saat Anda mengetuk Simpan.</string>
+    <string name="editor_recording_now">Sedang merekam. Ucapkan kata-katanya, lalu ketuk Berhenti.</string>
+    <string name="editor_recording_too_short">Tidak ada yang terekam. Ketuk Rekam, tunggu sebentar, lalu bicara.</string>
+    <string name="editor_recording_failed">Mikrofon tidak bisa dipakai. Tutup aplikasi lain yang mungkin sedang memakainya, lalu coba lagi.</string>
+    <string name="editor_recording_needs_mic">Merekam perlu mikrofon. Ketuk Rekam, lalu pilih Izinkan.</string>
+    <string name="editor_recording_mic_off">Mikrofon dimatikan untuk Niko Dialer. Nyalakan di pengaturan ponsel untuk Niko Dialer.</string>
+    <string name="editor_recording_needs_contacts">Rekaman disimpan, tapi belum bisa berdering untuk %1$s sampai kontak diizinkan.</string>
+    <string name="editor_recording_needs_storage">Rekaman disimpan, tapi belum bisa masuk ke nada dering ponsel sampai penyimpanan diizinkan.</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">Ponsel meminta izin untuk mikrofon, untuk merekam.</string>
+    <string name="editor_recording_ask_contacts">Ponsel meminta izin untuk kontak, untuk memasang rekaman sebagai nada dering %1$s.</string>
+    <string name="editor_recording_ask_storage">Ponsel meminta izin untuk penyimpanan, untuk menaruh rekaman bersama nada dering ponsel.</string>
+    <string name="editor_record">Rekam</string>
+    <string name="editor_record_stop">Berhenti</string>
+    <string name="editor_record_play">Putar</string>
+    <string name="editor_record_stop_playing">Berhenti memutar</string>
+    <string name="editor_record_again">Rekam lagi</string>
+    <string name="editor_record_delete">Hapus rekaman</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s menelepon - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">Seseorang</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">Atur wajah agar pas di dalam kotak</string>
+    <string name="crop_opening">Membuka foto.</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">Foto seperti yang akan terlihat di wajah</string>
+    <string name="crop_help">Geser foto untuk memindahkannya, dan cubit untuk memperbesar. Tombol-tombolnya juga bisa melakukan hal yang sama.</string>
+    <string name="crop_zoom_in">Perbesar</string>
+    <string name="crop_zoom_out">Perkecil</string>
+    <string name="crop_move_left">Geser ke kiri</string>
+    <string name="crop_move_right">Geser ke kanan</string>
+    <string name="crop_move_up">Geser ke atas</string>
+    <string name="crop_move_down">Geser ke bawah</string>
+    <string name="crop_fit_whole">Tampilkan seluruh foto</string>
+    <string name="crop_use">Pakai foto ini</string>
+    <string name="crop_save_failed">Foto tidak bisa disimpan. Coba lagi.</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">Ketuk sebuah tempat untuk menambahkan orang di situ.</string>
+    <string name="setup_photos_info">Foto membantu. Wajah lebih mudah dicari daripada nama. Orang-orang ini belum punya foto.</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">Tambahkan foto %1$s</string>
+    <string name="setup_record_info">Nama rekaman berbunyi saat orang itu menelepon, sebagai ganti nada dering, dengan suara yang dikenal. Ketuk seseorang untuk merekam namanya. Ini juga bisa dilakukan nanti di Pengaturan.</string>
+    <string name="setup_record_no_people">Tambahkan orang di langkah sebelumnya, lalu rekam nama mereka di sini.</string>
+    <string name="setup_recorded">Sudah direkam</string>
+    <string name="setup_not_recorded">Belum direkam. Ketuk untuk merekam.</string>
+    <string name="setup_calls_reason">Niko Dialer perlu diizinkan melakukan panggilan telepon, supaya ketukan pada wajah langsung memulai panggilan.</string>
+    <string name="setup_calls_allow">Izinkan panggilan</string>
+    <string name="calls_allowed">Diizinkan</string>
+    <string name="calls_not_allowed">Belum diizinkan. Ketuk untuk mengizinkan.</string>
+    <string name="calls_turned_off">Dimatikan. Ketuk untuk membuka pengaturan ponsel untuk Niko Dialer.</string>
+    <string name="setup_silence_reason">Panggilan dari orang yang tidak dikenal bisa dibuat diam, jadi hanya orang yang tersimpan di ponsel yang berdering. Ponsel akan bertanya sekali untuk mengizinkan Niko Dialer membisukan panggilan. Ini bisa diubah nanti di Pengaturan.</string>
+    <string name="setup_phone_ok">Pengaturan ini sudah benar.</string>
+    <string name="setup_sim">SIM untuk menelepon</string>
+    <string name="setup_sim_value">Jika ponsel punya dua SIM, pilih satu untuk menelepon, supaya ponsel tidak bertanya setiap kali.</string>
+</resources>

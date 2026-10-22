@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">سیٹنگز</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">%1$s کو فون کریں</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">فون کرنے کے لیے کسی چہرے کو چھوئیں۔</string>
+    <string name="hint_no_people">یہاں ابھی کوئی نہیں ہے۔ کوئی مددگار سیٹنگز میں لوگ شامل کر سکتا ہے۔</string>
+    <string name="hint_call_permission">ابھی فون کرنے کی اجازت نہیں ہے۔ کسی چہرے کو چھوئیں، پھر اجازت دیں چنیں۔</string>
+    <string name="hint_call_blocked">Niko Dialer کے لیے فون کرنا بند ہے۔ کوئی مددگار فون کی سیٹنگز میں اسے آن کر سکتا ہے۔</string>
+    <string name="hint_call_failed">کال شروع نہیں ہوئی۔ ذرا دیر بعد دوبارہ کوشش کریں۔</string>
+    <string name="hint_silencing_lost">جو نمبر محفوظ نہیں، ان کی کالوں پر پھر سے گھنٹی بجتی ہے۔ کوئی مددگار سیٹنگز میں اسے ٹھیک کر سکتا ہے۔</string>
+    <string name="hint_recorded_names">ہو سکتا ہے لوگوں کے فون کرنے پر ریکارڈ کیے گئے نام نہ چلیں۔ کوئی مددگار سیٹنگز میں اسے ٹھیک کر سکتا ہے۔</string>
+    <string name="hint_needs_attention">ہو سکتا ہے بعد میں کالیں کام کرنا بند کر دیں۔ کوئی مددگار سیٹنگز میں اسے ٹھیک کر سکتا ہے۔</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">%1$s کو فون کر رہے ہیں</string>
+    <string name="stop">روکیں</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">امی</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">توجہ درکار</string>
+    <string name="section_people">لوگ</string>
+    <string name="section_screen">اسکرین</string>
+    <string name="section_voice">آواز</string>
+    <string name="section_helper">مددگار</string>
+    <string name="section_calls">کالیں</string>
+    <string name="section_phone">فون</string>
+    <string name="section_recorded_names">ریکارڈ کیے گئے نام</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">اسکرین پر چہرہ</string>
+    <string name="place_top">اوپر</string>
+    <string name="place_bottom">نیچے</string>
+    <string name="place_top_left">اوپر بائیں</string>
+    <string name="place_top_right">اوپر دائیں</string>
+    <string name="place_middle_left">درمیان بائیں</string>
+    <string name="place_middle_right">درمیان دائیں</string>
+    <string name="place_bottom_left">نیچے بائیں</string>
+    <string name="place_bottom_right">نیچے دائیں</string>
+    <string name="place_empty">خالی</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">اسکرین پر لوگ</string>
+    <plurals name="people_count">
+        <item quantity="one">%d شخص</item>
+        <item quantity="other">%d لوگ</item>
+    </plurals>
+    <string name="info_people_on_screen">مرکزی اسکرین پر کتنے چہروں کی جگہ ہے۔ اسے بدلنے سے کوئی اپنی جگہ سے نہیں ہٹتا۔ جو لوگ جگہ میں نہیں آتے، جگہ بننے پر واپس آ جاتے ہیں۔</string>
+    <string name="setting_wait">فون کرنے سے پہلے انتظار</string>
+    <string name="wait_call_now">فوراً فون کریں</string>
+    <string name="wait_3s">3 سیکنڈ انتظار کریں</string>
+    <string name="wait_ask">پہلے پوچھیں</string>
+    <string name="info_wait">چہرہ چھونے کے بعد نام بولا جاتا ہے۔ 3 سیکنڈ انتظار کریں سے کال جانے سے پہلے روکیں دبانے کا وقت ملتا ہے۔ پہلے پوچھیں ایک بڑا بٹن دکھاتا ہے جسے دبانے پر فون ہوتا ہے۔</string>
+    <string name="setting_theme">تھیم</string>
+    <string name="theme_phone">فون جیسی</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_dark">گہری</string>
+    <string name="setting_screen_language">اسکرین کی زبان</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">4 ہندسوں کا PIN لوگوں اور سیٹنگز کو غلطی سے بدلنے سے بچاتا ہے۔ فون کرنا اس کے بغیر ہمیشہ کام کرتا ہے۔</string>
+    <string name="setup_again">قدم بہ قدم سیٹ اپ</string>
+    <string name="setup_again_value">مرکزی سیٹنگز دوبارہ دیکھیں</string>
+    <string name="info_phone_maker">کچھ فون ان ایپس کو روک دیتے ہیں جنہیں وہ غیر استعمال شدہ سمجھتے ہیں، اور ان کی اجازتیں واپس لے لیتے ہیں۔ اس سے کالیں رک سکتی ہیں۔ فون کمپنی کی سیٹنگز میں Niko Dialer کو اجازت دیے رکھیں۔</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">فون کالیں</string>
+    <string name="health_calls_value">%1$s کو فون کرنے کی اجازت دیں</string>
+    <string name="health_silencing">صرف محفوظ کانٹیکٹس کے لیے گھنٹی</string>
+    <string name="health_silencing_value">جو نمبر محفوظ نہیں، ان کی کالوں پر پھر سے گھنٹی بجتی ہے۔ %1$s کو انہیں خاموش کرنے کی اجازت دیں۔</string>
+    <string name="health_recorded_contacts">ریکارڈ کیے گئے ناموں کے لیے کانٹیکٹس</string>
+    <string name="health_recorded_contacts_value">%1$s کو کانٹیکٹس استعمال کرنے کی اجازت دیں، تاکہ لوگوں کے فون کرنے پر ریکارڈ کیے گئے نام چلیں</string>
+    <string name="health_ringer">گھنٹی</string>
+    <string name="health_ringer_value">گھنٹی خاموش ہے، وائبریٹ پر ہے یا دھیمی ہے، اس لیے ریکارڈ کیے گئے نام سنائی نہیں دیتے۔ گھنٹی کی آواز اونچی کریں۔</string>
+    <string name="health_recorded_not_set">ریکارڈ کیے گئے ناموں کی رنگ ٹون</string>
+    <string name="health_recorded_not_set_value">ایک ریکارڈ کیا گیا نام اپنے کانٹیکٹ کی رنگ ٹون نہیں ہے۔ اسے دوبارہ لگانے کے لیے چھوئیں۔</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">صرف محفوظ کانٹیکٹس کے لیے گھنٹی</string>
+    <string name="silence_value">جو لوگ فون میں محفوظ نہیں، ان کی کالوں پر گھنٹی نہیں بجے گی۔ وہ کالیں پھر بھی مسڈ کالز میں دکھیں گی۔</string>
+    <string name="info_silence">جو نمبر فون کے کانٹیکٹس میں محفوظ نہیں، ان کی کالوں پر گھنٹی نہیں بجتی۔ وہ پھر بھی مسڈ کالز میں دکھتی ہیں، تاکہ کلینک کی کال ضائع نہ ہو۔ کون محفوظ ہے یہ فون اپنے تمام کانٹیکٹس دیکھ کر طے کرتا ہے، صرف Niko Dialer کے لوگ نہیں۔ چھپے ہوئے نمبروں کی کالوں پر بھی گھنٹی نہیں بجتی۔</string>
+    <string name="silence_needs_android_10">آف۔ اس کے لیے Android 10 یا اس سے نیا چاہیے۔</string>
+    <string name="silence_not_on_this_phone">آف۔ یہ فون ایپس کو کالیں خاموش کرنے نہیں دیتا۔</string>
+    <string name="silence_not_allowed">آن نہیں ہوا۔ فون نے Niko Dialer کو کالیں خاموش کرنے کی اجازت نہیں دی۔ دوبارہ کوشش کرنے کے لیے چھوئیں۔</string>
+    <string name="silence_restricted_steps">اگر فون نے نہیں پوچھا، یا کہا کہ یہ سیٹنگ محدود ہے:\n1. نیچے ایپ کی معلومات کھولیں کو چھوئیں۔\n2. اوپر تین نقطوں کو چھوئیں۔\n3. Allow restricted settings کو چھوئیں۔\n4. یہاں واپس آئیں اور اسے دوبارہ آن کریں۔</string>
+    <string name="open_app_info">ایپ کی معلومات کھولیں</string>
+    <string name="open_app_info_value">فون میں Niko Dialer کا صفحہ</string>
+    <string name="last_silenced">آخری خاموش کی گئی کال</string>
+    <string name="last_silenced_none">ابھی تک کوئی نہیں</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">آج، %1$s</string>
+    <string name="last_silenced_yesterday">کل، %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s، %2$s</string>
+    <string name="info_last_silenced">فون میں محفوظ نہ ہونے والے نمبر کی کال آخری بار کب گھنٹی کے بغیر آئی۔ صرف وقت رکھا جاتا ہے، نمبر نہیں۔ فون کی مسڈ کالز میں دکھتا ہے کہ وہ کون تھا۔</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">کوئی شخص شامل کریں</string>
+    <string name="editor_change_title">شخص کی تفصیل بدلیں</string>
+    <string name="editor_from_contacts">کانٹیکٹس سے چنیں</string>
+    <string name="editor_name">نام</string>
+    <string name="editor_number">فون نمبر</string>
+    <string name="editor_name_missing">نام لکھیں، تاکہ وہ دکھایا اور بولا جا سکے۔</string>
+    <string name="editor_number_missing">فون کرنے کے لیے فون نمبر لکھیں۔</string>
+    <string name="editor_emergency">یہ ایمرجنسی نمبر ہے۔ چہرہ چھونے پر فون کا ڈائلر نمبر کے ساتھ کھل جاتا ہے، کیونکہ Android دوسری ایپس کو اس پر سیدھا فون کرنے نہیں دیتا۔</string>
+    <string name="editor_place">اسکرین پر جگہ</string>
+    <string name="editor_place_taken">اس جگہ پر اب کوئی ہے۔ کوئی اور جگہ چنیں۔</string>
+    <string name="editor_save">محفوظ کریں</string>
+    <string name="editor_remove">اسکرین سے ہٹائیں</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">%1$s کو اسکرین سے ہٹا دیں؟</string>
+    <string name="editor_remove_confirm">%1$s کو ہٹائیں</string>
+    <string name="editor_keep">%1$s کو رہنے دیں</string>
+    <string name="editor_contact_unreadable">وہ کانٹیکٹ پڑھا نہیں جا سکا۔ دوبارہ کوشش کریں، یا نام اور نمبر لکھیں۔</string>
+    <string name="editor_no_contacts_app">اس فون میں چننے کے لیے کانٹیکٹس کی کوئی ایپ نہیں ہے۔ اس کے بجائے نام اور نمبر لکھیں۔</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">اس شخص</string>
+    <string name="editor_typed_note">Niko Dialer %1$s کو فون کے کانٹیکٹس میں بھی محفوظ کرتا ہے، فون پر، SIM پر نہیں۔ پھر %1$s کی کال آنے پر ریکارڈ کیا گیا نام چل سکتا ہے، اور صرف محفوظ کانٹیکٹس کے لیے گھنٹی آن ہو تب بھی کال پر گھنٹی بجتی ہے۔</string>
+    <string name="editor_typed_note_ask">Niko Dialer %1$s کو فون کے کانٹیکٹس میں بھی محفوظ کرتا ہے، فون پر، SIM پر نہیں۔ پھر %1$s کی کال آنے پر ریکارڈ کیا گیا نام چل سکتا ہے، اور صرف محفوظ کانٹیکٹس کے لیے گھنٹی آن ہو تب بھی کال پر گھنٹی بجتی ہے۔ محفوظ کریں کے بعد فون کانٹیکٹس کی اجازت مانگتا ہے۔</string>
+    <string name="editor_sim_note">%1$s کا نمبر SIM کارڈ پر محفوظ ہے۔ SIM کانٹیکٹ کی اپنی رنگ ٹون نہیں ہو سکتی، اس لیے %1$s کی کال آنے پر ریکارڈ کیا گیا نام نہیں چل سکتا۔ اسے ٹھیک کرنے کے لیے %1$s کو فون میں کاپی کریں۔</string>
+    <string name="editor_sim_copy">فون میں کاپی کریں</string>
+    <string name="editor_sim_copied">%1$s کو اب فون پر محفوظ کر دیا گیا ہے۔</string>
+    <string name="editor_sim_copy_failed">%1$s کو فون میں کاپی نہیں کیا جا سکا۔ دوبارہ کوشش کریں۔</string>
+    <string name="editor_sim_needs_contacts">کاپی کرنے کے لیے فون کے کانٹیکٹس کی ضرورت ہے۔ فون میں کاپی کریں کو چھوئیں، پھر اجازت دیں چنیں۔</string>
+    <string name="editor_saved_title">%1$s کو محفوظ کر دیا گیا</string>
+    <string name="editor_saved_no_contacts">%1$s کا نام Niko Dialer میں ہے، لیکن فون کے کانٹیکٹس میں نہیں۔ %1$s کی کال آنے پر ریکارڈ کیا گیا نام تبھی چل سکتا ہے جب وہ کانٹیکٹس میں ہوں۔ صرف محفوظ کانٹیکٹس کے لیے گھنٹی ان کی کالوں کو خاموش بھی رکھ سکتا ہے۔ اسے بدلنے کے لیے %1$s کو دوبارہ کھولیں، محفوظ کریں کو چھوئیں اور اجازت دیں چنیں۔</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">تصویر</string>
+    <string name="editor_photo_missing">تصویر سے مدد ملتی ہے۔ نام کے مقابلے میں چہرہ ڈھونڈنا آسان ہوتا ہے۔</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">چہرے پر لگی تصویر</string>
+    <string name="editor_photo_take">تصویر کھینچیں</string>
+    <string name="editor_photo_choose">تصویر چنیں</string>
+    <string name="editor_photo_contact">کانٹیکٹ کی تصویر استعمال کریں</string>
+    <string name="editor_photo_remove">تصویر ہٹائیں</string>
+    <string name="editor_photo_unreadable">وہ تصویر کھل نہیں سکی۔ کوئی اور تصویر آزمائیں۔</string>
+    <string name="editor_no_camera_app">اس فون میں تصویر کھینچنے کے لیے کیمرے کی کوئی ایپ نہیں ہے۔ اس کے بجائے تصویر چنیں۔</string>
+    <string name="editor_no_photo_app">اس فون میں تصویر چننے کے لیے کوئی ایپ نہیں ہے۔ اس کے بجائے تصویر کھینچیں۔</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">ریکارڈ کیا گیا نام</string>
+    <string name="editor_recording_how">جب %1$s کی کال آئے تو فون رنگ ٹون کی جگہ یہ چلاتا ہے۔ ریکارڈ کریں کو چھوئیں اور اپنے الفاظ اور اپنی زبان میں \"%1$s کا فون آ رہا ہے\" کہیں۔ ریکارڈنگ 5 سیکنڈ بعد خود رک جاتی ہے۔</string>
+    <string name="editor_recording_kept">ریکارڈنگ فون کی رنگ ٹونز کی فہرست میں دکھتی ہے، اور Niko Dialer ان انسٹال ہونے پر بھی فون پر رہتی ہے۔</string>
+    <string name="editor_recording_none">ابھی کوئی ریکارڈنگ نہیں۔</string>
+    <string name="editor_recording_ready">ریکارڈ ہو گیا۔ سننے کے لیے چلائیں کو چھوئیں۔</string>
+    <string name="editor_recording_new">ریکارڈ ہو گیا۔ محفوظ کریں کو چھونے پر یہ رکھ لی جاتی ہے۔</string>
+    <string name="editor_recording_removed">محفوظ کریں کو چھونے پر ریکارڈنگ ہٹ جاتی ہے۔</string>
+    <string name="editor_recording_now">ریکارڈ ہو رہا ہے۔ الفاظ کہیں، پھر روکیں کو چھوئیں۔</string>
+    <string name="editor_recording_too_short">کچھ ریکارڈ نہیں ہوا۔ ریکارڈ کریں کو چھوئیں، ذرا رکیں، پھر بولیں۔</string>
+    <string name="editor_recording_failed">مائیکروفون استعمال نہیں ہو سکا۔ جو دوسری ایپس اسے استعمال کر رہی ہوں انہیں بند کریں، پھر دوبارہ کوشش کریں۔</string>
+    <string name="editor_recording_needs_mic">ریکارڈ کرنے کے لیے مائیکروفون چاہیے۔ ریکارڈ کریں کو چھوئیں، پھر اجازت دیں چنیں۔</string>
+    <string name="editor_recording_mic_off">Niko Dialer کے لیے مائیکروفون بند ہے۔ اسے فون کی سیٹنگز میں Niko Dialer کے لیے آن کریں۔</string>
+    <string name="editor_recording_needs_contacts">ریکارڈنگ رکھ لی گئی ہے، لیکن جب تک کانٹیکٹس کی اجازت نہ ہو، یہ %1$s کی کال پر نہیں بج سکتی۔</string>
+    <string name="editor_recording_needs_storage">ریکارڈنگ رکھ لی گئی ہے، لیکن جب تک اسٹوریج کی اجازت نہ ہو، یہ فون کی رنگ ٹونز میں نہیں جا سکتی۔</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">ریکارڈ کرنے کے لیے فون مائیکروفون کی اجازت مانگتا ہے۔</string>
+    <string name="editor_recording_ask_contacts">ریکارڈنگ کو %1$s کی رنگ ٹون بنانے کے لیے یہ کانٹیکٹس کی اجازت مانگتا ہے۔</string>
+    <string name="editor_recording_ask_storage">ریکارڈنگ کو فون کی رنگ ٹونز کے ساتھ رکھنے کے لیے یہ اسٹوریج کی اجازت مانگتا ہے۔</string>
+    <string name="editor_record">ریکارڈ کریں</string>
+    <string name="editor_record_stop">روکیں</string>
+    <string name="editor_record_play">چلائیں</string>
+    <string name="editor_record_stop_playing">چلانا روکیں</string>
+    <string name="editor_record_again">دوبارہ ریکارڈ کریں</string>
+    <string name="editor_record_delete">ریکارڈنگ مٹائیں</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s کا فون آ رہا ہے - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">کسی</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">چہرے کو چوکور میں لائیں</string>
+    <string name="crop_opening">تصویر کھل رہی ہے۔</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">چہرے پر تصویر ایسی دکھے گی</string>
+    <string name="crop_help">تصویر ہٹانے کے لیے اسے انگلی سے کھینچیں، اور بڑا چھوٹا کرنے کے لیے دو انگلیوں سے چٹکی کریں۔ بٹن بھی یہی کرتے ہیں۔</string>
+    <string name="crop_zoom_in">بڑا کریں</string>
+    <string name="crop_zoom_out">چھوٹا کریں</string>
+    <string name="crop_move_left">بائیں ہٹائیں</string>
+    <string name="crop_move_right">دائیں ہٹائیں</string>
+    <string name="crop_move_up">اوپر ہٹائیں</string>
+    <string name="crop_move_down">نیچے ہٹائیں</string>
+    <string name="crop_fit_whole">پوری تصویر دکھائیں</string>
+    <string name="crop_use">یہ تصویر استعمال کریں</string>
+    <string name="crop_save_failed">تصویر محفوظ نہیں ہو سکی۔ دوبارہ کوشش کریں۔</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">کسی جگہ کو چھو کر وہاں کسی کو شامل کریں۔</string>
+    <string name="setup_photos_info">تصویر سے مدد ملتی ہے۔ نام کے مقابلے میں چہرہ ڈھونڈنا آسان ہوتا ہے۔ ان لوگوں کی ابھی کوئی تصویر نہیں ہے۔</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">%1$s کی تصویر لگائیں</string>
+    <string name="setup_record_info">جب کوئی فون کرے تو رنگ ٹون کی جگہ اس کا ریکارڈ کیا گیا نام ایک جانی پہچانی آواز میں چلتا ہے۔ کسی کا نام ریکارڈ کرنے کے لیے اسے چھوئیں۔ یہ بعد میں سیٹنگز میں بھی کیا جا سکتا ہے۔</string>
+    <string name="setup_record_no_people">پچھلے مرحلے میں لوگ شامل کریں، پھر یہاں ان کے نام ریکارڈ کریں۔</string>
+    <string name="setup_recorded">ریکارڈ ہو گیا</string>
+    <string name="setup_not_recorded">ابھی ریکارڈ نہیں ہوا۔ ریکارڈ کرنے کے لیے چھوئیں۔</string>
+    <string name="setup_calls_reason">Niko Dialer کو فون کرنے کی اجازت چاہیے، تاکہ چہرہ چھونے سے کال شروع ہو جائے۔</string>
+    <string name="setup_calls_allow">کال کی اجازت دیں</string>
+    <string name="calls_allowed">اجازت ہے</string>
+    <string name="calls_not_allowed">ابھی اجازت نہیں۔ اجازت دینے کے لیے چھوئیں۔</string>
+    <string name="calls_turned_off">بند ہے۔ Niko Dialer کے لیے فون کی سیٹنگز کھولنے کے لیے چھوئیں۔</string>
+    <string name="setup_silence_reason">انجان لوگوں کی کالیں خاموش رکھی جا سکتی ہیں، تاکہ صرف فون میں محفوظ لوگوں کی کال پر گھنٹی بجے۔ فون ایک بار پوچھتا ہے کہ کیا Niko Dialer کو کالیں خاموش کرنے دی جائیں۔ یہ بعد میں سیٹنگز میں بدلا جا سکتا ہے۔</string>
+    <string name="setup_phone_ok">یہ سیٹنگز ٹھیک ہیں۔</string>
+    <string name="setup_sim">کال کی SIM</string>
+    <string name="setup_sim_value">اگر فون میں دو SIM ہیں تو کالوں کے لیے ایک چنیں، تاکہ فون ہر بار نہ پوچھے کہ کون سی۔</string>
+</resources>

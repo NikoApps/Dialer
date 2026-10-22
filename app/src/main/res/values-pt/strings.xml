@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">Configurações</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">Ligar para %1$s</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">Toque em um rosto para ligar.</string>
+    <string name="hint_no_people">Ainda não tem ninguém aqui. Um ajudante pode adicionar pessoas nas configurações.</string>
+    <string name="hint_call_permission">As ligações ainda não estão permitidas. Toque em um rosto e escolha Permitir.</string>
+    <string name="hint_call_blocked">As ligações estão desligadas para o Niko Dialer. Um ajudante pode ligar nas configurações do celular.</string>
+    <string name="hint_call_failed">A ligação não começou. Tente de novo daqui a pouco.</string>
+    <string name="hint_silencing_lost">Ligações de números não salvos voltaram a tocar. Um ajudante pode resolver isso nas configurações.</string>
+    <string name="hint_recorded_names">Os nomes gravados podem não tocar quando as pessoas ligarem. Um ajudante pode resolver isso nas configurações.</string>
+    <string name="hint_needs_attention">As ligações podem parar de funcionar mais tarde. Um ajudante pode resolver isso nas configurações.</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">Ligando para %1$s</string>
+    <string name="stop">Parar</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">Mamãe</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">Precisa de atenção</string>
+    <string name="section_people">Pessoas</string>
+    <string name="section_screen">Tela</string>
+    <string name="section_voice">Voz</string>
+    <string name="section_helper">Ajudante</string>
+    <string name="section_calls">Ligações</string>
+    <string name="section_phone">Celular</string>
+    <string name="section_recorded_names">Nomes gravados</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">O rosto na tela</string>
+    <string name="place_top">Em cima</string>
+    <string name="place_bottom">Embaixo</string>
+    <string name="place_top_left">Em cima à esquerda</string>
+    <string name="place_top_right">Em cima à direita</string>
+    <string name="place_middle_left">No meio à esquerda</string>
+    <string name="place_middle_right">No meio à direita</string>
+    <string name="place_bottom_left">Embaixo à esquerda</string>
+    <string name="place_bottom_right">Embaixo à direita</string>
+    <string name="place_empty">Vazio</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">Pessoas na tela</string>
+    <plurals name="people_count">
+        <item quantity="one">%d pessoa</item>
+        <item quantity="many">%d pessoas</item>
+        <item quantity="other">%d pessoas</item>
+    </plurals>
+    <string name="info_people_on_screen">Quantos rostos cabem na tela principal. Ninguém muda de lugar quando isso muda. Quem não couber volta quando tiver lugar de novo.</string>
+    <string name="setting_wait">Esperar antes de ligar</string>
+    <string name="wait_call_now">Ligar na hora</string>
+    <string name="wait_3s">Esperar 3 segundos</string>
+    <string name="wait_ask">Perguntar antes</string>
+    <string name="info_wait">Depois de tocar em um rosto, o nome é falado. Esperar 3 segundos dá tempo de apertar Parar antes de a ligação sair. Perguntar antes mostra um botão grande de Ligar para apertar.</string>
+    <string name="setting_theme">Tema</string>
+    <string name="theme_phone">Igual ao celular</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="setting_screen_language">Idioma da tela</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">Um PIN de 4 números evita que as pessoas e as configurações sejam mudadas sem querer. Ligar sempre funciona sem ele.</string>
+    <string name="setup_again">Configurar passo a passo</string>
+    <string name="setup_again_value">Rever as configurações principais</string>
+    <string name="info_phone_maker">Alguns celulares fecham apps que acham que não são usados e tiram as permissões deles. Isso pode impedir as ligações. Deixe o Niko Dialer permitido nas configurações do fabricante.</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">Ligações</string>
+    <string name="health_calls_value">Permita que o %1$s faça ligações</string>
+    <string name="health_silencing">Tocar só para contatos salvos</string>
+    <string name="health_silencing_value">Ligações de números não salvos voltaram a tocar. Permita que o %1$s as deixe em silêncio.</string>
+    <string name="health_recorded_contacts">Contatos para os nomes gravados</string>
+    <string name="health_recorded_contacts_value">Permita que o %1$s use os contatos, para os nomes gravados tocarem quando as pessoas ligarem</string>
+    <string name="health_ringer">Volume do toque</string>
+    <string name="health_ringer_value">O celular está no silencioso, no vibrar ou com o volume baixo, então não dá para ouvir os nomes gravados. Aumente o volume do toque.</string>
+    <string name="health_recorded_not_set">Toques com nome gravado</string>
+    <string name="health_recorded_not_set_value">Um nome gravado não está como toque de chamada do contato. Toque para colocar de novo.</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">Tocar só para contatos salvos</string>
+    <string name="silence_value">Ligações de quem não está salvo no celular não tocam. Elas continuam aparecendo como ligações perdidas.</string>
+    <string name="info_silence">Ligações de números que não estão nos contatos do celular não tocam. Elas continuam aparecendo como ligações perdidas, para não perder uma ligação do posto de saúde, por exemplo. O celular decide quem está salvo usando todos os contatos dele, não só as pessoas do Niko Dialer. Números ocultos também não tocam.</string>
+    <string name="silence_needs_android_10">Desligado. Precisa do Android 10 ou mais novo.</string>
+    <string name="silence_not_on_this_phone">Desligado. Este celular não deixa os apps silenciarem ligações.</string>
+    <string name="silence_not_allowed">Não está ligado. O celular não permitiu que o Niko Dialer silenciasse ligações. Toque para tentar de novo.</string>
+    <string name="silence_restricted_steps">Se o celular não perguntou, ou disse que a configuração é restrita:\n1. Toque em Abrir informações do app, aqui embaixo.\n2. Toque nos três pontos no alto.\n3. Toque em Permitir configurações restritas.\n4. Volte aqui e ligue isto de novo.</string>
+    <string name="open_app_info">Abrir informações do app</string>
+    <string name="open_app_info_value">A página do Niko Dialer no celular</string>
+    <string name="last_silenced">Última ligação silenciada</string>
+    <string name="last_silenced_none">Nenhuma ainda</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">Hoje, %1$s</string>
+    <string name="last_silenced_yesterday">Ontem, %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s, %2$s</string>
+    <string name="info_last_silenced">Quando chegou pela última vez, sem tocar, uma ligação de um número não salvo no celular. Só o horário é guardado, não o número. As ligações perdidas do celular mostram quem foi.</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">Adicionar uma pessoa</string>
+    <string name="editor_change_title">Mudar uma pessoa</string>
+    <string name="editor_from_contacts">Escolher dos contatos</string>
+    <string name="editor_name">Nome</string>
+    <string name="editor_number">Número de telefone</string>
+    <string name="editor_name_missing">Coloque um nome, para ele aparecer e ser falado.</string>
+    <string name="editor_number_missing">Coloque um número de telefone para ligar.</string>
+    <string name="editor_emergency">Este é um número de emergência. Tocar no rosto abre o discador do celular com o número pronto, porque o Android não deixa outros apps ligarem direto para ele.</string>
+    <string name="editor_place">Lugar na tela</string>
+    <string name="editor_place_taken">Esse lugar já tem alguém. Escolha outro lugar.</string>
+    <string name="editor_save">Salvar</string>
+    <string name="editor_remove">Tirar da tela</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">Tirar %1$s da tela?</string>
+    <string name="editor_remove_confirm">Tirar %1$s</string>
+    <string name="editor_keep">Manter %1$s</string>
+    <string name="editor_contact_unreadable">Não foi possível ler esse contato. Tente de novo, ou digite o nome e o número.</string>
+    <string name="editor_no_contacts_app">Este celular não tem app de contatos para escolher. Digite o nome e o número.</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">esta pessoa</string>
+    <string name="editor_typed_note">O Niko Dialer também salva %1$s nos contatos do celular, no próprio celular, não no chip. Assim um nome gravado pode tocar quando %1$s ligar, e Tocar só para contatos salvos deixa a ligação tocar.</string>
+    <string name="editor_typed_note_ask">O Niko Dialer também salva %1$s nos contatos do celular, no próprio celular, não no chip. Assim um nome gravado pode tocar quando %1$s ligar, e Tocar só para contatos salvos deixa a ligação tocar. Depois de Salvar, o celular pede para permitir os contatos.</string>
+    <string name="editor_sim_note">%1$s está no chip. Um contato do chip não pode ter toque de chamada próprio, então um nome gravado não pode tocar quando %1$s ligar. Para resolver, copie %1$s para o celular.</string>
+    <string name="editor_sim_copy">Copiar para o celular</string>
+    <string name="editor_sim_copied">Agora %1$s está no celular.</string>
+    <string name="editor_sim_copy_failed">Não foi possível copiar %1$s para o celular. Tente de novo.</string>
+    <string name="editor_sim_needs_contacts">Para copiar, é preciso acessar os contatos do celular. Toque em Copiar para o celular e escolha Permitir.</string>
+    <string name="editor_saved_title">Pessoa salva: %1$s</string>
+    <string name="editor_saved_no_contacts">%1$s está no Niko Dialer, mas não nos contatos do celular. Um nome gravado só toca quando %1$s ligar se estiver nos contatos. Tocar só para contatos salvos também pode deixar essas ligações em silêncio. Para mudar isso, abra %1$s de novo, toque em Salvar e escolha Permitir.</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">Foto</string>
+    <string name="editor_photo_missing">Uma foto ajuda. Um rosto é mais fácil de achar do que um nome.</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">A foto do rosto</string>
+    <string name="editor_photo_take">Tirar uma foto</string>
+    <string name="editor_photo_choose">Escolher uma foto</string>
+    <string name="editor_photo_contact">Usar a foto do contato</string>
+    <string name="editor_photo_remove">Tirar a foto</string>
+    <string name="editor_photo_unreadable">Não foi possível abrir essa foto. Tente outra.</string>
+    <string name="editor_no_camera_app">Este celular não tem app de câmera para tirar foto. Escolha uma foto.</string>
+    <string name="editor_no_photo_app">Este celular não tem app para escolher uma foto. Tire uma foto.</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">Nome gravado</string>
+    <string name="editor_recording_how">Quando %1$s ligar, o celular toca esta gravação no lugar do toque de chamada. Toque em Gravar e diga \"%1$s está ligando\" com suas palavras e no seu idioma. A gravação para sozinha depois de 5 segundos.</string>
+    <string name="editor_recording_kept">A gravação aparece na lista de toques do celular e fica no celular mesmo se o Niko Dialer for desinstalado.</string>
+    <string name="editor_recording_none">Ainda não tem gravação.</string>
+    <string name="editor_recording_ready">Gravado. Toque em Ouvir para escutar.</string>
+    <string name="editor_recording_new">Gravado. A gravação fica guardada quando você tocar em Salvar.</string>
+    <string name="editor_recording_removed">A gravação sai quando você tocar em Salvar.</string>
+    <string name="editor_recording_now">Gravando. Diga as palavras e toque em Parar.</string>
+    <string name="editor_recording_too_short">Nada foi gravado. Toque em Gravar, espere um pouco e depois fale.</string>
+    <string name="editor_recording_failed">Não foi possível usar o microfone. Feche outros apps que possam estar usando ele e tente de novo.</string>
+    <string name="editor_recording_needs_mic">Para gravar, é preciso usar o microfone. Toque em Gravar e escolha Permitir.</string>
+    <string name="editor_recording_mic_off">O microfone está desligado para o Niko Dialer. Ligue nas configurações do celular para o Niko Dialer.</string>
+    <string name="editor_recording_needs_contacts">A gravação fica guardada, mas não pode tocar para %1$s até os contatos serem permitidos.</string>
+    <string name="editor_recording_needs_storage">A gravação fica guardada, mas não pode ir para os toques do celular até o armazenamento ser permitido.</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">O celular pede para permitir o microfone, para gravar.</string>
+    <string name="editor_recording_ask_contacts">Ele pede os contatos, para colocar a gravação como toque de chamada de %1$s.</string>
+    <string name="editor_recording_ask_storage">Ele pede o armazenamento, para colocar a gravação junto com os toques do celular.</string>
+    <string name="editor_record">Gravar</string>
+    <string name="editor_record_stop">Parar</string>
+    <string name="editor_record_play">Ouvir</string>
+    <string name="editor_record_stop_playing">Parar de ouvir</string>
+    <string name="editor_record_again">Gravar de novo</string>
+    <string name="editor_record_delete">Apagar a gravação</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s está ligando - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">Alguém</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">Encaixe o rosto no quadrado</string>
+    <string name="crop_opening">Abrindo a foto.</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">A foto como vai ficar no rosto</string>
+    <string name="crop_help">Arraste a foto para mover, e afaste ou junte os dedos para aumentar ou diminuir. Os botões fazem o mesmo.</string>
+    <string name="crop_zoom_in">Aumentar</string>
+    <string name="crop_zoom_out">Diminuir</string>
+    <string name="crop_move_left">Mover para a esquerda</string>
+    <string name="crop_move_right">Mover para a direita</string>
+    <string name="crop_move_up">Mover para cima</string>
+    <string name="crop_move_down">Mover para baixo</string>
+    <string name="crop_fit_whole">Mostrar a foto inteira</string>
+    <string name="crop_use">Usar esta foto</string>
+    <string name="crop_save_failed">Não foi possível salvar a foto. Tente de novo.</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">Toque em um lugar para colocar alguém nele.</string>
+    <string name="setup_photos_info">Uma foto ajuda. Um rosto é mais fácil de achar do que um nome. Estas pessoas ainda não têm foto.</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">Adicionar uma foto de %1$s</string>
+    <string name="setup_record_info">Um nome gravado toca quando essa pessoa liga, no lugar do toque de chamada, com uma voz que a pessoa conhece. Toque em alguém para gravar o nome. Isso também pode ser feito depois nas configurações.</string>
+    <string name="setup_record_no_people">Adicione pessoas no passo anterior e depois grave os nomes aqui.</string>
+    <string name="setup_recorded">Gravado</string>
+    <string name="setup_not_recorded">Ainda não gravado. Toque para gravar.</string>
+    <string name="setup_calls_reason">O Niko Dialer precisa de permissão para fazer ligações, para que tocar em um rosto comece a ligação.</string>
+    <string name="setup_calls_allow">Permitir ligações</string>
+    <string name="calls_allowed">Permitido</string>
+    <string name="calls_not_allowed">Ainda não permitido. Toque para permitir.</string>
+    <string name="calls_turned_off">Desligado. Toque para abrir as configurações do celular para o Niko Dialer.</string>
+    <string name="setup_silence_reason">Ligações de desconhecidos podem ficar em silêncio, para só as pessoas salvas no celular tocarem. O celular pergunta uma vez se o Niko Dialer pode silenciar ligações. Isso pode ser mudado depois nas configurações.</string>
+    <string name="setup_phone_ok">Estas configurações estão certas.</string>
+    <string name="setup_sim">Chip para ligar</string>
+    <string name="setup_sim_value">Se o celular tiver dois chips, escolha um para as ligações, para o celular não perguntar qual usar toda vez.</string>
+</resources>
