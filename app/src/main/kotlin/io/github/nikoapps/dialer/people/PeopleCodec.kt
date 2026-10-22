@@ -6,28 +6,30 @@ import java.util.Base64
  * Turns the people list into one short string for DataStore and back. Six people don't need
  * a database or a serialisation library.
  *
- * Each person is `place;id;name;number`, with the three text fields in URL-safe Base64 so any
- * script or punctuation in a name is safe. People are joined with commas. Records that don't
- * read back are skipped rather than losing everyone.
+ * Each person is `place;id;name;number;photoVersion`, with the three text fields in URL-safe
+ * Base64 so any script or punctuation in a name is safe. People are joined with commas. Records
+ * that don't read back are skipped rather than losing everyone. Records saved before photos
+ * have no photo field and read back as having no photo.
  */
 object PeopleCodec {
     private val encoder = Base64.getUrlEncoder().withoutPadding()
     private val decoder = Base64.getUrlDecoder()
 
     fun encode(people: List<Person>): String =
-        people.joinToString(",") { p -> listOf(p.place.toString(), b64(p.id), b64(p.name), b64(p.number)).joinToString(";") }
+        people.joinToString(",") { p -> listOf(p.place.toString(), b64(p.id), b64(p.name), b64(p.number), p.photoVersion.toString()).joinToString(";") }
 
     fun decode(text: String?): List<Person> {
         if (text.isNullOrEmpty()) return emptyList()
         return text.split(",").mapNotNull { record ->
             val fields = record.split(";")
-            if (fields.size != 4) return@mapNotNull null
+            if (fields.size !in 4..5) return@mapNotNull null
             runCatching {
                 Person(
                     id = unb64(fields[1]),
                     name = unb64(fields[2]),
                     number = unb64(fields[3]),
                     place = fields[0].toInt(),
+                    photoVersion = fields.getOrNull(4)?.toInt()?.coerceAtLeast(0) ?: 0,
                 )
             }.getOrNull()
         }

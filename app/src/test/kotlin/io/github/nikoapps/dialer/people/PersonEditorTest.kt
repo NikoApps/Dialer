@@ -78,4 +78,26 @@ class PersonEditorTest {
         assertSame(people, savePerson(people, id = null, name = " ", number = "98", place = 1))
         assertSame(people, savePerson(people, id = "m", name = "Mum", number = "", place = 0))
     }
+
+    @Test
+    fun `a new photo always gets a new version`() {
+        val once = setPhoto(listOf(mum, ram), "m", hasPhoto = true)
+        assertEquals(1, once.first { it.id == "m" }.photoVersion)
+        val twice = setPhoto(once, "m", hasPhoto = true)
+        assertEquals(2, twice.first { it.id == "m" }.photoVersion)
+        assertEquals(ram, twice.first { it.id == "r" })
+    }
+
+    @Test
+    fun `removing a photo leaves the silhouette`() {
+        val removed = setPhoto(listOf(mum.copy(photoVersion = 3), ram), "m", hasPhoto = false)
+        assertEquals(listOf(false, false), removed.map { it.hasPhoto })
+        assertEquals(listOf(0, 3), removed.map { it.place })
+    }
+
+    @Test
+    fun `saving keeps the photo`() {
+        val people = listOf(mum.copy(photoVersion = 2))
+        assertEquals(2, savePerson(people, id = "m", name = "Ma", number = "1", place = 2).single().photoVersion)
+    }
 }

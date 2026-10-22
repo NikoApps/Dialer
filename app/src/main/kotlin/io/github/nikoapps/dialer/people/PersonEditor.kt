@@ -73,3 +73,24 @@ fun savePerson(
     if (moved.first { it.id == id }.place != place) return people
     return moved.map { if (it.id == id) it.copy(name = cleanName, number = cleanNumber) else it }
 }
+
+/** What the editor does to a person's photo when they're saved. */
+sealed interface PhotoEdit {
+    data object Keep : PhotoEdit
+    data object Remove : PhotoEdit
+
+    /** A new photo, already cropped and saved at [path] in the cache. */
+    data class Replace(val path: String) : PhotoEdit
+}
+
+/**
+ * Marks that a person has a new photo ([hasPhoto] true), or none. A new photo always gets a new
+ * version, so the face never keeps showing the old one. Nobody else changes.
+ */
+fun setPhoto(people: List<Person>, id: String, hasPhoto: Boolean): List<Person> = people.map {
+    when {
+        it.id != id -> it
+        hasPhoto -> it.copy(photoVersion = it.photoVersion.coerceAtLeast(0) + 1)
+        else -> it.copy(photoVersion = 0)
+    }
+}
