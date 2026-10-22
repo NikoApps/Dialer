@@ -10,6 +10,7 @@ import io.github.nikoapps.dialer.people.ContactByNumber
 import io.github.nikoapps.dialer.people.contactAfter
 import io.github.nikoapps.dialer.people.contactLink
 import io.github.nikoapps.dialer.people.DialerPermissions
+import io.github.nikoapps.dialer.people.FileBackup
 import io.github.nikoapps.dialer.people.PeopleRepository
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonEdit
@@ -45,8 +46,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val settingsRepository = SettingsRepository(application)
     private val peopleRepository = PeopleRepository(application)
 
-    /** Held while recorded names and their ringtones change, so a save and a check never overlap. */
-    private val recordedNames = Mutex()
+    /** Held while a person's files, recorded names and ringtones change, so a save, a removal and a check never overlap. */
+    private val personFiles = Mutex()
 
     /**
      * False in a new process, until the screen saved before Android stopped Dialer has been
@@ -100,9 +101,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /**
      * Saves a new person ([id] null) or changes one, with what the editor did to their photo,
      * contact and recorded name. A new photo or recording is put in place before the person is
-     * saved, so they never point at a missing file. If a new person can't be saved after all, those
-     * files are deleted again. Then the person is linked to the phone's contacts and their recorded
-     * name set as that contact's ringtone, as far as the permissions allow.
+     * saved, so they never point at a missing file, and the old one is kept aside until the save
+     * is in. If the person can't be saved after all, the old files come back, and a removed photo
+     * or recording is only deleted once the save is in. Then the person is linked to the phone's
+     * contacts and their recorded name set as that contact's ringtone, as far as the permissions
+     * allow. A ringtone chosen elsewhere is only replaced when the recording or the contact changed.
      */
     fun savePerson(edit: PersonEdit) {
         val app = getApplication<Application>()
@@ -110,27 +113,22 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         val recording = edit.recording
         viewModelScope.launch {
             val personId = id ?: UUID.randomUUID().toString()
-            val photoSaved = withContext(Dispatchers.IO) {
-                when (photo) {
-                    is PhotoEdit.Replace -> PersonPhotos.save(app, personId, File(photo.path)).also { File(photo.path).delete() }
-                    PhotoEdit.Remove -> false.also { PersonPhotos.delete(app, personId) }
-                    PhotoEdit.Keep -> false
-                }
-            }
-            if (photo != PhotoEdit.Keep) PhotoCache.forget(personId)
-            recordedNames.withLock {
+            personFiles.withLock {
                 val before = peopleRepository.current().firstOrNull { it.id == personId }
-                val recordingSaved = withContext(Dispatchers.IO) {
-                    when (recording) {
-                        is RecordingEdit.Replace -> {
-                            // The old copy in Ringtones goes; a new one is made from the new master below.
-                            before?.let { RecordedNames.replaceCopy(app, it) }
-                            RecordedNames.saveMaster(app, personId, File(recording.path)).also { File(recording.path).delete() }
-                        }
-                        RecordingEdit.Remove -> false.also { before?.let { RecordedNames.remove(app, it) } }
-                        RecordingEdit.Keep -> false
-                    }
+                var photoBackup: FileBackup? = null
+                var recordingBackup: FileBackup? = null
+                val (photoSaved, recordingSaved) = withContext(Dispatchers.IO) {
+                    val photoSaved = (photo as? PhotoEdit.Replace)?.let {
+                        photoBackup = FileBackup.of(PersonPhotos.file(app, personId))
+                        PersonPhotos.save(app, personId, File(it.path)).also { _ -> File(it.path).delete() }
+                    } ?: false
+                    val recordingSaved = (recording as? RecordingEdit.Replace)?.let {
+                        recordingBackup = FileBackup.of(RecordedNames.masterFile(app, personId))
+                        RecordedNames.saveMaster(app, personId, File(it.path)).also { _ -> File(it.path).delete() }
+                    } ?: false
+                    photoSaved to recordingSaved
                 }
+                if (photoSaved) PhotoCache.forget(personId)
                 var saved = false
                 peopleRepository.update { people ->
                     // withPersonSaved hands back the same list when the person can't be saved there.
@@ -151,18 +149,37 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
                 if (!saved) {
                     withContext(Dispatchers.IO) {
-                        if (photoSaved && before == null) PersonPhotos.delete(app, personId)
-                        if (recordingSaved && before == null) RecordedNames.masterFile(app, personId).delete()
+                        photoBackup?.let { if (photoSaved) it.restore() else it.drop() }
+                        recordingBackup?.let { if (recordingSaved) it.restore() else it.drop() }
                     }
+                    // A face read while the new photo was in place mustn't stay on screen.
+                    if (photoSaved) PhotoCache.forget(personId)
                     return@withLock
                 }
+                // Saved, so what the old files were for can go now.
+                withContext(Dispatchers.IO) {
+                    photoBackup?.drop()
+                    recordingBackup?.drop()
+                    if (photo == PhotoEdit.Remove) PersonPhotos.delete(app, personId)
+                    if (before != null) {
+                        when {
+                            // The old copy in Ringtones goes; a new one is made from the new master below.
+                            recordingSaved -> RecordedNames.replaceCopy(app, before)
+                            recording == RecordingEdit.Remove -> RecordedNames.remove(app, before)
+                        }
+                    }
+                }
+                if (photo == PhotoEdit.Remove) PhotoCache.forget(personId)
                 val after = peopleRepository.current().firstOrNull { it.id == personId } ?: return@withLock
+                val contactChanged = before?.contactLink != after.contactLink
                 // A new contact for someone with a recording: the old contact gets its own ringtone back.
-                if (before != null && before.contactLink != after.contactLink && after.hasRecording) {
+                if (before != null && contactChanged && after.hasRecording) {
                     withContext(Dispatchers.IO) { RecordedNames.clearContact(app, before, before.contactLink) }
                 }
                 linkContact(personId, mayCreate = true)
-                if (syncRecordedName(personId, fix = true) is RecordedNames.Outcome.NotSet) _recordedNameNotSet.value = true
+                // A ringtone chosen elsewhere is only replaced for a new recording or a new contact.
+                val force = recordingSaved || contactChanged
+                if (syncRecordedName(personId, fix = force) is RecordedNames.Outcome.NotSet) _recordedNameNotSet.value = true
             }
             // Brings the health check up to date for everyone, now this person is done.
             checkRecordedNames()
@@ -171,7 +188,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     /**
      * Sets one person's recorded name as their contact's ringtone, and keeps what Dialer learnt
-     * (the contact, the ringtone copy) on the person. Call with [recordedNames] held.
+     * (the contact, the ringtone copy) on the person. Call with [personFiles] held.
      */
     private suspend fun syncRecordedName(personId: String, fix: Boolean): RecordedNames.Outcome? {
         val app = getApplication<Application>()
@@ -232,10 +249,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
      * contact in the phone's contacts and sets recorded names over other ringtones.
      */
     fun checkRecordedNames(fix: Boolean = false) {
-        if (!fix && recordedNames.isLocked) return
+        if (!fix && personFiles.isLocked) return
         val app = getApplication<Application>()
         viewModelScope.launch {
-            recordedNames.withLock {
+            personFiles.withLock {
                 var notSet = false
                 for (person in peopleRepository.current().filter { it.hasRecording }) {
                     val outcome = syncRecordedName(person.id, fix) as? RecordedNames.Outcome.NotSet ?: continue
@@ -259,7 +276,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun removePerson(person: Person) {
         val app = getApplication<Application>()
         viewModelScope.launch {
-            recordedNames.withLock {
+            personFiles.withLock {
                 val stored = peopleRepository.current().firstOrNull { it.id == person.id } ?: person
                 peopleRepository.update { withoutPerson(it, person.id) }
                 withContext(Dispatchers.IO) {
