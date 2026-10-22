@@ -11,6 +11,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">Tap a face to call.</string>
     <string name="hint_no_people">No one is here yet. A helper can add people in Settings.</string>
+    <string name="hint_people_unreadable">The saved people couldn\'t be read. A helper can add them again in Settings.</string>
     <string name="hint_call_permission">Calls aren\'t allowed yet. Tap a face, then choose Allow.</string>
     <string name="hint_call_blocked">Calls are turned off for Niko Dialer. A helper can turn them on in the phone\'s settings.</string>
     <string name="hint_call_failed">The call didn\'t start. Try again in a moment.</string>

@@ -10,6 +10,9 @@ import io.github.nikoapps.dialer.R
 enum class Hint {
     Ready,
     NoPeople,
+
+    /** Nobody is on the grid because the saved people couldn't be read. */
+    PeopleUnreadable,
     Voice,
     CallPermission,
     CallBlocked,
@@ -31,6 +34,7 @@ enum class Hint {
  * permission hints. Voice and calls come before other health warnings, as the spec asks.
  * [silencingLost] comes next, since unsaved numbers ring again, then [recordedNames], when a
  * recorded name may not play. [needsAttention] is any other problem listed in settings.
+ * [peopleUnreadable] says why the grid is empty when the saved people couldn't be read.
  */
 fun hintFor(
     hasPeople: Boolean,
@@ -41,9 +45,11 @@ fun hintFor(
     silencingLost: Boolean = false,
     recordedNames: Boolean = false,
     needsAttention: Boolean = false,
+    peopleUnreadable: Boolean = false,
 ): Hint = when {
     lastCallFailed -> Hint.CallFailed
     !canCall && callsBlocked -> Hint.CallBlocked
+    !hasPeople && peopleUnreadable -> Hint.PeopleUnreadable
     !hasPeople -> Hint.NoPeople
     voice.isProblem -> Hint.Voice
     !canCall -> Hint.CallPermission
@@ -61,6 +67,7 @@ val VoiceStatus.isProblem: Boolean
 fun hintText(hint: Hint, voice: VoiceStatus): String = when (hint) {
     Hint.Ready -> stringResource(R.string.hint_ready)
     Hint.NoPeople -> stringResource(R.string.hint_no_people)
+    Hint.PeopleUnreadable -> stringResource(R.string.hint_people_unreadable)
     Hint.Voice -> voiceMessage(voice) ?: stringResource(R.string.hint_ready)
     Hint.CallPermission -> stringResource(R.string.hint_call_permission)
     Hint.CallBlocked -> stringResource(R.string.hint_call_blocked)

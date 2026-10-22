@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">Toque em um rosto para ligar.</string>
     <string name="hint_no_people">Ainda não tem ninguém aqui. Um ajudante pode adicionar pessoas nas configurações.</string>
+    <string name="hint_people_unreadable">Não foi possível ler as pessoas salvas. Um ajudante pode adicioná-las de novo nas configurações.</string>
     <string name="hint_call_permission">As ligações ainda não estão permitidas. Toque em um rosto e escolha Permitir.</string>
     <string name="hint_call_blocked">As ligações estão desligadas para o Niko Dialer. Um ajudante pode ligar nas configurações do celular.</string>
     <string name="hint_call_failed">A ligação não começou. Tente de novo daqui a pouco.</string>

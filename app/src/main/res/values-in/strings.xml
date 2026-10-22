@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">Ketuk wajah untuk menelepon.</string>
     <string name="hint_no_people">Belum ada siapa pun di sini. Pendamping bisa menambahkan orang di Pengaturan.</string>
+    <string name="hint_people_unreadable">Orang yang tersimpan tidak bisa dibaca. Pendamping bisa menambahkannya lagi di Pengaturan.</string>
     <string name="hint_call_permission">Telepon belum diizinkan. Ketuk wajah, lalu pilih Izinkan.</string>
     <string name="hint_call_blocked">Telepon dimatikan untuk Niko Dialer. Pendamping bisa menyalakannya di pengaturan ponsel.</string>
     <string name="hint_call_failed">Panggilan tidak tersambung. Coba lagi sebentar lagi.</string>

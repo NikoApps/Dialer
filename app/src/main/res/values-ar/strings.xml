@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">المس وجهًا للاتصال.</string>
     <string name="hint_no_people">لا يوجد أحد هنا بعد. يمكن لمساعد إضافة أشخاص من الإعدادات.</string>
+    <string name="hint_people_unreadable">تعذّرت قراءة الأشخاص المحفوظين. يمكن لمساعد إضافتهم مرة أخرى من الإعدادات.</string>
     <string name="hint_call_permission">الاتصال غير مسموح به بعد. المس وجهًا، ثم اختر «السماح».</string>
     <string name="hint_call_blocked">الاتصال متوقف لـ Niko Dialer. يمكن لمساعد تشغيله من إعدادات الهاتف.</string>
     <string name="hint_call_failed">لم يبدأ الاتصال. حاول مرة أخرى بعد لحظة.</string>
