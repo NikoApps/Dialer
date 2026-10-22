@@ -44,6 +44,8 @@
     <string name="place_bottom_left">Abajo a la izquierda</string>
     <string name="place_bottom_right">Abajo a la derecha</string>
     <string name="place_empty">Vacío</string>
+    <string name="place_off_screen">Fuera de la pantalla ahora</string>
+    <string name="people_count_hiding">%1$s. Fuera de la pantalla: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">Personas en la pantalla</string>

@@ -45,6 +45,10 @@
     <string name="place_bottom_left">Bottom left</string>
     <string name="place_bottom_right">Bottom right</string>
     <string name="place_empty">Empty</string>
+    <!-- Someone kept at a place past the grid, after People on screen was lowered. -->
+    <string name="place_off_screen">Not on the screen now</string>
+    <!-- A People on screen choice that leaves people off the grid. %1$s is "2 people", %2$s their names, such as "Sita and Doctor". -->
+    <string name="people_count_hiding">%1$s. Not on the screen: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">People on screen</string>

@@ -44,6 +44,8 @@
     <string name="place_bottom_left">نیچے بائیں</string>
     <string name="place_bottom_right">نیچے دائیں</string>
     <string name="place_empty">خالی</string>
+    <string name="place_off_screen">ابھی اسکرین پر نہیں</string>
+    <string name="people_count_hiding">%1$s۔ اسکرین پر نہیں: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">اسکرین پر لوگ</string>

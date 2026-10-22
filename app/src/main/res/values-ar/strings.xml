@@ -44,6 +44,8 @@
     <string name="place_bottom_left">أسفل اليسار</string>
     <string name="place_bottom_right">أسفل اليمين</string>
     <string name="place_empty">فارغ</string>
+    <string name="place_off_screen">ليس على الشاشة الآن</string>
+    <string name="people_count_hiding">%1$s. ليس على الشاشة: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">الأشخاص على الشاشة</string>

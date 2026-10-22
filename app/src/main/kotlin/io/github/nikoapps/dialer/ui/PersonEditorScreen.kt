@@ -75,7 +75,6 @@ import io.github.nikoapps.dialer.people.PickPhoneNumber
 import io.github.nikoapps.dialer.people.editorProblems
 import io.github.nikoapps.dialer.people.personColor
 import io.github.nikoapps.dialer.people.placeChoices
-import io.github.nikoapps.dialer.people.placePosition
 import io.github.nikoapps.dialer.people.readPickedContact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -405,7 +404,7 @@ fun PersonEditorScreen(
                     title = stringResource(R.string.editor_place),
                     options = choices,
                     selected = chosenPlace,
-                    optionLabel = { stringResource(placeLabel(placePosition(it, peopleOnScreen))) },
+                    optionLabel = { placeName(it, peopleOnScreen) },
                     onSelect = { chosenPlace = it; message = null },
                     cancelLabel = stringResource(CommonsR.string.cancel),
                 )

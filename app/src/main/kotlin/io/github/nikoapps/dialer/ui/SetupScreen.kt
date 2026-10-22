@@ -49,7 +49,7 @@ fun SetupScreen(
 ) {
     val steps = listOf(
         SetupStep(stringResource(R.string.section_people)) {
-            PeopleOnScreenRow(settings, onUpdate)
+            PeopleOnScreenRow(settings, people, onUpdate)
             StepText(stringResource(R.string.setup_people_info))
             PeopleRows(people, settings.peopleOnScreen, onEditPlace)
             MissingPhotos(people, settings.peopleOnScreen, onEditPlace)

@@ -34,6 +34,18 @@ fun placesOnScreen(people: List<Person>, peopleOnScreen: Int): List<Person?> {
     return List(shape.places) { byPlace[it] }
 }
 
+/**
+ * People kept at a place past the grid, lowest place first, such as after the helper chose fewer
+ * people on screen. They aren't shown or called, but a helper can still change or remove them.
+ */
+fun peopleOffScreen(people: List<Person>, peopleOnScreen: Int): List<Person> {
+    val places = gridShape(peopleOnScreen).places
+    return people.filter { it.place >= places }.sortedBy { it.place }
+}
+
+/** True when [place] is past the grid, so whoever is there isn't shown. */
+fun isOffScreen(place: Int, peopleOnScreen: Int): Boolean = place >= gridShape(peopleOnScreen).places
+
 /** Places nobody holds, lowest first, out of every place the biggest grid has. */
 fun freePlaces(people: List<Person>): List<Int> {
     val taken = people.map { it.place }.toSet()

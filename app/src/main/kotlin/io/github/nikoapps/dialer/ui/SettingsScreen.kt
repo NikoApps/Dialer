@@ -84,7 +84,7 @@ fun SettingsScreen(
                 }
 
                 SettingsGroup(stringResource(R.string.section_screen)) {
-                    PeopleOnScreenRow(settings, onUpdate)
+                    PeopleOnScreenRow(settings, people, onUpdate)
                     WaitBeforeCallingRow(settings, onUpdate)
                     ThemeRow(settings, onUpdate)
                     if (canChooseScreenLanguage) ScreenLanguageRow(screenLanguage, onScreenLanguage)
