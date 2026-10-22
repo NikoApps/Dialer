@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12 and newer (Hub ADR 0033). Nothing goes to cloud backup. Moving to a new phone by cable
+     or the phone's transfer tool brings the people, settings, photos and recorded names along. -->
+<data-extraction-rules>
+    <!-- allowBackup="false" already turns cloud backup off. Excluding every place as well keeps it off
+         if a phone or a later Android ever reads these rules for the cloud too. -->
+    <cloud-backup>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+        <exclude domain="device_root" path="." />
+        <exclude domain="device_file" path="." />
+        <exclude domain="device_database" path="." />
+        <exclude domain="device_sharedpref" path="." />
+    </cloud-backup>
+    <!-- Only Dialer's own data: the DataStore files (settings, people, last silenced call), the cropped
+         photos and the master recordings. Ringtone copies live in the phone's Ringtones folder and
+         contact ringtones in the contacts, so neither moves; Dialer sets them again from the
+         recordings, and the health check shows any it can't. -->
+    <device-transfer>
+        <include domain="file" path="datastore/" />
+        <include domain="file" path="photos/" />
+        <include domain="file" path="recordings/" />
+    </device-transfer>
+</data-extraction-rules>

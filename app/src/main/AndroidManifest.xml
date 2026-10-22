@@ -42,8 +42,13 @@
         </intent>
     </queries>
 
+    <!-- Backup (Hub ADR 0033): moving to a new phone works on Android 12 and newer, cloud backup never.
+         On Android 12+ for apps targeting 12+, allowBackup="false" only turns off cloud (and adb) backup;
+         device-to-device transfer still runs and follows dataExtractionRules. Below 12 the one flag
+         covers both, so there it turns off cloud backup and transfer together. -->
     <application
         android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
