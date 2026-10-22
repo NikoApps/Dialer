@@ -20,6 +20,9 @@ import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.screening.CallScreening
 import io.github.nikoapps.dialer.screening.LastSilenced
 import io.github.nikoapps.dialer.screening.ScreeningSupport
+import io.github.nikoapps.dialer.screening.DATE_SKELETON
+import io.github.nikoapps.dialer.screening.TIME_SKELETON_12
+import io.github.nikoapps.dialer.screening.TIME_SKELETON_24
 import io.github.nikoapps.dialer.screening.lastSilenced
 import java.time.Instant
 import java.time.ZoneId
@@ -105,7 +108,15 @@ private fun lastSilencedText(at: Instant?): String {
     val locale = LocalConfiguration.current.locales[0]
     val is24Hour = DateFormat.is24HourFormat(context)
     val last = remember(at, locale, is24Hour) {
-        lastSilenced(at, Instant.now(), ZoneId.systemDefault(), is24Hour, locale)
+        val timeSkeleton = if (is24Hour) TIME_SKELETON_24 else TIME_SKELETON_12
+        lastSilenced(
+            at = at,
+            now = Instant.now(),
+            zone = ZoneId.systemDefault(),
+            timePattern = DateFormat.getBestDateTimePattern(locale, timeSkeleton),
+            datePattern = DateFormat.getBestDateTimePattern(locale, DATE_SKELETON),
+            locale = locale,
+        )
     }
     return when (last) {
         LastSilenced.None -> stringResource(R.string.last_silenced_none)
