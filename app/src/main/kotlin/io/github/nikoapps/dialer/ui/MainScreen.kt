@@ -41,12 +41,14 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import io.github.nikoapps.commons.theme.NikoTheme
 import io.github.nikoapps.dialer.R
@@ -152,7 +154,7 @@ private fun SettingsButton(onClick: () -> Unit) {
     }
 }
 
-private val SettingsLabelStyle = androidx.compose.ui.text.TextStyle(fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+private val SettingsLabelStyle = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
 
 /** The grid's shape comes only from the number of places, never from how many people are saved. */
 @Composable
@@ -201,7 +203,7 @@ private fun PersonTile(person: Person, onClick: () -> Unit, modifier: Modifier =
                 }
                 BasicText(
                     text = person.name,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = shrinkingLines(MaterialTheme.typography.titleLarge).copy(
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                     ),
@@ -219,8 +221,17 @@ private fun PersonTile(person: Person, onClick: () -> Unit, modifier: Modifier =
 }
 
 /**
+ * [style] with its line height as a share of the font size, so lines get shorter as auto-sized
+ * text shrinks. A line height in sp stays the same, and at 200% font size two lines of it no
+ * longer fit the space the text has, so it's cut off however small the letters get.
+ */
+private fun shrinkingLines(style: TextStyle): TextStyle =
+    if (style.lineHeight.isSp && style.fontSize.isSp) style.copy(lineHeight = (style.lineHeight.value / style.fontSize.value).em) else style
+
+/**
  * How to use the screen, or what will stop a call. Always two lines tall (capped at 88dp), whatever
- * it says, so the grid above never moves. The text shrinks to fit. TalkBack reads it when it changes.
+ * it says, so the grid above never moves. The text shrinks until two lines fit. TalkBack reads it
+ * when it changes.
  */
 @Composable
 private fun HintLine(text: String, modifier: Modifier = Modifier) {
@@ -229,7 +240,7 @@ private fun HintLine(text: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier.height(height), contentAlignment = Alignment.Center) {
         BasicText(
             text = text,
-            style = style.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center),
+            style = shrinkingLines(style).copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center),
             maxLines = 2,
             autoSize = TextAutoSize.StepBased(minFontSize = 12.sp, maxFontSize = style.fontSize),
             modifier = Modifier.fillMaxWidth().semantics { liveRegion = LiveRegionMode.Polite },
@@ -262,3 +273,23 @@ private fun MainScreenPreview() {
 @Preview(showBackground = true, widthDp = 360, heightDp = 640, fontScale = 2f)
 @Composable
 private fun MainScreenLargeTextPreview() = MainScreenPreview()
+
+/** Every place full, with long names and a two-line hint, at 200% font size: nothing may be cut off. */
+@Preview(showBackground = true, widthDp = 360, heightDp = 640, fontScale = 2f)
+@Composable
+private fun MainScreenFullLargeTextPreview() {
+    val people = listOf("Mum", "Ram Bahadur", "Sita Didi", "Doctor Sharma", "Grandson", "Neighbour").mapIndexed { place, name ->
+        Person(id = "p$place", name = name, number = "980000000$place", place = place)
+    }
+    NikoTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            MainScreen(
+                places = placesOnScreen(people, 6),
+                columns = gridShape(6).columns,
+                hint = stringResource(R.string.hint_recorded_names),
+                onCall = {},
+                onOpenSettings = {},
+            )
+        }
+    }
+}
