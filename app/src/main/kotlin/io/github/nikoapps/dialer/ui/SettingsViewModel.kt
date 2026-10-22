@@ -3,36 +3,44 @@ package io.github.nikoapps.dialer.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.nikoapps.dialer.people.contactAfter
+import io.github.nikoapps.dialer.people.contactLink
 import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.PeopleRepository
-import io.github.nikoapps.dialer.people.PhoneContacts
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonEdit
 import io.github.nikoapps.dialer.people.PersonPhotos
+import io.github.nikoapps.dialer.people.PhoneContacts
 import io.github.nikoapps.dialer.people.PhotoEdit
-import io.github.nikoapps.dialer.people.contactAfter
-import io.github.nikoapps.dialer.people.contactLink
-import io.github.nikoapps.dialer.people.setContact
+import io.github.nikoapps.dialer.people.RecordingEdit
 import io.github.nikoapps.dialer.people.removePerson as withoutPerson
 import io.github.nikoapps.dialer.people.savePerson as withPersonSaved
+import io.github.nikoapps.dialer.people.setContact
 import io.github.nikoapps.dialer.people.setPhoto
+import io.github.nikoapps.dialer.people.setRecording
+import io.github.nikoapps.dialer.recording.RecordedNames
 import io.github.nikoapps.dialer.screening.SilenceLog
 import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.dialer.settings.SettingsRepository
+import java.io.File
+import java.time.Instant
+import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.util.UUID
-import java.time.Instant
 
 /** Helper settings and the people on the grid, shared by the main screen and the helper screens. */
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     private val settingsRepository = SettingsRepository(application)
     private val peopleRepository = PeopleRepository(application)
+
+    /** Held while recorded names and their ringtones change, so a save and a check never overlap. */
+    private val recordedNames = Mutex()
 
     /** Null until the stored settings have loaded, so the screen never flashes defaults. */
     val settings: StateFlow<DialerSettings?> = settingsRepository.settings
@@ -56,13 +64,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     /**
-     * Saves a new person ([id] null) or changes one, with what the editor did to their photo.
-     * A new photo is put in place before the person is saved, so the face never points at a
-     * missing file. If a new person can't be saved after all, their photo is deleted again.
+     * Saves a new person ([id] null) or changes one, with what the editor did to their photo,
+     * contact and recorded name. A new photo or recording is put in place before the person is
+     * saved, so they never point at a missing file. If a new person can't be saved after all, those
+     * files are deleted again. Then the person is linked to the phone's contacts and their recorded
+     * name set as that contact's ringtone, as far as the permissions allow.
      */
     fun savePerson(edit: PersonEdit) {
         val app = getApplication<Application>()
         val (id, name, number, place, photo) = edit
+        val recording = edit.recording
         viewModelScope.launch {
             val personId = id ?: UUID.randomUUID().toString()
             val photoSaved = withContext(Dispatchers.IO) {
@@ -73,22 +84,80 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             if (photo != PhotoEdit.Keep) PhotoCache.forget(personId)
-            var saved = false
+            recordedNames.withLock {
+                val before = peopleRepository.current().firstOrNull { it.id == personId }
+                val recordingSaved = withContext(Dispatchers.IO) {
+                    when (recording) {
+                        is RecordingEdit.Replace -> {
+                            // The old copy in Ringtones goes; a new one is made from the new master below.
+                            before?.let { RecordedNames.replaceCopy(app, it) }
+                            RecordedNames.saveMaster(app, personId, File(recording.path)).also { File(recording.path).delete() }
+                        }
+                        RecordingEdit.Remove -> false.also { before?.let { RecordedNames.remove(app, it) } }
+                        RecordingEdit.Keep -> false
+                    }
+                }
+                var saved = false
+                peopleRepository.update { people ->
+                    // withPersonSaved hands back the same list when the person can't be saved there.
+                    var updated = withPersonSaved(people, personId, name, number, place, newId = { personId })
+                    if (updated === people) return@update people
+                    saved = true
+                    updated = setContact(updated, personId, contactAfter(before?.contactLink, edit.contact))
+                    updated = when {
+                        photoSaved -> setPhoto(updated, personId, hasPhoto = true)
+                        photo == PhotoEdit.Remove -> setPhoto(updated, personId, hasPhoto = false)
+                        else -> updated
+                    }
+                    when {
+                        recordingSaved -> setRecording(updated, personId, hasRecording = true)
+                        recording == RecordingEdit.Remove -> setRecording(updated, personId, hasRecording = false)
+                        else -> updated
+                    }
+                }
+                if (!saved) {
+                    withContext(Dispatchers.IO) {
+                        if (photoSaved && before == null) PersonPhotos.delete(app, personId)
+                        if (recordingSaved && before == null) RecordedNames.masterFile(app, personId).delete()
+                    }
+                    return@withLock
+                }
+                val after = peopleRepository.current().firstOrNull { it.id == personId } ?: return@withLock
+                // A new contact for someone with a recording: the old contact gets its own ringtone back.
+                if (before != null && before.contactLink != after.contactLink && after.hasRecording) {
+                    withContext(Dispatchers.IO) { RecordedNames.clearContact(app, before, before.contactLink) }
+                }
+                linkContact(personId, mayCreate = true)
+                syncRecordedName(personId, fix = true)
+            }
+        }
+    }
+
+    /**
+     * Sets one person's recorded name as their contact's ringtone, and keeps what Dialer learnt
+     * (the contact, the ringtone copy) on the person. Call with [recordedNames] held.
+     */
+    private suspend fun syncRecordedName(personId: String, fix: Boolean): RecordedNames.Outcome? {
+        val app = getApplication<Application>()
+        val person = peopleRepository.current().firstOrNull { it.id == personId } ?: return null
+        val outcome = withContext(Dispatchers.IO) { RecordedNames.sync(app, person, fix) }
+        val learnt = when (outcome) {
+            is RecordedNames.Outcome.Ready -> outcome.person
+            is RecordedNames.Outcome.NotSet -> outcome.person
+        }
+        if (learnt != person) {
             peopleRepository.update { people ->
-                val before = people.firstOrNull { it.id == personId }?.contactLink
-                // withPersonSaved hands back the same list when the person can't be saved there.
-                val updated = withPersonSaved(people, personId, name, number, place, newId = { personId })
-                    .let { if (it === people) it else setContact(it, personId, contactAfter(before, edit.contact)) }
-                saved = updated.any { it.id == personId }
-                when {
-                    photoSaved -> setPhoto(updated, personId, hasPhoto = true)
-                    photo == PhotoEdit.Remove -> setPhoto(updated, personId, hasPhoto = false)
-                    else -> updated
+                people.map {
+                    // Only onto the same recording; if it changed meanwhile, the next check catches up.
+                    if (it.id != personId || it.recordingVersion != person.recordingVersion) {
+                        it
+                    } else {
+                        it.copy(contactLookupKey = learnt.contactLookupKey, contactId = learnt.contactId, ringtoneUri = learnt.ringtoneUri)
+                    }
                 }
             }
-            if (!saved && photoSaved) withContext(Dispatchers.IO) { PersonPhotos.delete(app, personId) }
-            if (saved) linkContact(personId, mayCreate = true)
         }
+        return outcome
     }
 
     /**
@@ -113,12 +182,21 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    /** Removes a person from the grid and deletes their photo. Nobody else moves. */
+    /**
+     * Removes a person from the grid and deletes their photo and recorded name. Their contact
+     * stays in the phone's contacts, back on the phone's default ringtone. Nobody else moves.
+     */
     fun removePerson(person: Person) {
         val app = getApplication<Application>()
         viewModelScope.launch {
-            peopleRepository.update { withoutPerson(it, person.id) }
-            withContext(Dispatchers.IO) { PersonPhotos.delete(app, person.id) }
+            recordedNames.withLock {
+                val stored = peopleRepository.current().firstOrNull { it.id == person.id } ?: person
+                peopleRepository.update { withoutPerson(it, person.id) }
+                withContext(Dispatchers.IO) {
+                    PersonPhotos.delete(app, person.id)
+                    RecordedNames.remove(app, stored)
+                }
+            }
             PhotoCache.forget(person.id)
         }
     }
