@@ -118,7 +118,29 @@ data class PersonEdit(
     val place: Int,
     val photo: PhotoEdit = PhotoEdit.Keep,
     val contact: ContactEdit = ContactEdit.Keep,
+    val recording: RecordingEdit = RecordingEdit.Keep,
 )
+
+/** What the editor does to a person's recorded name when they're saved. */
+sealed interface RecordingEdit {
+    data object Keep : RecordingEdit
+    data object Remove : RecordingEdit
+
+    /** A new recording, waiting at [path] in the cache. */
+    data class Replace(val path: String) : RecordingEdit
+}
+
+/**
+ * Marks that a person has a new recorded name ([hasRecording] true), or none. A new recording
+ * always gets a new version. With none, the ringtone Dialer set is forgotten too. Nobody else changes.
+ */
+fun setRecording(people: List<Person>, id: String, hasRecording: Boolean): List<Person> = people.map {
+    when {
+        it.id != id -> it
+        hasRecording -> it.copy(recordingVersion = it.recordingVersion.coerceAtLeast(0) + 1)
+        else -> it.copy(recordingVersion = 0, ringtoneUri = "")
+    }
+}
 
 /**
  * The link a person keeps after [edit], given the link they had ([current], null for none).

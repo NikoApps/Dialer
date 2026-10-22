@@ -69,6 +69,8 @@ import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonPhotos
 import io.github.nikoapps.dialer.people.PersonEdit
 import io.github.nikoapps.dialer.people.PhotoEdit
+import io.github.nikoapps.dialer.people.RecordingEdit
+import io.github.nikoapps.dialer.recording.RecordedNames
 import io.github.nikoapps.dialer.people.PickPhoneNumber
 import io.github.nikoapps.dialer.people.editorProblems
 import io.github.nikoapps.dialer.people.personColor
@@ -82,12 +84,12 @@ import java.io.File
 import io.github.nikoapps.commons.R as CommonsR
 
 /**
- * Adds a person at [place], or changes the person already there: name, number, photo and place.
- * Recorded names come later. This helper screen may scroll; the main screen never does.
+ * Adds a person at [place], or changes the person already there: name, number, photo, recorded
+ * name and place. This helper screen may scroll; the main screen never does.
  *
  * [onSave] gets the trimmed name and number, what to do with the photo and the contact, and the
- * chosen place, and only once they're valid. A new photo is cropped here and only kept once the
- * person is saved. A contact picked here stays linked while its number is the one to call.
+ * chosen place, and only once they're valid. A new photo or recording is made here and only kept
+ * once the person is saved. A contact picked here stays linked while its number is the one to call.
  */
 @Composable
 fun PersonEditorScreen(
@@ -115,6 +117,9 @@ fun PersonEditorScreen(
     // A new photo, cropped and waiting in the cache until Save.
     var newPhoto by rememberSaveable { mutableStateOf<String?>(null) }
     var photoRemoved by rememberSaveable { mutableStateOf(false) }
+    // A new recorded name, waiting in the cache until Save, or the saved one marked to go.
+    var newRecording by rememberSaveable { mutableStateOf<String?>(null) }
+    var recordingRemoved by rememberSaveable { mutableStateOf(false) }
     // The picked contact's photo, copied while the contacts app allowed reading it.
     var contactPhoto by rememberSaveable { mutableStateOf<String?>(null) }
     // The photo being cropped. While set, the crop screen shows instead of the form.
@@ -181,6 +186,12 @@ fun PersonEditorScreen(
         else -> PhotoEdit.Keep
     }
 
+    val recordingEdit = when {
+        newRecording != null -> RecordingEdit.Replace(newRecording!!)
+        recordingRemoved -> RecordingEdit.Remove
+        else -> RecordingEdit.Keep
+    }
+
     val contactEdit = when {
         // A number typed or changed by hand: the old contact's ringtone isn't this number's.
         number.trim() != linkedNumber.trim() -> ContactEdit.Unlink
@@ -195,7 +206,7 @@ fun PersonEditorScreen(
     val hasContactsPermission = DialerPermissions.hasContacts(context)
 
     val saveNow = { askedForContacts: Boolean ->
-        onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit))
+        onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit, recordingEdit))
         if (askedForContacts && !DialerPermissions.hasContacts(context)) savedWithoutContacts = true else onDone()
     }
     val copyToPhone = {
@@ -366,6 +377,26 @@ fun PersonEditorScreen(
                         newPhoto = null
                         photoRemoved = true
                         photoMessage = null
+                    },
+                    modifier = side,
+                )
+
+                val savedClip = editing?.takeIf { it.hasRecording && !recordingRemoved }
+                    ?.let { RecordedNames.masterFile(context, it.id) }
+                RecordedNameSection(
+                    name = name.trim(),
+                    clip = newRecording?.let(::File) ?: savedClip,
+                    isNew = newRecording != null,
+                    removed = recordingRemoved,
+                    onRecorded = { file ->
+                        newRecording?.let { File(it).delete() }
+                        newRecording = file.path
+                        recordingRemoved = false
+                    },
+                    onDelete = {
+                        newRecording?.let { File(it).delete() }
+                        newRecording = null
+                        recordingRemoved = editing?.hasRecording == true
                     },
                     modifier = side,
                 )

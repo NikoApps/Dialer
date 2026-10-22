@@ -114,8 +114,11 @@ private val safeId = Regex("[A-Za-z0-9_-]{1,64}")
  * The file name for a person's photo. Ids are UUIDs, used as they are. Anything else is turned
  * into a hash, so no id can reach outside the photos folder.
  */
-fun photoFileName(personId: String): String {
-    if (safeId.matches(personId)) return "$personId.jpg"
+fun photoFileName(personId: String): String = personFileStem(personId) + ".jpg"
+
+/** A person's id as a safe file name without extension, for their photo and their recording. */
+fun personFileStem(personId: String): String {
+    if (safeId.matches(personId)) return personId
     val digest = MessageDigest.getInstance("SHA-256").digest(personId.toByteArray(Charsets.UTF_8))
-    return "id_" + digest.take(16).joinToString("") { "%02x".format(it) } + ".jpg"
+    return "id_" + digest.take(16).joinToString("") { "%02x".format(it) }
 }

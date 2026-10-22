@@ -138,6 +138,38 @@
     <string name="editor_no_camera_app">This phone has no camera app to take a photo with. Choose a photo instead.</string>
     <string name="editor_no_photo_app">This phone has no app to choose a photo from. Take a photo instead.</string>
 
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">Recorded name</string>
+    <string name="editor_recording_how">When %1$s calls, the phone plays this instead of the ringtone. Tap Record and say \"%1$s is calling\" in your own words and language. It stops by itself after 5 seconds.</string>
+    <string name="editor_recording_kept">The recording shows in the phone\'s ringtone list, and stays on the phone if Niko Dialer is uninstalled.</string>
+    <string name="editor_recording_none">No recording yet.</string>
+    <string name="editor_recording_ready">Recorded. Tap Play to hear it.</string>
+    <string name="editor_recording_new">Recorded. It is kept when you tap Save.</string>
+    <string name="editor_recording_removed">The recording goes when you tap Save.</string>
+    <string name="editor_recording_now">Recording. Say the words, then tap Stop.</string>
+    <string name="editor_recording_too_short">Nothing was recorded. Tap Record, wait a moment, then speak.</string>
+    <string name="editor_recording_failed">The microphone couldn\'t be used. Close other apps that may be using it, then try again.</string>
+    <string name="editor_recording_needs_mic">Recording needs the microphone. Tap Record, then choose Allow.</string>
+    <string name="editor_recording_mic_off">The microphone is turned off for Niko Dialer. Turn it on in the phone\'s settings for Niko Dialer.</string>
+    <string name="editor_recording_needs_contacts">The recording is kept, but it can\'t ring for %1$s until contacts are allowed.</string>
+    <string name="editor_recording_needs_storage">The recording is kept, but it can\'t go in the phone\'s ringtones until storage is allowed.</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">The phone asks to allow the microphone, to record.</string>
+    <string name="editor_recording_ask_contacts">It asks for contacts, to set the recording as the ringtone for %1$s.</string>
+    <string name="editor_recording_ask_storage">It asks for storage, to put the recording with the phone\'s ringtones.</string>
+    <string name="editor_record">Record</string>
+    <string name="editor_record_stop">Stop</string>
+    <string name="editor_record_play">Play</string>
+    <string name="editor_record_stop_playing">Stop playing</string>
+    <string name="editor_record_again">Record again</string>
+    <string name="editor_record_delete">Delete the recording</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s is calling - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">Someone</string>
+
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">Fit the face in the square</string>
     <string name="crop_opening">Opening the photo.</string>

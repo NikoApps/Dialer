@@ -128,4 +128,16 @@ class PersonEditorTest {
         assertEquals(2, saved.recordingVersion)
         assertEquals("content://x", saved.ringtoneUri)
     }
+
+    @Test
+    fun `a new recording always gets a new version, and none forgets the ringtone`() {
+        val people = listOf(mum.copy(recordingVersion = 1, ringtoneUri = "content://x"), ram)
+        val again = setRecording(people, "m", hasRecording = true)
+        assertEquals(2, again[0].recordingVersion)
+        assertEquals("content://x", again[0].ringtoneUri)
+        assertEquals(ram, again[1])
+        val none = setRecording(again, "m", hasRecording = false)
+        assertEquals(0, none[0].recordingVersion)
+        assertEquals("", none[0].ringtoneUri)
+    }
 }
