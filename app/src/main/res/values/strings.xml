@@ -17,6 +17,8 @@
     <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
     <string name="calling_name">Calling %1$s</string>
     <string name="stop">Stop</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">Mum</string>
 
     <!-- Helper settings -->
     <string name="back">Back</string>

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -29,30 +30,40 @@ class SettingsRepository(context: Context) {
             prefs.write(updated)
         }
     }
+}
 
-    private object Keys {
-        val peopleOnScreen = intPreferencesKey("people_on_screen")
-        val waitBeforeCalling = stringPreferencesKey("wait_before_calling")
-        val setupDone = booleanPreferencesKey("setup_done")
-        val pinHash = stringPreferencesKey("helper_pin_hash")
-    }
+private object Keys {
+    val peopleOnScreen = intPreferencesKey("people_on_screen")
+    val waitBeforeCalling = stringPreferencesKey("wait_before_calling")
+    val theme = stringPreferencesKey("theme")
+    val voiceLanguage = stringPreferencesKey("voice_language")
+    val speechRate = floatPreferencesKey("speech_rate")
+    val setupDone = booleanPreferencesKey("setup_done")
+    val pinHash = stringPreferencesKey("helper_pin_hash")
+}
 
-    private fun Preferences.toSettings(): DialerSettings {
-        val d = DialerSettings()
-        return DialerSettings(
-            peopleOnScreen = this[Keys.peopleOnScreen]?.takeIf { it in PEOPLE_ON_SCREEN_CHOICES } ?: d.peopleOnScreen,
-            waitBeforeCalling = this[Keys.waitBeforeCalling]
-                ?.let { name -> WaitBeforeCalling.entries.firstOrNull { it.name == name } }
-                ?: d.waitBeforeCalling,
-            setupDone = this[Keys.setupDone] ?: d.setupDone,
-            helperPinHash = this[Keys.pinHash],
-        )
-    }
+/** Reads stored settings. Anything missing or unknown, such as an option from a newer version, falls back to its default. */
+internal fun Preferences.toSettings(): DialerSettings {
+    val d = DialerSettings()
+    return DialerSettings(
+        peopleOnScreen = this[Keys.peopleOnScreen]?.takeIf { it in PEOPLE_ON_SCREEN_CHOICES } ?: d.peopleOnScreen,
+        waitBeforeCalling = this[Keys.waitBeforeCalling]
+            ?.let { name -> WaitBeforeCalling.entries.firstOrNull { it.name == name } }
+            ?: d.waitBeforeCalling,
+        theme = this[Keys.theme]?.let { name -> ThemeChoice.entries.firstOrNull { it.name == name } } ?: d.theme,
+        voiceLanguage = this[Keys.voiceLanguage],
+        speechRate = this[Keys.speechRate]?.takeIf { it > 0f } ?: d.speechRate,
+        setupDone = this[Keys.setupDone] ?: d.setupDone,
+        helperPinHash = this[Keys.pinHash],
+    )
+}
 
-    private fun MutablePreferences.write(s: DialerSettings) {
-        this[Keys.peopleOnScreen] = s.peopleOnScreen
-        this[Keys.waitBeforeCalling] = s.waitBeforeCalling.name
-        this[Keys.setupDone] = s.setupDone
-        if (s.helperPinHash == null) remove(Keys.pinHash) else this[Keys.pinHash] = s.helperPinHash
-    }
+internal fun MutablePreferences.write(s: DialerSettings) {
+    this[Keys.peopleOnScreen] = s.peopleOnScreen
+    this[Keys.waitBeforeCalling] = s.waitBeforeCalling.name
+    this[Keys.theme] = s.theme.name
+    if (s.voiceLanguage == null) remove(Keys.voiceLanguage) else this[Keys.voiceLanguage] = s.voiceLanguage
+    this[Keys.speechRate] = s.speechRate
+    this[Keys.setupDone] = s.setupDone
+    if (s.helperPinHash == null) remove(Keys.pinHash) else this[Keys.pinHash] = s.helperPinHash
 }
