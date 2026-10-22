@@ -16,4 +16,11 @@ data class Person(
     val name: String,
     val number: String,
     val place: Int,
-)
+    /**
+     * 0 when there's no photo. Otherwise the photo is in Dialer's own files under the person's
+     * id, and this goes up by one each time it changes, so the face shows the new one.
+     */
+    val photoVersion: Int = 0,
+) {
+    val hasPhoto: Boolean get() = photoVersion > 0
+}
