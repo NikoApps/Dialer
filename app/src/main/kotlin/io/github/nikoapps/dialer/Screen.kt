@@ -29,3 +29,13 @@ internal enum class Screen {
  */
 internal fun screenAfterRestart(saved: Screen, pinSet: Boolean): Screen =
     if (pinSet && saved.behindPin) Screen.Unlock else saved
+
+/**
+ * The screen to keep when Dialer leaves the front, such as when Home is pressed. With a PIN set,
+ * a screen behind it goes back to the grid, so the next person to open Dialer can't change
+ * settings. Turning the phone ([changingConfig]) keeps it, and so does a screen Dialer opened
+ * itself ([openedAnotherScreen]), such as the contact picker or the camera, so a helper is never
+ * thrown out halfway through adding someone.
+ */
+internal fun screenAfterLeaving(current: Screen, pinSet: Boolean, changingConfig: Boolean, openedAnotherScreen: Boolean): Screen =
+    if (pinSet && current.behindPin && !changingConfig && !openedAnotherScreen) Screen.Main else current

@@ -24,4 +24,28 @@ class ScreenTest {
             assertEquals(screen.name, screen, screenAfterRestart(screen, pinSet = false))
         }
     }
+
+    @Test
+    fun `leaving Dialer with a PIN set sends helper screens back to the grid`() {
+        for (screen in listOf(Screen.Settings, Screen.SetPin, Screen.Setup, Screen.EditPerson)) {
+            assertEquals(screen.name, Screen.Main, screenAfterLeaving(screen, pinSet = true, changingConfig = false, openedAnotherScreen = false))
+        }
+    }
+
+    @Test
+    fun `turning the phone or a screen Dialer opened itself keeps the helper where they were`() {
+        for (screen in Screen.entries) {
+            assertEquals(screen.name, screen, screenAfterLeaving(screen, pinSet = true, changingConfig = true, openedAnotherScreen = false))
+            assertEquals(screen.name, screen, screenAfterLeaving(screen, pinSet = true, changingConfig = false, openedAnotherScreen = true))
+        }
+    }
+
+    @Test
+    fun `leaving without a PIN, or from the grid or Unlock, changes nothing`() {
+        for (screen in Screen.entries) {
+            assertEquals(screen.name, screen, screenAfterLeaving(screen, pinSet = false, changingConfig = false, openedAnotherScreen = false))
+        }
+        assertEquals(Screen.Main, screenAfterLeaving(Screen.Main, pinSet = true, changingConfig = false, openedAnotherScreen = false))
+        assertEquals(Screen.Unlock, screenAfterLeaving(Screen.Unlock, pinSet = true, changingConfig = false, openedAnotherScreen = false))
+    }
 }
