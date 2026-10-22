@@ -82,7 +82,14 @@ object RingtoneStore {
             resolver.delete(uri, null, null)
             return null
         }
-        resolver.update(uri, ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null)
+        // Still pending, the ringer can't play it, so a copy that can't be finished goes again.
+        val published = runCatching {
+            resolver.update(uri, ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null) > 0
+        }.getOrDefault(false)
+        if (!published) {
+            runCatching { resolver.delete(uri, null, null) }
+            return null
+        }
         return uri.toString()
     }
 
