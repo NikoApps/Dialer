@@ -5,12 +5,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.nikoapps.dialer.people.PeopleRepository
 import io.github.nikoapps.dialer.people.Person
+import io.github.nikoapps.dialer.people.PersonPhotos
+import io.github.nikoapps.dialer.people.PhotoEdit
+import io.github.nikoapps.dialer.people.removePerson as withoutPerson
+import io.github.nikoapps.dialer.people.savePerson as withPersonSaved
+import io.github.nikoapps.dialer.people.setPhoto
 import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.dialer.settings.SettingsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.UUID
 
 /** Helper settings and the people on the grid, shared by the main screen and the helper screens. */
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,5 +41,46 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /** Use the functions in Places.kt, such as `updatePeople { movePerson(it, id, place) }`, so nobody else moves. */
     fun updatePeople(transform: (List<Person>) -> List<Person>) {
         viewModelScope.launch { peopleRepository.update(transform) }
+    }
+
+    /**
+     * Saves a new person ([id] null) or changes one, with what the editor did to their photo.
+     * A new photo is put in place before the person is saved, so the face never points at a
+     * missing file. If a new person can't be saved after all, their photo is deleted again.
+     */
+    fun savePerson(id: String?, name: String, number: String, place: Int, photo: PhotoEdit) {
+        val app = getApplication<Application>()
+        viewModelScope.launch {
+            val personId = id ?: UUID.randomUUID().toString()
+            val photoSaved = withContext(Dispatchers.IO) {
+                when (photo) {
+                    is PhotoEdit.Replace -> PersonPhotos.save(app, personId, File(photo.path)).also { File(photo.path).delete() }
+                    PhotoEdit.Remove -> false.also { PersonPhotos.delete(app, personId) }
+                    PhotoEdit.Keep -> false
+                }
+            }
+            if (photo != PhotoEdit.Keep) PhotoCache.forget(personId)
+            var saved = false
+            peopleRepository.update { people ->
+                val updated = withPersonSaved(people, personId, name, number, place, newId = { personId })
+                saved = updated.any { it.id == personId }
+                when {
+                    photoSaved -> setPhoto(updated, personId, hasPhoto = true)
+                    photo == PhotoEdit.Remove -> setPhoto(updated, personId, hasPhoto = false)
+                    else -> updated
+                }
+            }
+            if (!saved && photoSaved) withContext(Dispatchers.IO) { PersonPhotos.delete(app, personId) }
+        }
+    }
+
+    /** Removes a person from the grid and deletes their photo. Nobody else moves. */
+    fun removePerson(person: Person) {
+        val app = getApplication<Application>()
+        viewModelScope.launch {
+            peopleRepository.update { withoutPerson(it, person.id) }
+            withContext(Dispatchers.IO) { PersonPhotos.delete(app, person.id) }
+            PhotoCache.forget(person.id)
+        }
     }
 }

@@ -7,8 +7,11 @@ import android.net.Uri
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.activity.result.contract.ActivityResultContract
 
-/** A name and number picked from the phone's contacts. */
-data class PickedContact(val name: String, val number: String)
+/**
+ * A name and number picked from the phone's contacts. [photoUris] are the contact's photo, big
+ * one first, empty when it has none. They can only be read straight after picking.
+ */
+data class PickedContact(val name: String, val number: String, val photoUris: List<String> = emptyList())
 
 /**
  * The system contact picker, showing phone numbers. The contacts app grants Dialer a one-time
@@ -23,10 +26,11 @@ class PickPhoneNumber : ActivityResultContract<Unit, Uri?>() {
 
 /** Reads the picked number. Null if it can't be read, such as when the grant was refused. Call off the main thread. */
 fun readPickedContact(context: Context, uri: Uri): PickedContact? = runCatching {
-    context.contentResolver.query(uri, arrayOf(Phone.DISPLAY_NAME, Phone.NUMBER), null, null, null)?.use { cursor ->
+    context.contentResolver.query(uri, arrayOf(Phone.DISPLAY_NAME, Phone.NUMBER, Phone.PHOTO_URI, Phone.PHOTO_THUMBNAIL_URI), null, null, null)?.use { cursor ->
         if (!cursor.moveToFirst()) return@use null
         val name = cursor.getString(0).orEmpty().trim()
         val number = cursor.getString(1).orEmpty().trim()
-        PickedContact(name, number).takeIf { number.isNotEmpty() }
+        val photos = listOfNotNull(cursor.getString(2), cursor.getString(3)).filter { it.isNotBlank() }.distinct()
+        PickedContact(name, number, photos).takeIf { number.isNotEmpty() }
     }
 }.getOrNull()

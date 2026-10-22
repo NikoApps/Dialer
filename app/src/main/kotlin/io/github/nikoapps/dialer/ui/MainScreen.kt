@@ -52,7 +52,6 @@ import io.github.nikoapps.commons.theme.NikoTheme
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.gridShape
-import io.github.nikoapps.dialer.people.personColor
 import io.github.nikoapps.dialer.people.placesOnScreen
 
 /**
@@ -195,8 +194,8 @@ private fun PersonTile(person: Person, onClick: () -> Unit, modifier: Modifier =
             val nameMaxHeight = maxHeight * 0.4f
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Silhouette(
-                        color = personColor(person.id),
+                    PersonPicture(
+                        person = person,
                         modifier = Modifier.fillMaxHeight().aspectRatio(1f, matchHeightConstraintsFirst = true),
                     )
                 }

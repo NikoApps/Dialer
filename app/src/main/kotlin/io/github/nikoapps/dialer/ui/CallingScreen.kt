@@ -30,7 +30,6 @@ import io.github.nikoapps.commons.ui.BigButton
 import io.github.nikoapps.commons.ui.SecondaryButton
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.people.Person
-import io.github.nikoapps.dialer.people.personColor
 
 /**
  * Shown between the tap on a face and the phone's own call screen: the face, the name, and
@@ -48,8 +47,8 @@ fun CallingScreen(person: Person, askFirst: Boolean, onCall: () -> Unit, onStop:
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Silhouette(
-                color = personColor(person.id),
+            PersonPicture(
+                person = person,
                 modifier = Modifier.fillMaxHeight().aspectRatio(1f, matchHeightConstraintsFirst = true),
             )
         }

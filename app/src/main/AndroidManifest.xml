@@ -3,6 +3,8 @@
 
     <!-- Never the internet permission. Niko Dialer works fully offline. -->
     <!-- Contacts, microphone and call screening come with the features that need them (Hub spec). -->
+    <!-- Never CAMERA: photos come from the camera app and the photo picker, which need no permission.
+         Declaring it would make the camera app need it too. -->
 
     <!-- Tap a face, the call starts. Asked the first time a face is tapped. -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -33,5 +35,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Lets the camera app write one new photo for a face. Not exported, and no camera permission:
+             the camera app takes the photo, Dialer only gets the file. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.photos"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/photo_paths" />
+        </provider>
     </application>
 </manifest>

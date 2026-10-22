@@ -43,8 +43,6 @@ import io.github.nikoapps.dialer.health.DialerHealth
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.gridShape
 import io.github.nikoapps.dialer.people.placesOnScreen
-import io.github.nikoapps.dialer.people.removePerson
-import io.github.nikoapps.dialer.people.savePerson
 import io.github.nikoapps.dialer.settings.DialerHelperPin
 import io.github.nikoapps.dialer.settings.ThemeChoice
 import io.github.nikoapps.dialer.ui.CallingScreen
@@ -239,12 +237,12 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             people = everyone,
             place = editPlace,
             peopleOnScreen = current.peopleOnScreen,
-            onSave = { id, name, number, place ->
-                settingsViewModel.updatePeople { savePerson(it, id, name, number, place) }
+            onSave = { id, name, number, place, photo ->
+                settingsViewModel.savePerson(id, name, number, place, photo)
                 screen = editorReturn
             },
             onRemove = { person ->
-                settingsViewModel.updatePeople { removePerson(it, person.id) }
+                settingsViewModel.removePerson(person)
                 screen = editorReturn
             },
             onBack = { screen = editorReturn },
