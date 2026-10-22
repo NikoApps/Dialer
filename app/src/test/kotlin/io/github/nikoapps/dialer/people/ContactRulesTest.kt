@@ -51,6 +51,8 @@ class ContactRulesTest {
         assertEquals(local, chooseLocalAccount(existing = listOf(samsung), platformLocal = local))
         assertEquals(samsung, chooseLocalAccount(existing = listOf(samsung), platformLocal = ContactAccount("SIM", "vnd.sec.contact.sim")))
         assertEquals(NoAccount, chooseLocalAccount(existing = emptyList(), platformLocal = NoAccount))
+        // Android saying "no account" doesn't override a maker's own local account.
+        assertEquals(samsung, chooseLocalAccount(existing = listOf(samsung), platformLocal = NoAccount))
     }
 
     @Test

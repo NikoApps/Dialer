@@ -3,7 +3,9 @@ package io.github.nikoapps.dialer.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.PeopleRepository
+import io.github.nikoapps.dialer.people.PhoneContacts
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonEdit
 import io.github.nikoapps.dialer.people.PersonPhotos
@@ -85,6 +87,29 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             if (!saved && photoSaved) withContext(Dispatchers.IO) { PersonPhotos.delete(app, personId) }
+            if (saved) linkContact(personId, mayCreate = true)
+        }
+    }
+
+    /**
+     * Links a person with no contact to the phone's contacts, while contacts are allowed: to a
+     * contact with their number if there is one, otherwise, when [mayCreate], to a new contact saved
+     * on the phone. Typed people are saved this way, so silencing never catches their calls and a
+     * recorded name has a contact to ring for.
+     */
+    private suspend fun linkContact(personId: String, mayCreate: Boolean) {
+        val app = getApplication<Application>()
+        if (!DialerPermissions.hasContacts(app)) return
+        val person = peopleRepository.current().firstOrNull { it.id == personId } ?: return
+        if (person.hasContact) return
+        val link = withContext(Dispatchers.IO) {
+            PhoneContacts.findByNumber(app, person.number)
+                ?: if (mayCreate) PhoneContacts.saveOnPhone(app, person.name, person.number) else null
+        } ?: return
+        // Only if they're still the same person with no contact; the helper may have changed them meanwhile.
+        peopleRepository.update { people ->
+            val now = people.firstOrNull { it.id == personId }
+            if (now == null || now.hasContact || now.number != person.number) people else setContact(people, personId, link)
         }
     }
 

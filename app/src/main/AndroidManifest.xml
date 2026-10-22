@@ -2,13 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Never the internet permission. Niko Dialer works fully offline. -->
-    <!-- Contacts and microphone come with the features that need them (Hub spec). -->
+    <!-- The microphone comes with recorded names (Hub spec). -->
     <!-- Call screening is a role granted in a system dialog, not a permission. -->
     <!-- Never CAMERA: photos come from the camera app and the photo picker, which need no permission.
          Declaring it would make the camera app need it too. -->
 
     <!-- Tap a face, the call starts. Asked the first time a face is tapped. -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- Save typed people in the phone's contacts, and set and check each person's ringtone.
+         One "contacts" question on Android, asked when saving a typed person or recording a name.
+         Picking a contact needs neither: the contacts app grants a one-time read. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <!-- Calling implies a phone; still install on tablets, where the hint line explains. -->
     <uses-feature

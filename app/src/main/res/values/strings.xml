@@ -112,6 +112,19 @@
     <string name="editor_contact_unreadable">That contact couldn\'t be read. Try again, or type the name and number.</string>
     <string name="editor_no_contacts_app">This phone has no contacts app to choose from. Type the name and number instead.</string>
 
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">this person</string>
+    <string name="editor_typed_note">Niko Dialer also saves %1$s in the phone\'s contacts, on the phone, not the SIM. Then a recorded name can play when %1$s calls, and Only ring for saved contacts lets the call ring.</string>
+    <string name="editor_typed_note_ask">Niko Dialer also saves %1$s in the phone\'s contacts, on the phone, not the SIM. Then a recorded name can play when %1$s calls, and Only ring for saved contacts lets the call ring. After Save, the phone asks to allow contacts.</string>
+    <string name="editor_sim_note">%1$s is saved on the SIM card. A SIM contact can\'t have its own ringtone, so a recorded name can\'t play when %1$s calls. Copy %1$s to the phone to fix this.</string>
+    <string name="editor_sim_copy">Copy to the phone</string>
+    <string name="editor_sim_copied">%1$s is saved on the phone now.</string>
+    <string name="editor_sim_copy_failed">%1$s couldn\'t be copied to the phone. Try again.</string>
+    <string name="editor_sim_needs_contacts">Copying needs the phone\'s contacts. Tap Copy to the phone, then choose Allow.</string>
+    <string name="editor_saved_title">%1$s is saved</string>
+    <string name="editor_saved_no_contacts">%1$s is in Niko Dialer, but not in the phone\'s contacts. A recorded name can only play when %1$s calls if they are in the contacts. Only ring for saved contacts may also keep their calls quiet. To change this, open %1$s again, tap Save and choose Allow.</string>
+
     <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
     <string name="editor_photo">Photo</string>
     <string name="editor_photo_missing">A photo helps. A face is easier to find than a name.</string>

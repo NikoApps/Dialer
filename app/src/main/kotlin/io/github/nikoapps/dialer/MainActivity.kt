@@ -285,10 +285,8 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             people = everyone,
             place = editPlace,
             peopleOnScreen = current.peopleOnScreen,
-            onSave = { edit ->
-                settingsViewModel.savePerson(edit)
-                screen = editorReturn
-            },
+            onSave = settingsViewModel::savePerson,
+            onDone = { screen = editorReturn },
             onRemove = { person ->
                 settingsViewModel.removePerson(person)
                 screen = editorReturn

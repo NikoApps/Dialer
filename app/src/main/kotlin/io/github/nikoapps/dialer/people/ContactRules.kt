@@ -67,7 +67,8 @@ private val knownLocalTypes = listOf(
  * ([existing]) is used, so its name is right, and otherwise no account.
  */
 fun chooseLocalAccount(existing: List<ContactAccount>, platformLocal: ContactAccount? = null): ContactAccount {
-    if (platformLocal != null && !isSimAccount(platformLocal)) return platformLocal
+    // "No account" from Android may just mean the maker didn't say, so a maker's own account still wins then.
+    if (platformLocal?.type != null && !isSimAccount(platformLocal)) return platformLocal
     for (type in knownLocalTypes) {
         existing.firstOrNull { it.type?.lowercase() == type && it.name != null }?.let { return it }
     }
