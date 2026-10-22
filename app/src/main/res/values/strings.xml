@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
-    <string name="app_name">Niko Dialer</string>
+    <string name="app_name" translatable="false">Niko Dialer</string>
 
     <!-- Main screen -->
     <string name="settings_open">Settings</string>
@@ -62,6 +62,7 @@
     <string name="theme_phone">Same as phone</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="setting_screen_language">Screen language</string>
 
     <!-- Helper settings -->
     <string name="info_pin">A 4-number PIN stops people and settings being changed by accident. Calling always works without it.</string>
