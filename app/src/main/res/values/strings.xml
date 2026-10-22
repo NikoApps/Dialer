@@ -90,8 +90,40 @@
     <string name="editor_contact_unreadable">That contact couldn\'t be read. Try again, or type the name and number.</string>
     <string name="editor_no_contacts_app">This phone has no contacts app to choose from. Type the name and number instead.</string>
 
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">Photo</string>
+    <string name="editor_photo_missing">A photo helps. A face is easier to find than a name.</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">The photo on the face</string>
+    <string name="editor_photo_take">Take a photo</string>
+    <string name="editor_photo_choose">Choose a photo</string>
+    <string name="editor_photo_contact">Use the contact\'s photo</string>
+    <string name="editor_photo_remove">Remove the photo</string>
+    <string name="editor_photo_unreadable">That photo couldn\'t be opened. Try another one.</string>
+    <string name="editor_no_camera_app">This phone has no camera app to take a photo with. Choose a photo instead.</string>
+    <string name="editor_no_photo_app">This phone has no app to choose a photo from. Take a photo instead.</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">Fit the face in the square</string>
+    <string name="crop_opening">Opening the photo.</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">The photo as it will look on the face</string>
+    <string name="crop_help">Drag the photo to move it, and pinch to zoom. The buttons do the same.</string>
+    <string name="crop_zoom_in">Zoom in</string>
+    <string name="crop_zoom_out">Zoom out</string>
+    <string name="crop_move_left">Move left</string>
+    <string name="crop_move_right">Move right</string>
+    <string name="crop_move_up">Move up</string>
+    <string name="crop_move_down">Move down</string>
+    <string name="crop_fit_whole">Fit whole photo</string>
+    <string name="crop_use">Use this photo</string>
+    <string name="crop_save_failed">The photo couldn\'t be saved. Try again.</string>
+
     <!-- First-run setup -->
     <string name="setup_people_info">Tap a place to add someone to it.</string>
+    <string name="setup_photos_info">A photo helps. A face is easier to find than a name. These people have no photo yet.</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">Add a photo of %1$s</string>
     <string name="setup_calls_reason">Niko Dialer needs to be allowed to make phone calls, so a tap on a face starts the call.</string>
     <string name="setup_calls_allow">Allow calls</string>
     <string name="calls_allowed">Allowed</string>

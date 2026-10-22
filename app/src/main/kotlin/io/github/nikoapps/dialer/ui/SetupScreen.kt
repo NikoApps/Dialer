@@ -11,11 +11,13 @@ import io.github.nikoapps.commons.health.HealthCheck
 import io.github.nikoapps.commons.ui.HealthRows
 import io.github.nikoapps.commons.ui.PhoneMakerRow
 import io.github.nikoapps.commons.ui.PinRows
+import io.github.nikoapps.commons.ui.SecondaryButton
 import io.github.nikoapps.commons.ui.SetupFrame
 import io.github.nikoapps.commons.ui.SetupStep
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.health.DialerHealth
 import io.github.nikoapps.dialer.people.Person
+import io.github.nikoapps.dialer.people.placesOnScreen
 import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.commons.R as CommonsR
 
@@ -44,6 +46,7 @@ fun SetupScreen(
             PeopleOnScreenRow(settings, onUpdate)
             StepText(stringResource(R.string.setup_people_info))
             PeopleRows(people, settings.peopleOnScreen, onEditPlace)
+            MissingPhotos(people, settings.peopleOnScreen, onEditPlace)
         },
         SetupStep(stringResource(R.string.section_calls)) {
             StepText(stringResource(R.string.setup_calls_reason))
@@ -62,6 +65,21 @@ fun SetupScreen(
         },
     )
     SetupFrame(steps = steps, step = step, onStep = onStep, onFinish = onFinish)
+}
+
+/** Asks for a photo of each person on screen who has none, with a button that opens their editor. */
+@Composable
+private fun MissingPhotos(people: List<Person>, peopleOnScreen: Int, onEditPlace: (Int) -> Unit) {
+    val missing = placesOnScreen(people, peopleOnScreen).filterNotNull().filterNot { it.hasPhoto }
+    if (missing.isEmpty()) return
+    StepText(stringResource(R.string.setup_photos_info))
+    missing.forEach { person ->
+        SecondaryButton(
+            text = stringResource(R.string.setup_add_photo, person.name),
+            onClick = { onEditPlace(person.place) },
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+        )
+    }
 }
 
 @Composable

@@ -1,6 +1,9 @@
 package io.github.nikoapps.dialer.ui
 
 import android.content.ActivityNotFoundException
+import android.net.Uri
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,28 +54,33 @@ import io.github.nikoapps.dialer.call.CallAction
 import io.github.nikoapps.dialer.call.PhoneCalls
 import io.github.nikoapps.dialer.people.EditorProblem
 import io.github.nikoapps.dialer.people.Person
+import io.github.nikoapps.dialer.people.PersonPhotos
+import io.github.nikoapps.dialer.people.PhotoEdit
 import io.github.nikoapps.dialer.people.PickPhoneNumber
 import io.github.nikoapps.dialer.people.editorProblems
+import io.github.nikoapps.dialer.people.personColor
 import io.github.nikoapps.dialer.people.placeChoices
 import io.github.nikoapps.dialer.people.placePosition
 import io.github.nikoapps.dialer.people.readPickedContact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import io.github.nikoapps.commons.R as CommonsR
 
 /**
- * Adds a person at [place], or changes the person already there: name, number and place.
- * Photos and recorded names come later. This helper screen may scroll; the main screen never does.
+ * Adds a person at [place], or changes the person already there: name, number, photo and place.
+ * Recorded names come later. This helper screen may scroll; the main screen never does.
  *
- * [onSave] gets the trimmed name and number and the chosen place, and only once they're valid.
+ * [onSave] gets the trimmed name and number, what to do with the photo and the chosen place, and
+ * only once they're valid. A new photo is cropped here and only kept once the person is saved.
  */
 @Composable
 fun PersonEditorScreen(
     people: List<Person>,
     place: Int,
     peopleOnScreen: Int,
-    onSave: (id: String?, name: String, number: String, place: Int) -> Unit,
+    onSave: (id: String?, name: String, number: String, place: Int, photo: PhotoEdit) -> Unit,
     onRemove: (Person) -> Unit,
     onBack: () -> Unit,
 ) {
@@ -87,6 +96,14 @@ fun PersonEditorScreen(
     var showProblems by rememberSaveable { mutableStateOf(false) }
     var confirmRemove by rememberSaveable { mutableStateOf(false) }
     var message by rememberSaveable { mutableStateOf<Int?>(null) }
+    // A new photo, cropped and waiting in the cache until Save.
+    var newPhoto by rememberSaveable { mutableStateOf<String?>(null) }
+    var photoRemoved by rememberSaveable { mutableStateOf(false) }
+    // The picked contact's photo, copied while the contacts app allowed reading it.
+    var contactPhoto by rememberSaveable { mutableStateOf<String?>(null) }
+    // The photo being cropped. While set, the crop screen shows instead of the form.
+    var cropSource by rememberSaveable { mutableStateOf<String?>(null) }
+    var photoMessage by rememberSaveable { mutableStateOf<Int?>(null) }
 
     val editing = people.firstOrNull { it.id == editingId }
     val choices = remember(people, editingId, peopleOnScreen) {
@@ -98,23 +115,60 @@ fun PersonEditorScreen(
     val pickContact = rememberLauncherForActivityResult(PickPhoneNumber()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         scope.launch {
-            val picked = withContext(Dispatchers.IO) { readPickedContact(context, uri) }
+            val (picked, photo) = withContext(Dispatchers.IO) {
+                val picked = readPickedContact(context, uri)
+                picked to picked?.let { PersonPhotos.copyContactPhoto(context, it.photoUris) }
+            }
             if (picked == null) {
                 message = R.string.editor_contact_unreadable
             } else {
                 message = null
                 if (picked.name.isNotEmpty()) name = picked.name
                 number = picked.number
+                contactPhoto = photo?.path
             }
         }
+    }
+
+    val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { taken ->
+        if (taken) cropSource = PersonPhotos.cameraPicture(context).toString()
+    }
+    // Uses the phone's photo picker, or the older document picker on phones without it.
+    val choosePhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) cropSource = uri.toString()
+    }
+    val hasPhoto = newPhoto != null || (!photoRemoved && editing?.hasPhoto == true)
+    val photoEdit = when {
+        newPhoto != null -> PhotoEdit.Replace(newPhoto!!)
+        photoRemoved -> PhotoEdit.Remove
+        else -> PhotoEdit.Keep
     }
 
     val save = {
         when {
             problems.isNotEmpty() -> showProblems = true
             chosenPlace !in choices -> message = R.string.editor_place_taken
-            else -> onSave(editingId, name.trim(), number.trim(), chosenPlace)
+            else -> onSave(editingId, name.trim(), number.trim(), chosenPlace, photoEdit)
         }
+    }
+
+    cropSource?.let { source ->
+        PhotoCropScreen(
+            source = source,
+            onCropped = { file ->
+                newPhoto?.let { File(it).delete() }
+                newPhoto = file.path
+                photoRemoved = false
+                photoMessage = null
+                cropSource = null
+            },
+            onCancel = { cropSource = null },
+            onUnreadable = {
+                photoMessage = R.string.editor_photo_unreadable
+                cropSource = null
+            },
+        )
+        return
     }
 
     ProvideInfoStrings {
@@ -179,6 +233,42 @@ fun PersonEditorScreen(
                 )
                 if (emergency) Note(stringResource(R.string.editor_emergency), warning = false, modifier = side)
 
+                PhotoSection(
+                    hasPhoto = hasPhoto,
+                    newPhoto = newPhoto,
+                    editing = editing.takeIf { !photoRemoved },
+                    colorId = editingId ?: "new",
+                    canUseContactPhoto = contactPhoto != null,
+                    message = photoMessage,
+                    onTake = {
+                        photoMessage = null
+                        try {
+                            takePhoto.launch(PersonPhotos.cameraUri(context))
+                        } catch (_: ActivityNotFoundException) {
+                            photoMessage = R.string.editor_no_camera_app
+                        }
+                    },
+                    onChoose = {
+                        photoMessage = null
+                        try {
+                            choosePhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        } catch (_: ActivityNotFoundException) {
+                            photoMessage = R.string.editor_no_photo_app
+                        }
+                    },
+                    onUseContactPhoto = {
+                        photoMessage = null
+                        contactPhoto?.let { cropSource = Uri.fromFile(File(it)).toString() }
+                    },
+                    onRemove = {
+                        newPhoto?.let { File(it).delete() }
+                        newPhoto = null
+                        photoRemoved = true
+                        photoMessage = null
+                    },
+                    modifier = side,
+                )
+
                 ChoiceRow(
                     title = stringResource(R.string.editor_place),
                     options = choices,
@@ -213,6 +303,52 @@ fun PersonEditorScreen(
             },
             onKeep = { confirmRemove = false },
         )
+    }
+}
+
+/**
+ * The face as it will look, and the ways to change it. With no photo it says plainly that one
+ * helps. The photo is a picture next to buttons that say what they do.
+ */
+@Composable
+private fun PhotoSection(
+    hasPhoto: Boolean,
+    newPhoto: String?,
+    editing: Person?,
+    colorId: String,
+    canUseContactPhoto: Boolean,
+    message: Int?,
+    onTake: () -> Unit,
+    onChoose: () -> Unit,
+    onUseContactPhoto: () -> Unit,
+    onRemove: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current.applicationContext
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text(
+            text = stringResource(R.string.editor_photo),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.semantics { heading() },
+        )
+        val pictureModifier = Modifier.size(160.dp)
+        val photo = when {
+            newPhoto != null -> rememberPhoto(newPhoto) { File(newPhoto) }
+            editing != null && editing.hasPhoto -> rememberPhoto(PhotoCache.key(editing)) { PersonPhotos.file(context, editing.id) }
+            else -> null
+        }
+        if (hasPhoto && photo != null) {
+            FacePhoto(photo, pictureModifier, contentDescription = stringResource(R.string.editor_photo_label))
+        } else if (!hasPhoto) {
+            Silhouette(color = personColor(colorId), modifier = pictureModifier)
+            Note(stringResource(R.string.editor_photo_missing), warning = false)
+        }
+        message?.let { Note(stringResource(it), warning = true) }
+        SecondaryButton(text = stringResource(R.string.editor_photo_take), onClick = onTake)
+        SecondaryButton(text = stringResource(R.string.editor_photo_choose), onClick = onChoose)
+        if (canUseContactPhoto) SecondaryButton(text = stringResource(R.string.editor_photo_contact), onClick = onUseContactPhoto)
+        if (hasPhoto) SecondaryButton(text = stringResource(R.string.editor_photo_remove), onClick = onRemove)
     }
 }
 
@@ -257,7 +393,7 @@ private fun PersonEditorPreview() {
                 people = listOf(Person(id = "a", name = "Mum", number = "9800000001", place = 0)),
                 place = 0,
                 peopleOnScreen = 4,
-                onSave = { _, _, _, _ -> },
+                onSave = { _, _, _, _, _ -> },
                 onRemove = {},
                 onBack = {},
             )
