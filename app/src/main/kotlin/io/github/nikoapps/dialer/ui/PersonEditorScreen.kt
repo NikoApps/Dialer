@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.net.Uri
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,18 +45,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
+import io.github.nikoapps.commons.health.PhoneHealth
 import io.github.nikoapps.commons.theme.NikoTheme
 import io.github.nikoapps.commons.ui.ChoiceRow
 import io.github.nikoapps.commons.ui.ProvideInfoStrings
 import io.github.nikoapps.commons.ui.ScreenTopBar
 import io.github.nikoapps.commons.ui.SecondaryButton
 import io.github.nikoapps.commons.ui.SolidButton
+import io.github.nikoapps.commons.ui.openPage
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.call.CallAction
 import io.github.nikoapps.dialer.call.PhoneCalls
 import io.github.nikoapps.dialer.people.ContactEdit
 import io.github.nikoapps.dialer.people.ContactLink
+import io.github.nikoapps.dialer.people.AskFor
+import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.EditorProblem
+import io.github.nikoapps.dialer.people.PhoneContacts
+import io.github.nikoapps.dialer.people.contactAfter
+import io.github.nikoapps.dialer.people.contactLink
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonPhotos
 import io.github.nikoapps.dialer.people.PersonEdit
@@ -88,8 +97,10 @@ fun PersonEditorScreen(
     onSave: (PersonEdit) -> Unit,
     onRemove: (Person) -> Unit,
     onBack: () -> Unit,
+    onDone: () -> Unit = onBack,
 ) {
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val scope = rememberCoroutineScope()
     val existing = remember(people, place) { people.firstOrNull { it.place == place } }
     // Kept by id, so the screen still knows who it's editing if they're moved while it's open.
@@ -113,6 +124,14 @@ fun PersonEditorScreen(
     var pickedKey by rememberSaveable { mutableStateOf<String?>(null) }
     var pickedId by rememberSaveable { mutableLongStateOf(0L) }
     var linkedNumber by rememberSaveable { mutableStateOf(existing?.number.orEmpty()) }
+    // The picked number is stored on the SIM, which can't hold a ringtone.
+    var pickedOnSim by rememberSaveable { mutableStateOf(false) }
+    var contactMessage by rememberSaveable { mutableStateOf<Int?>(null) }
+    // Contacts were refused when saving, so the person is saved in Dialer only. Shows why that matters.
+    var savedWithoutContacts by rememberSaveable { mutableStateOf(false) }
+    var contactsBlocked by rememberSaveable { mutableStateOf(false) }
+    // What to do once the contacts question closes.
+    var afterContacts by rememberSaveable { mutableStateOf<AfterContacts?>(null) }
 
     val editing = people.firstOrNull { it.id == editingId }
     val choices = remember(people, editingId, peopleOnScreen) {
@@ -124,9 +143,13 @@ fun PersonEditorScreen(
     val pickContact = rememberLauncherForActivityResult(PickPhoneNumber()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         scope.launch {
-            val (picked, photo) = withContext(Dispatchers.IO) {
+            val (picked, photo, onSim) = withContext(Dispatchers.IO) {
                 val picked = readPickedContact(context, uri)
-                picked to picked?.let { PersonPhotos.copyContactPhoto(context, it.photoUris) }
+                Triple(
+                    picked,
+                    picked?.let { PersonPhotos.copyContactPhoto(context, it.photoUris) },
+                    picked != null && PhoneContacts.isOnSim(context, picked.account),
+                )
             }
             if (picked == null) {
                 message = R.string.editor_contact_unreadable
@@ -138,6 +161,8 @@ fun PersonEditorScreen(
                 pickedKey = picked.link?.lookupKey.orEmpty()
                 pickedId = picked.link?.contactId ?: 0L
                 linkedNumber = picked.number
+                pickedOnSim = onSim
+                contactMessage = null
             }
         }
     }
@@ -164,11 +189,51 @@ fun PersonEditorScreen(
         else -> ContactEdit.Link(ContactLink(pickedId, pickedKey!!))
     }
 
+    // Without a contact, Save also keeps the person in the phone's contacts, so the ringtone has
+    // somewhere to live and silencing doesn't catch their calls.
+    val linkedAfterSave = contactAfter(editing?.contactLink, contactEdit) != null
+    val hasContactsPermission = DialerPermissions.hasContacts(context)
+
+    val saveNow = { askedForContacts: Boolean ->
+        onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit))
+        if (askedForContacts && !DialerPermissions.hasContacts(context)) savedWithoutContacts = true else onDone()
+    }
+    val copyToPhone = {
+        scope.launch {
+            val link = withContext(Dispatchers.IO) { PhoneContacts.saveOnPhone(context, name.trim(), number.trim()) }
+            if (link == null) {
+                contactMessage = R.string.editor_sim_copy_failed
+            } else {
+                pickedKey = link.lookupKey
+                pickedId = link.contactId
+                linkedNumber = number
+                pickedOnSim = false
+                contactMessage = R.string.editor_sim_copied
+            }
+        }
+    }
+    val askForContacts = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        val granted = DialerPermissions.hasContacts(context)
+        contactsBlocked = !granted && activity != null &&
+            DialerPermissions.contacts.none { ActivityCompat.shouldShowRequestPermissionRationale(activity, it) }
+        when (afterContacts) {
+            AfterContacts.Save -> saveNow(true)
+            AfterContacts.Copy -> if (granted) copyToPhone() else contactMessage = R.string.editor_sim_needs_contacts
+            null -> Unit
+        }
+        afterContacts = null
+    }
+    val askContactsThen = { then: AfterContacts ->
+        afterContacts = then
+        askForContacts.launch(DialerPermissions.toAsk(context, AskFor.SaveContact).toTypedArray())
+    }
+
     val save = {
         when {
             problems.isNotEmpty() -> showProblems = true
             chosenPlace !in choices -> message = R.string.editor_place_taken
-            else -> onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit))
+            !linkedAfterSave && !hasContactsPermission -> askContactsThen(AfterContacts.Save)
+            else -> saveNow(false)
         }
     }
 
@@ -252,6 +317,22 @@ fun PersonEditorScreen(
                     modifier = side.fillMaxWidth().heightIn(min = 64.dp),
                 )
                 if (emergency) Note(stringResource(R.string.editor_emergency), warning = false, modifier = side)
+                ContactNotes(
+                    name = name.trim(),
+                    onSim = pickedOnSim && number.trim() == linkedNumber.trim(),
+                    typed = !linkedAfterSave,
+                    hasPermission = hasContactsPermission,
+                    message = contactMessage,
+                    onCopy = {
+                        contactMessage = null
+                        when {
+                            EditorProblem.NoName in problems || EditorProblem.NoNumber in problems -> showProblems = true
+                            hasContactsPermission -> copyToPhone()
+                            else -> askContactsThen(AfterContacts.Copy)
+                        }
+                    },
+                    modifier = side,
+                )
 
                 PhotoSection(
                     hasPhoto = hasPhoto,
@@ -314,6 +395,18 @@ fun PersonEditorScreen(
         }
     }
 
+    if (savedWithoutContacts) {
+        SavedWithoutContactsDialog(
+            name = name.trim(),
+            blocked = contactsBlocked,
+            onOpenAppInfo = { openPage(context, PhoneHealth.appInfo(context)) },
+            onDone = {
+                savedWithoutContacts = false
+                onDone()
+            },
+        )
+    }
+
     if (confirmRemove && editing != null) {
         RemoveDialog(
             name = editing.name,
@@ -369,6 +462,66 @@ private fun PhotoSection(
         SecondaryButton(text = stringResource(R.string.editor_photo_choose), onClick = onChoose)
         if (canUseContactPhoto) SecondaryButton(text = stringResource(R.string.editor_photo_contact), onClick = onUseContactPhoto)
         if (hasPhoto) SecondaryButton(text = stringResource(R.string.editor_photo_remove), onClick = onRemove)
+    }
+}
+
+/** What waits for the contacts question to close. */
+private enum class AfterContacts { Save, Copy }
+
+/**
+ * Why the phone's contacts matter for this person. A typed person is also saved in the phone's
+ * contacts; a contact on the SIM can be copied to the phone, since the SIM can't hold a ringtone.
+ */
+@Composable
+private fun ContactNotes(
+    name: String,
+    onSim: Boolean,
+    typed: Boolean,
+    hasPermission: Boolean,
+    message: Int?,
+    onCopy: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val shown = name.ifEmpty { stringResource(R.string.editor_this_person) }
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        when {
+            onSim -> {
+                Note(stringResource(R.string.editor_sim_note, shown), warning = false)
+                SecondaryButton(text = stringResource(R.string.editor_sim_copy), onClick = onCopy)
+            }
+            typed -> Note(
+                stringResource(if (hasPermission) R.string.editor_typed_note else R.string.editor_typed_note_ask, shown),
+                warning = false,
+            )
+        }
+        message?.let { Note(stringResource(it, shown), warning = it != R.string.editor_sim_copied) }
+    }
+}
+
+/** The person is saved in Dialer, but not in the phone's contacts, and what that means. */
+@Composable
+private fun SavedWithoutContactsDialog(name: String, blocked: Boolean, onOpenAppInfo: () -> Unit, onDone: () -> Unit) {
+    Dialog(onDismissRequest = onDone) {
+        Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surface) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()).padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.editor_saved_title, name),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.semantics { heading() },
+                )
+                Text(
+                    text = stringResource(R.string.editor_saved_no_contacts, name),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (blocked) SecondaryButton(text = stringResource(R.string.open_app_info), onClick = onOpenAppInfo)
+                SolidButton(text = stringResource(CommonsR.string.ok), onClick = onDone, modifier = Modifier.fillMaxWidth())
+            }
+        }
     }
 }
 
