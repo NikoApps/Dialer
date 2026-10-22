@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.LocaleList
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.nikoapps.dialer.people.ContactByNumber
 import io.github.nikoapps.dialer.people.contactAfter
 import io.github.nikoapps.dialer.people.contactLink
 import io.github.nikoapps.dialer.people.DialerPermissions
@@ -196,8 +197,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     /**
-     * Links a person with no contact to the phone's contacts, while contacts are allowed: to a
-     * contact with their number if there is one, otherwise, when [mayCreate], to a new contact saved
+     * Links a person with no contact to the phone's contacts, while contacts are allowed: to the
+     * contact with their number if there is exactly one (or one by their name), otherwise, with none, when [mayCreate], to a new contact saved
      * on the phone. Typed people are saved this way, so silencing never catches their calls and a
      * recorded name has a contact to ring for.
      */
@@ -207,8 +208,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         val person = peopleRepository.current().firstOrNull { it.id == personId } ?: return
         if (person.hasContact) return
         val link = withContext(Dispatchers.IO) {
-            PhoneContacts.findByNumber(app, person.number)
-                ?: if (mayCreate) PhoneContacts.saveOnPhone(app, person.name, person.number) else null
+            when (val match = PhoneContacts.findByNumber(app, person.number, person.name)) {
+                is ContactByNumber.One -> match.link
+                ContactByNumber.None -> if (mayCreate) PhoneContacts.saveOnPhone(app, person.name, person.number) else null
+                // Several contacts share the number: none is guessed, and no extra one is made.
+                ContactByNumber.Several -> null
+            }
         } ?: return
         // Only if they're still the same person with no contact; the helper may have changed them meanwhile.
         peopleRepository.update { people ->

@@ -2,6 +2,7 @@ package io.github.nikoapps.dialer.recording
 
 import android.content.Context
 import io.github.nikoapps.dialer.R
+import io.github.nikoapps.dialer.people.ContactByNumber
 import io.github.nikoapps.dialer.people.ContactLink
 import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.Person
@@ -136,9 +137,13 @@ object RecordedNames {
         context.getString(R.string.ringtone_title, it, context.getString(R.string.app_name))
     }
 
+    /** Several contacts with the number and none by the person's name: none is guessed, and none is made. */
     private fun findOrMakeContact(context: Context, person: Person, fix: Boolean): ContactLink? =
-        PhoneContacts.findByNumber(context, person.number)
-            ?: if (fix) PhoneContacts.saveOnPhone(context, person.name, person.number) else null
+        when (val match = PhoneContacts.findByNumber(context, person.number, person.name)) {
+            is ContactByNumber.One -> match.link
+            ContactByNumber.None -> if (fix) PhoneContacts.saveOnPhone(context, person.name, person.number) else null
+            ContactByNumber.Several -> null
+        }
 
     private fun setOn(context: Context, person: Person, link: ContactLink): Outcome =
         if (PhoneContacts.setRingtone(context, link, person.ringtoneUri)) Outcome.Ready(person) else Outcome.NotSet(person, Reason.SetFailed)

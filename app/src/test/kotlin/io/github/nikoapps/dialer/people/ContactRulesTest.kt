@@ -60,4 +60,22 @@ class ContactRulesTest {
         val sim = ContactAccount("SIM1", "vnd.sec.contact.sim")
         assertEquals(NoAccount, chooseLocalAccount(existing = listOf(sim)))
     }
+
+    private val mum = NumberMatch(ContactLink(1, "mum"), "Mum")
+    private val dad = NumberMatch(ContactLink(2, "dad"), "Dad")
+
+    @Test
+    fun `one contact with the number is taken`() {
+        assertEquals(ContactByNumber.One(mum.link), contactForNumber(listOf(mum), "Someone else"))
+        assertEquals(ContactByNumber.One(mum.link), contactForNumber(listOf(mum, mum.copy(name = "Mum home")), null))
+        assertEquals(ContactByNumber.None, contactForNumber(emptyList(), "Mum"))
+    }
+
+    @Test
+    fun `with several contacts only the one by the person's name is taken`() {
+        assertEquals(ContactByNumber.One(dad.link), contactForNumber(listOf(mum, dad), " dad "))
+        assertEquals(ContactByNumber.Several, contactForNumber(listOf(mum, dad), "Home"))
+        assertEquals(ContactByNumber.Several, contactForNumber(listOf(mum, dad), null))
+        assertEquals(ContactByNumber.Several, contactForNumber(listOf(mum, dad, dad.copy(link = ContactLink(3, "dad2"))), "Dad"))
+    }
 }
