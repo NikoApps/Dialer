@@ -2,6 +2,7 @@ package io.github.nikoapps.dialer
 
 import android.Manifest
 import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -79,6 +80,33 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    /**
+     * True from when Dialer opens another app's screen itself, such as the contact picker, the
+     * camera, a permission question or a phone settings page, until Dialer is back in front. A
+     * helper doing that is still in the middle of something, so the PIN isn't asked again.
+     */
+    internal var openedAnotherScreen = false
+        private set
+
+    // Every startActivity and every activity result launcher ends up here.
+    @Deprecated("Deprecated in ComponentActivity")
+    @Suppress("DEPRECATION")
+    override fun startActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
+        openedAnotherScreen = true
+        try {
+            super.startActivityForResult(intent, requestCode, options)
+        } catch (e: RuntimeException) {
+            // Nothing opened, such as no app for it, so Dialer never left.
+            openedAnotherScreen = false
+            throw e
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        openedAnotherScreen = false
+    }
 }
 
 @Composable
@@ -116,10 +144,19 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     // setting in the phone's settings, and after the permission question closes.
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     var healthCheckRun by remember { mutableIntStateOf(0) }
-    // A waiting call never goes out while Dialer is off the screen, such as when the screen turns
-    // off, and the next tap after a call counts again. Turning the phone keeps everything.
+    // Leaving Dialer, such as pressing Home: a waiting call stops, and with a PIN set the next
+    // person to open Dialer starts at the grid, not in the helper's screens. Turning the phone
+    // keeps everything, and so does a trip to a screen Dialer opened itself, such as the camera.
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        if (activity?.isChangingConfigurations != true) callViewModel.onLeftScreen()
+        val main = activity as? MainActivity
+        val changingConfig = activity?.isChangingConfigurations == true
+        if (!changingConfig) callViewModel.onLeftScreen()
+        screen = screenAfterLeaving(
+            current = screen,
+            pinSet = settings?.helperPinHash != null,
+            changingConfig = changingConfig,
+            openedAnotherScreen = main?.openedAnotherScreen == true,
+        )
     }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         callViewModel.onResume()
