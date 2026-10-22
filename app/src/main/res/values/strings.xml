@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Niko Dialer</string>
+    <string name="not_ready">Niko Dialer is being built. It can\'t make calls yet.</string>
+</resources>
