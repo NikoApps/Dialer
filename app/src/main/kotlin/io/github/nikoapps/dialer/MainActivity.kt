@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                 ThemeChoice.Dark -> true
                 ThemeChoice.Phone, null -> isSystemInDarkTheme()
             }
-            NikoTheme(darkTheme = dark) {
+            NikoTheme(darkTheme = dark, accent = io.github.nikoapps.commons.theme.NikoAccent.Dialer) {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     App(settingsViewModel)
                 }
