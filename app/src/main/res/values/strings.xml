@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Niko Dialer</string>
-    <string name="not_ready">Niko Dialer is being built. It can\'t make calls yet.</string>
+
+    <!-- Main screen -->
+    <string name="settings_open">Settings</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">Call %1$s</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">Tap a face to call.</string>
+    <string name="hint_no_people">No one is here yet. A helper can add people in Settings.</string>
+    <string name="hint_call_permission">Calls aren\'t allowed yet. Tap a face, then choose Allow.</string>
+    <string name="hint_call_blocked">Calls are turned off for Niko Dialer. A helper can turn them on in the phone\'s settings.</string>
+    <string name="hint_call_failed">The call didn\'t start. Try again in a moment.</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">Calling %1$s</string>
+    <string name="stop">Stop</string>
+
+    <!-- Helper settings -->
+    <string name="back">Back</string>
+    <string name="settings_coming">Settings for helpers come in the next version.</string>
 </resources>

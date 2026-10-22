@@ -2,7 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Never the internet permission. Niko Dialer works fully offline. -->
-    <!-- Call, contacts, microphone and call screening come with the features that need them (Hub spec). -->
+    <!-- Contacts, microphone and call screening come with the features that need them (Hub spec). -->
+
+    <!-- Tap a face, the call starts. Asked the first time a face is tapped. -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- Calling implies a phone; still install on tablets, where the hint line explains. -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
     <!-- Android 11+ hides text-to-speech engines from apps that don't ask for them. -->
     <queries>
