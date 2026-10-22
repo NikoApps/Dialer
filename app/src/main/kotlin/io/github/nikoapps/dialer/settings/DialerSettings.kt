@@ -27,6 +27,11 @@ data class DialerSettings(
     val voiceLanguage: String? = null,
     /** 1.0 is the engine's normal speed. The default is slightly slower, as in Clock. */
     val speechRate: Float = SpeechSpeed.Normal.rate,
+    /**
+     * "Only ring for saved contacts": calls from numbers not saved in the phone are silenced.
+     * Only turned on once Dialer holds the call screening role (Android 10+).
+     */
+    val onlySavedContacts: Boolean = false,
     /** The helper finished or skipped first-run setup. */
     val setupDone: Boolean = false,
     /** The helper's 4-digit PIN hashed with [DialerHelperPin], or null when there is no PIN. */
