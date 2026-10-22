@@ -82,15 +82,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/**
- * The screens. Settings is reached through Unlock once a PIN is set; the PIN screen and the
- * people editor open from settings or setup and go back to where they came from.
- *
- * The calling screen isn't one of them: it shows over [Screen.Main] whenever [CallViewModel] has a
- * call waiting, so Stop and a placed call always land back on the grid.
- */
-private enum class Screen { Main, Unlock, Settings, SetPin, Setup, EditPerson }
-
 @Composable
 private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewModel = viewModel()) {
     val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
@@ -104,6 +95,14 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     var pinReturn by rememberSaveable { mutableStateOf(Screen.Settings) }
     var editorReturn by rememberSaveable { mutableStateOf(Screen.Settings) }
     var editPlace by rememberSaveable { mutableIntStateOf(0) }
+    // After Android stopped Dialer in the background, the saved screen comes back but the PIN
+    // doesn't count any more. Checked once for each new view model, as soon as the PIN is known.
+    if (!settingsViewModel.screenRestored) {
+        settings?.let {
+            settingsViewModel.screenRestored = true
+            screen = screenAfterRestart(screen, pinSet = it.helperPinHash != null)
+        }
+    }
     // The call permission was refused and the phone won't ask again. Kept here so it survives
     // a visit to the calling screen or settings.
     var callsBlocked by rememberSaveable { mutableStateOf(false) }

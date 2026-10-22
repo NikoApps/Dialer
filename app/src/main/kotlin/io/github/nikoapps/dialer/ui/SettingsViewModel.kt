@@ -44,6 +44,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /** Held while recorded names and their ringtones change, so a save and a check never overlap. */
     private val recordedNames = Mutex()
 
+    /**
+     * False in a new process, until the screen saved before Android stopped Dialer has been
+     * checked against the PIN. A config change keeps this view model, so it stays true then.
+     */
+    var screenRestored = false
+
     private val _recordedNameNotSet = MutableStateFlow(false)
 
     /** The last check found a recorded name that isn't its contact's ringtone and couldn't be put back quietly. */
