@@ -104,12 +104,23 @@ class PhotoCropTest {
     }
 
     @Test
-    fun `big photos are shrunk by powers of two`() {
+    fun `big photos are shrunk by powers of two until the long side fits`() {
         assertEquals(1, sampleSizeFor(1000, 800, 1600))
-        assertEquals(1, sampleSizeFor(3199, 2000, 1600))
+        assertEquals(1, sampleSizeFor(1600, 1200, 1600))
+        assertEquals(2, sampleSizeFor(1601, 1200, 1600))
         assertEquals(2, sampleSizeFor(3200, 2400, 1600))
-        assertEquals(4, sampleSizeFor(4000, 8000, 1600))
+        assertEquals(4, sampleSizeFor(3201, 2400, 1600))
+        assertEquals(8, sampleSizeFor(4000, 8000, 1600))
         assertEquals(1, sampleSizeFor(4000, 3000, 0))
+    }
+
+    @Test
+    fun `the shrunk long side is never over the working size`() {
+        for (long in listOf(1601, 2000, 3199, 4000, 4032, 6000, 9248, 12000)) {
+            val sample = sampleSizeFor(long, long / 2, 1600)
+            assertTrue("$long", (long + sample - 1) / sample <= 1600)
+            assertTrue("$long", long / sample >= 800)
+        }
     }
 
     @Test
