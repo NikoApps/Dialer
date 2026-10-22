@@ -2,10 +2,12 @@ package io.github.nikoapps.dialer.settings
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -14,7 +16,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(
+    name = "settings",
+    // An unreadable file starts again from the defaults rather than crashing Dialer, or the call screening, each time.
+    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+)
 
 /** Reads and writes [DialerSettings]. One DataStore per process. */
 class SettingsRepository(context: Context) {

@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">फोन गर्न अनुहारमा छुनुहोस्।</string>
     <string name="hint_no_people">यहाँ अझै कोही छैन। सहयोगीले सेटिङमा मान्छे थप्न सक्नुहुन्छ।</string>
+    <string name="hint_people_unreadable">सेभ भएका मान्छे पढ्न सकिएन। सहयोगीले सेटिङमा उहाँहरूलाई फेरि थप्न सक्नुहुन्छ।</string>
     <string name="hint_call_permission">फोन गर्ने अनुमति अझै छैन। अनुहारमा छुनुहोस्, अनि \"अनुमति दिनुहोस्\" छान्नुहोस्।</string>
     <string name="hint_call_blocked">Niko Dialer का लागि फोन गर्ने सुविधा बन्द छ। सहयोगीले फोनको सेटिङमा खोल्न सक्नुहुन्छ।</string>
     <string name="hint_call_failed">फोन लागेन। केही बेरमा फेरि प्रयास गर्नुहोस्।</string>

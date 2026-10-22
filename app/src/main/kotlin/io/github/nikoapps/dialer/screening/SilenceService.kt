@@ -4,8 +4,10 @@ import android.os.Build
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import io.github.nikoapps.dialer.settings.SettingsRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import java.time.Instant
 
@@ -28,21 +30,21 @@ class SilenceService : CallScreeningService() {
             else -> CallDirection.Unknown
         }
 
-        // Android waits only a few seconds for an answer while the phone is already ringing.
-        // Reading one setting from DataStore takes milliseconds, so this blocks briefly instead
-        // of answering from another thread, which keeps the service bound until the answer and
-        // the log write are done. If the read is slow for any reason, the call rings as normal.
-        val onlySavedContacts = runBlocking(Dispatchers.IO) {
-            withTimeoutOrNull(READ_TIMEOUT_MS) { SettingsRepository(this@SilenceService).current().onlySavedContacts }
-        } ?: false
+        // Answered from a background thread, which Android allows, so reading the setting never
+        // blocks the main thread. Android waits only a few seconds while the phone is already
+        // ringing; if the read is slow or fails for any reason, the call rings as normal.
+        val context = applicationContext
+        scope.launch {
+            val onlySavedContacts = runCatching {
+                withTimeoutOrNull(READ_TIMEOUT_MS) { SettingsRepository(context).current().onlySavedContacts }
+            }.getOrNull() ?: false
 
-        val screening = screeningFor(Build.VERSION.SDK_INT, onlySavedContacts, direction)
-        respondToCall(callDetails, responseFor(screening))
+            val screening = screeningFor(Build.VERSION.SDK_INT, onlySavedContacts, direction)
+            runCatching { respondToCall(callDetails, responseFor(screening)) }
 
-        if (screening == Screening.Silence) {
-            // After answering, so a slow write never delays the decision. Only the time is kept.
-            runBlocking(Dispatchers.IO) {
-                withTimeoutOrNull(WRITE_TIMEOUT_MS) { SilenceLog(this@SilenceService).record(Instant.now()) }
+            if (screening == Screening.Silence) {
+                // After answering, so a slow write never delays the decision. Only the time is kept.
+                runCatching { withTimeoutOrNull(WRITE_TIMEOUT_MS) { SilenceLog(context).record(Instant.now()) } }
             }
         }
     }
@@ -61,6 +63,12 @@ class SilenceService : CallScreeningService() {
     }
 
     private companion object {
+        /**
+         * Not tied to the service, which Android may unbind as soon as it has the answer, so the
+         * log write still finishes. Each call's work ends by itself within the timeouts.
+         */
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
         const val READ_TIMEOUT_MS = 1_500L
         const val WRITE_TIMEOUT_MS = 1_000L
     }

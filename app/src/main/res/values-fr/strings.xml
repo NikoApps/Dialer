@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">Touchez un visage pour appeler.</string>
     <string name="hint_no_people">Il n\'y a encore personne ici. Un proche peut ajouter des personnes dans les réglages.</string>
+    <string name="hint_people_unreadable">Les personnes enregistrées n\'ont pas pu être lues. Un proche peut les ajouter à nouveau dans les réglages.</string>
     <string name="hint_call_permission">Les appels ne sont pas encore autorisés. Touchez un visage, puis choisissez Autoriser.</string>
     <string name="hint_call_blocked">Les appels sont désactivés pour Niko Dialer. Un proche peut les activer dans les réglages du téléphone.</string>
     <string name="hint_call_failed">L\'appel n\'a pas démarré. Réessayez dans un instant.</string>

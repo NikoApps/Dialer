@@ -115,6 +115,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     val people by settingsViewModel.people.collectAsStateWithLifecycle()
     val lastSilencedAt by settingsViewModel.lastSilencedAt.collectAsStateWithLifecycle()
     val recordedNameNotSet by settingsViewModel.recordedNameNotSet.collectAsStateWithLifecycle()
+    val peopleUnreadable by settingsViewModel.peopleUnreadable.collectAsStateWithLifecycle()
     val call by callViewModel.state.collectAsStateWithLifecycle()
     val voice by callViewModel.voice.collectAsStateWithLifecycle()
     var screen by rememberSaveable { mutableStateOf(Screen.Main) }
@@ -296,6 +297,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
                         silencingLost = DialerHealth.Silencing in problems,
                         recordedNames = problems.any { it in DialerHealth.recordedNameChecks },
                         needsAttention = problems.isNotEmpty(),
+                        peopleUnreadable = peopleUnreadable,
                     ),
                     voice = voice.voice,
                     onCallsBlocked = { blocked ->

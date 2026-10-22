@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">ফোন করতে একটি মুখে ছুঁয়ে দিন।</string>
     <string name="hint_no_people">এখনও কেউ নেই। একজন সাহায্যকারী সেটিংসে মানুষ যোগ করতে পারেন।</string>
+    <string name="hint_people_unreadable">সেভ করা মানুষদের পড়া গেল না। একজন সাহায্যকারী সেটিংসে তাঁদের আবার যোগ করতে পারেন।</string>
     <string name="hint_call_permission">এখনও ফোন করার অনুমতি নেই। একটি মুখে ছুঁয়ে দিন, তারপর অনুমতি দিন বেছে নিন।</string>
     <string name="hint_call_blocked">Niko Dialer-এর জন্য ফোন করা বন্ধ আছে। একজন সাহায্যকারী ফোনের সেটিংসে এটি চালু করতে পারেন।</string>
     <string name="hint_call_failed">ফোন শুরু হয়নি। একটু পরে আবার চেষ্টা করুন।</string>

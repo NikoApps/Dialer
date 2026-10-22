@@ -117,4 +117,10 @@ class HintTest {
             hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, voice = VoiceStatus.NoVoice, recordedNames = true),
         )
     }
+
+    @Test
+    fun `an empty grid says when the saved people couldn't be read`() {
+        assertEquals(Hint.PeopleUnreadable, hintFor(hasPeople = false, canCall = true, callsBlocked = false, lastCallFailed = false, peopleUnreadable = true))
+        assertEquals(Hint.Ready, hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, peopleUnreadable = true))
+    }
 }

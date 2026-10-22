@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">فون کرنے کے لیے کسی چہرے کو چھوئیں۔</string>
     <string name="hint_no_people">یہاں ابھی کوئی نہیں ہے۔ کوئی مددگار سیٹنگز میں لوگ شامل کر سکتا ہے۔</string>
+    <string name="hint_people_unreadable">محفوظ لوگ پڑھے نہیں جا سکے۔ کوئی مددگار سیٹنگز میں انہیں دوبارہ شامل کر سکتا ہے۔</string>
     <string name="hint_call_permission">ابھی فون کرنے کی اجازت نہیں ہے۔ کسی چہرے کو چھوئیں، پھر اجازت دیں چنیں۔</string>
     <string name="hint_call_blocked">Niko Dialer کے لیے فون کرنا بند ہے۔ کوئی مددگار فون کی سیٹنگز میں اسے آن کر سکتا ہے۔</string>
     <string name="hint_call_failed">کال شروع نہیں ہوئی۔ ذرا دیر بعد دوبارہ کوشش کریں۔</string>

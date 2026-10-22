@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -67,6 +68,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /** Null until loaded, so the grid never flashes empty. */
     val people: StateFlow<List<Person>?> = peopleRepository.people
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    /** True while nobody is on the grid because the saved people couldn't be read. */
+    val peopleUnreadable: StateFlow<Boolean> = peopleRepository.unreadable
+        .flowOn(Dispatchers.IO)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /** When a call was last silenced, for "Last silenced call". Null until one is. */
     val lastSilencedAt: StateFlow<Instant?> = SilenceLog(application).lastSilencedAt
@@ -158,6 +164,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
                 // Saved, so what the old files were for can go now.
                 withContext(Dispatchers.IO) {
+                    peopleRepository.forgetUnreadable()
                     photoBackup?.drop()
                     recordingBackup?.drop()
                     if (photo == PhotoEdit.Remove) PersonPhotos.delete(app, personId)

@@ -2,15 +2,21 @@ package io.github.nikoapps.dialer.screening
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 
-private val Context.silenceLogStore: DataStore<Preferences> by preferencesDataStore(name = "silence_log")
+private val Context.silenceLogStore: DataStore<Preferences> by preferencesDataStore(
+    name = "silence_log",
+    // An unreadable file starts again from the defaults rather than crashing Dialer, or the call screening, each time.
+    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+)
 
 /**
  * When Dialer last silenced a call, so a family member can check silencing works and see if

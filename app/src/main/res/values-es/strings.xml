@@ -10,6 +10,7 @@
     <!-- The hint line under the grid. Always one of these, in the same place. -->
     <string name="hint_ready">Toque una cara para llamar.</string>
     <string name="hint_no_people">Aún no hay nadie. Un ayudante puede añadir personas en los ajustes.</string>
+    <string name="hint_people_unreadable">No se pudo leer a las personas guardadas. Un ayudante puede añadirlas otra vez en los ajustes.</string>
     <string name="hint_call_permission">Las llamadas aún no están permitidas. Toque una cara y elija Permitir.</string>
     <string name="hint_call_blocked">Las llamadas están desactivadas para Niko Dialer. Un ayudante puede activarlas en los ajustes del teléfono.</string>
     <string name="hint_call_failed">La llamada no empezó. Inténtelo de nuevo en un momento.</string>
