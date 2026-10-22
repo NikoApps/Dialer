@@ -1,6 +1,5 @@
 package io.github.nikoapps.dialer.ui
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,14 +59,14 @@ import io.github.nikoapps.dialer.people.placesOnScreen
  * The main screen: title bar, the fixed photo grid, and the hint line.
  *
  * Every part has a height that depends only on the font size, never on what's saved or what the
- * hint says, so faces stay exactly where they are. [places] has one entry per place; null is an
+ * [hint] says, so faces stay exactly where they are. [places] has one entry per place; null is an
  * empty place.
  */
 @Composable
 fun MainScreen(
     places: List<Person?>,
     columns: Int,
-    @StringRes hint: Int,
+    hint: String,
     onCall: (Person) -> Unit,
     onOpenSettings: () -> Unit,
 ) {
@@ -83,7 +82,7 @@ fun MainScreen(
                 .padding(horizontal = 24.dp, vertical = 8.dp),
         )
         HintLine(
-            text = stringResource(hint),
+            text = hint,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 8.dp),
@@ -253,7 +252,7 @@ private fun MainScreenPreview() {
             MainScreen(
                 places = placesOnScreen(people, 6),
                 columns = gridShape(6).columns,
-                hint = R.string.hint_ready,
+                hint = stringResource(R.string.hint_ready),
                 onCall = {},
                 onOpenSettings = {},
             )
