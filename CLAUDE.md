@@ -53,6 +53,7 @@ scripts/release.sh 0.2.0        # bump version, changelog, commit and tag
 - Version lives in `gradle.properties` (`VERSION_NAME`, `VERSION_CODE`). Tags are the bare version name, no `v`.
 - User-facing release notes are written by hand in `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`: plain words, 500 bytes max.
 - The repo is private until the founder decides to open it (ADR 0018). Never change its visibility without that instruction.
-- The release workflow comes with the first test release; copy it from Clock.
+- Releasing: write `changelogs/<next versionCode>.txt`, run `scripts/release.sh <version>` on `main`, then push `main` and the tag. The Release workflow checks the build is reproducible, signs it and publishes the GitHub release with one APK, `niko-dialer.apk` (ADR 0029).
+- The release key lives outside the repo. Never print, copy or commit it or its password.
 - The package ID `io.github.nikoapps.dialer` must never change once released.
 - Never commit secrets, signing keys or private Hub content.
