@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -81,6 +82,7 @@ import io.github.nikoapps.dialer.people.personColor
 import io.github.nikoapps.dialer.people.placeChoices
 import io.github.nikoapps.dialer.people.readPickedContact
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -163,7 +165,11 @@ fun PersonEditorScreen(
         (placeChoices(people, editingId, peopleOnScreen) + place).distinct().sorted()
     }
     val problems = editorProblems(name, number)
-    val emergency = remember(number) { PhoneCalls.actionFor(context, number) is CallAction.Dial }
+    // Asking the phone about emergency numbers can be slow, so it's done off the main thread, once typing pauses.
+    val emergency by produceState(false, number) {
+        delay(EMERGENCY_CHECK_DELAY_MS)
+        value = withContext(Dispatchers.Default) { PhoneCalls.actionFor(context, number) is CallAction.Dial }
+    }
 
     val pickContact = rememberLauncherForActivityResult(PickPhoneNumber()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -516,6 +522,9 @@ private fun PhotoSection(
         if (hasPhoto) SecondaryButton(text = stringResource(R.string.editor_photo_remove), onClick = onRemove)
     }
 }
+
+/** How long typing pauses before the number is checked for an emergency number. */
+private const val EMERGENCY_CHECK_DELAY_MS = 300L
 
 /** What waits for the contacts question to close. */
 private enum class AfterContacts { Save, Copy }
