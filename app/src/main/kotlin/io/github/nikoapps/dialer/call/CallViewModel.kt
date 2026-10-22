@@ -14,11 +14,13 @@ import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.settings.DialerSettings
 import io.github.nikoapps.dialer.settings.SettingsRepository
 import io.github.nikoapps.dialer.speech.voiceLocaleFor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 /** [engine] is the speech engine's name, shown to helpers so they know which voice is in use. */
@@ -27,6 +29,16 @@ data class VoiceState(val voice: VoiceStatus = VoiceStatus.Starting, val engine:
 class CallViewModel(application: Application) : AndroidViewModel(application) {
 
     private var settings = DialerSettings()
+
+    /** False until the stored settings are read, so a tap never uses the default wait instead of the helper's choice. */
+    private var settingsLoaded = false
+
+    /**
+     * How each tapped number is called, by number. Asking the phone whether a number is an
+     * emergency number can be slow, so it's worked out off the main thread when the face is tapped.
+     * Only used on the main thread.
+     */
+    private val actions = HashMap<String, CallAction>()
 
     /** The language "Calling Mum" is said in, or null when Dialer has no sentence for it. */
     private var locale: Locale? = null
@@ -63,7 +75,9 @@ class CallViewModel(application: Application) : AndroidViewModel(application) {
     private val flow = CallFlow(
         scope = viewModelScope,
         speech = speech,
-        placeCall = { person -> PhoneCalls.start(application, PhoneCalls.actionFor(application, person.number)) },
+        placeCall = { person ->
+            PhoneCalls.start(application, actions[person.number] ?: PhoneCalls.actionFor(application, person.number))
+        },
     )
 
     val state: StateFlow<CallState> = flow.state
@@ -74,14 +88,32 @@ class CallViewModel(application: Application) : AndroidViewModel(application) {
             SettingsRepository(application).settings.collect { new ->
                 val languageChanged = new.voiceLanguage != settings.voiceLanguage || locale == null
                 settings = new
+                settingsLoaded = true
                 speaker.setRate(new.speechRate)
                 if (languageChanged) chooseLanguage()
             }
         }
     }
 
-    /** A face was tapped and, if needed, the call permission granted. */
-    fun onFaceTapped(person: Person) = flow.start(person, settings.waitBeforeCalling)
+    /**
+     * A face was tapped. The call starts unless it needs the call permission and Dialer doesn't
+     * have it yet; then [onNeedsPermission] asks for it, and this is called again once it's granted.
+     * Taps before the settings have loaded are ignored.
+     */
+    fun onFaceTapped(person: Person, onNeedsPermission: (Person) -> Unit = {}) {
+        if (!settingsLoaded) return
+        val app = getApplication<Application>()
+        viewModelScope.launch {
+            val action = withContext(Dispatchers.Default) { PhoneCalls.actionFor(app, person.number) }
+            actions[person.number] = action
+            if (action is CallAction.Call && !PhoneCalls.hasCallPermission(app)) {
+                onNeedsPermission(person)
+            } else {
+                // A second tap that arrives meanwhile is ignored here, so only one call goes out.
+                flow.start(person, settings.waitBeforeCalling)
+            }
+        }
+    }
 
     fun onCall() = flow.confirm()
 

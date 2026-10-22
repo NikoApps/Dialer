@@ -40,7 +40,6 @@ import io.github.nikoapps.commons.ui.UnlockPinScreen
 import io.github.nikoapps.commons.ui.openPage
 import io.github.nikoapps.dialer.call.CallState
 import io.github.nikoapps.dialer.call.CallViewModel
-import io.github.nikoapps.dialer.call.PhoneCalls
 import io.github.nikoapps.dialer.health.DialerHealth
 import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.Person
@@ -117,6 +116,11 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     // setting in the phone's settings, and after the permission question closes.
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     var healthCheckRun by remember { mutableIntStateOf(0) }
+    // A waiting call never goes out while Dialer is off the screen, such as when the screen turns
+    // off, and the next tap after a call counts again. Turning the phone keeps everything.
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        if (activity?.isChangingConfigurations != true) callViewModel.onLeftScreen()
+    }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         callViewModel.onResume()
         // Puts back recorded name ringtones that went missing, such as after moving to a new phone.
@@ -346,7 +350,6 @@ private fun GridStep(
     callViewModel: CallViewModel,
     onOpenSettings: () -> Unit,
 ) {
-    val context = LocalContext.current
     val activity = LocalActivity.current
     // The face tapped while the permission question is open; its call starts once calls are allowed.
     var waitingForPermission by rememberSaveable { mutableStateOf<String?>(null) }
@@ -370,11 +373,19 @@ private fun GridStep(
         columns = columns,
         hint = hintText(hint, voice),
         onCall = { person ->
-            if (PhoneCalls.needsPermission(context, person.number)) {
-                waitingForPermission = person.id
-                askToCall.launch(Manifest.permission.CALL_PHONE)
-            } else {
-                callViewModel.onFaceTapped(person)
+            // While the permission question is open, other taps wait for it.
+            if (waitingForPermission == null) {
+                callViewModel.onFaceTapped(person) { needsPermission ->
+                    if (waitingForPermission == null) {
+                        waitingForPermission = needsPermission.id
+                        try {
+                            askToCall.launch(Manifest.permission.CALL_PHONE)
+                        } catch (_: IllegalStateException) {
+                            // The grid went away before the question could open.
+                            waitingForPermission = null
+                        }
+                    }
+                }
             }
         },
         onOpenSettings = onOpenSettings,
@@ -383,13 +394,7 @@ private fun GridStep(
 
 @Composable
 private fun CallingStep(person: Person, askFirst: Boolean, callViewModel: CallViewModel) {
-    // Back is the same as Stop.
+    // Back is the same as Stop. Leaving Dialer stops a waiting call too; see the ON_STOP effect in App.
     BackHandler(onBack = callViewModel::onStop)
-    // A waiting call never goes out while Dialer is off the screen, such as when the screen turns off.
-    // Turning the phone round also stops the activity, but the call keeps waiting through that.
-    val activity = LocalActivity.current
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        if (activity?.isChangingConfigurations != true) callViewModel.onLeftScreen()
-    }
     CallingScreen(person = person, askFirst = askFirst, onCall = callViewModel::onCall, onStop = callViewModel::onStop)
 }

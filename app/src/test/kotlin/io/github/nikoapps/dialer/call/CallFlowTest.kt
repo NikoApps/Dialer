@@ -140,4 +140,62 @@ class CallFlowTest {
         s.flow.start(mum, WaitBeforeCalling.Wait3s)
         assertEquals(CallState.Waiting(mum), s.flow.state.value)
     }
+
+    @Test
+    fun `a double tap with call straight away places one call`() = runTest {
+        val s = Setup(this)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        s.flow.start(ram, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum), s.placed)
+        assertEquals(listOf("Mum"), s.speech.said)
+    }
+
+    @Test
+    fun `taps count again once the guard time has passed`() = runTest {
+        val s = Setup(this)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        advanceTimeBy(CallFlow.PLACING_MILLIS - 1)
+        runCurrent()
+        s.flow.start(ram, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum), s.placed)
+
+        advanceTimeBy(2)
+        runCurrent()
+        s.flow.start(ram, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum, ram), s.placed)
+    }
+
+    @Test
+    fun `taps count again once Dialer has gone to the background`() = runTest {
+        val s = Setup(this)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        s.flow.onLeft()
+        s.flow.start(ram, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum, ram), s.placed)
+    }
+
+    @Test
+    fun `a tap just after a waited or confirmed call is ignored too`() = runTest {
+        val s = Setup(this)
+        s.flow.start(mum, WaitBeforeCalling.AskFirst)
+        s.flow.confirm()
+        s.flow.start(ram, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum), s.placed)
+
+        s.flow.onLeft()
+        s.flow.start(ram, WaitBeforeCalling.Wait3s)
+        advanceTimeBy(CallFlow.WAIT_MILLIS + 1)
+        runCurrent()
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum, ram), s.placed)
+    }
+
+    @Test
+    fun `a call that couldn't start can be tried again at once`() = runTest {
+        val s = Setup(this, callStarts = false)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        s.flow.start(mum, WaitBeforeCalling.CallNow)
+        assertEquals(listOf(mum, mum), s.placed)
+    }
 }
