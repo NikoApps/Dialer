@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v4
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-disabled: true
+
+      - name: Read version
+        run: |
+          name=$(grep '^VERSION_NAME=' gradle.properties | cut -d= -f2)
+          code=$(grep '^VERSION_CODE=' gradle.properties | cut -d= -f2)
+          if [ "$name" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME doesn't match VERSION_NAME $name"
+            exit 1
+          fi
+          notes="fastlane/metadata/android/en-US/changelogs/$code.txt"
+          if [ ! -s "$notes" ]; then
+            echo "Missing release notes: $notes"
+            exit 1
+          fi
+          echo "NOTES=$notes" >> "$GITHUB_ENV"
+
+      # Two unsigned builds from a clean tree must match byte for byte, or F-Droid can't reproduce them.
+      - name: Check the build is reproducible
+        run: |
+          ./gradlew assembleRelease --no-build-cache --console=plain
+          cp app/build/outputs/apk/release/app-release-unsigned.apk "$RUNNER_TEMP/unsigned-1.apk"
+          git clean -fdx && git submodule foreach --recursive git clean -fdx
+          ./gradlew assembleRelease --no-build-cache --console=plain
+          cp app/build/outputs/apk/release/app-release-unsigned.apk "$RUNNER_TEMP/unsigned-2.apk"
+          cmp "$RUNNER_TEMP/unsigned-1.apk" "$RUNNER_TEMP/unsigned-2.apk"
+
+      - name: Build signed APK
+        env:
+          NIKO_KEYSTORE_BASE64: ${{ secrets.NIKO_KEYSTORE_BASE64 }}
+          NIKO_KEYSTORE_PASSWORD: ${{ secrets.NIKO_KEYSTORE_PASSWORD }}
+          NIKO_KEY_ALIAS: ${{ secrets.NIKO_KEY_ALIAS }}
+          NIKO_KEY_PASSWORD: ${{ secrets.NIKO_KEY_PASSWORD }}
+        run: |
+          export NIKO_KEYSTORE_FILE="$RUNNER_TEMP/release.p12"
+          echo "$NIKO_KEYSTORE_BASE64" | base64 -d > "$NIKO_KEYSTORE_FILE"
+          git clean -fdx && git submodule foreach --recursive git clean -fdx
+          ./gradlew assembleRelease --no-build-cache --console=plain
+          rm "$NIKO_KEYSTORE_FILE"
+          cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/niko-dialer.apk"
+
+      # The signed APK must be the unsigned build plus a signature, which is what F-Droid checks.
+      - name: Compare signed and unsigned
+        run: |
+          pip install --quiet apksigcopier==1.1.1
+          export PATH="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1):$PATH"
+          apksigcopier compare "$RUNNER_TEMP/niko-dialer.apk" --unsigned "$RUNNER_TEMP/unsigned-1.apk"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$RUNNER_TEMP/niko-dialer.apk" \
+            --title "Niko Dialer $GITHUB_REF_NAME" \
+            --notes-file "$NOTES"
