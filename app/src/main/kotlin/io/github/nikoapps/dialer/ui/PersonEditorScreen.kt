@@ -23,12 +23,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -46,6 +48,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.nikoapps.commons.health.PhoneHealth
 import io.github.nikoapps.commons.theme.NikoTheme
 import io.github.nikoapps.commons.ui.ChoiceRow
@@ -137,6 +141,23 @@ fun PersonEditorScreen(
     // What to do once the contacts question closes.
     var afterContacts by rememberSaveable { mutableStateOf<AfterContacts?>(null) }
 
+    // Once Save hands the new photo and recording over, the view model moves them into place.
+    var saved by remember { mutableStateOf(false) }
+    val leftovers by rememberUpdatedState(
+        listOfNotNull(contactPhoto, newPhoto.takeUnless { saved }, newRecording.takeUnless { saved }),
+    )
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    // Leaving the editor: the camera's picture, the contact's photo and anything not saved go, so
+    // they don't pile up in the cache. While the activity is only being made again, such as when
+    // the phone turns, they stay, because the editor comes back with them.
+    DisposableEffect(Unit) {
+        onDispose {
+            if (lifecycle.currentState == Lifecycle.State.DESTROYED) return@onDispose
+            leftovers.forEach { File(it).delete() }
+            PersonPhotos.deleteCameraPicture(context)
+        }
+    }
+
     val editing = people.firstOrNull { it.id == editingId }
     val choices = remember(people, editingId, peopleOnScreen) {
         (placeChoices(people, editingId, peopleOnScreen) + place).distinct().sorted()
@@ -205,6 +226,7 @@ fun PersonEditorScreen(
     val hasContactsPermission = DialerPermissions.hasContacts(context)
 
     val saveNow = { askedForContacts: Boolean ->
+        saved = true
         onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit, recordingEdit))
         if (askedForContacts && !DialerPermissions.hasContacts(context)) savedWithoutContacts = true else onDone()
     }
