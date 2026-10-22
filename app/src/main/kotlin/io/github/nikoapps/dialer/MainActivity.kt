@@ -285,8 +285,8 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             people = everyone,
             place = editPlace,
             peopleOnScreen = current.peopleOnScreen,
-            onSave = { id, name, number, place, photo ->
-                settingsViewModel.savePerson(id, name, number, place, photo)
+            onSave = { edit ->
+                settingsViewModel.savePerson(edit)
                 screen = editorReturn
             },
             onRemove = { person ->
