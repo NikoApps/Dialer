@@ -42,15 +42,25 @@ class CallFlow(
     /** Starts the call; returns false if it couldn't. */
     private val placeCall: (Person) -> Boolean,
     private val waitMillis: Long = WAIT_MILLIS,
+    private val placingMillis: Long = PLACING_MILLIS,
 ) {
     private val _state = MutableStateFlow<CallState>(CallState.Idle())
     val state: StateFlow<CallState> = _state.asStateFlow()
 
     private var wait: Job? = null
 
-    /** A face was tapped. A second tap while a call is already waiting is ignored. */
+    /**
+     * Set for a moment after a call goes out. The grid is back at once, so without it a double tap
+     * on a face would place a second call before the phone's call screen covers Dialer.
+     */
+    private var placing: Job? = null
+
+    /**
+     * A face was tapped. A second tap while a call is already waiting is ignored, and so is any
+     * tap just after a call went out, until Dialer goes to the background or [placingMillis] pass.
+     */
     fun start(person: Person, mode: WaitBeforeCalling) {
-        if (_state.value !is CallState.Idle) return
+        if (_state.value !is CallState.Idle || placing != null) return
         speech.sayCalling(person)
         when (mode) {
             WaitBeforeCalling.CallNow -> place(person)
@@ -80,8 +90,13 @@ class CallFlow(
         _state.value = CallState.Idle()
     }
 
-    /** The calling screen went away, such as the screen turning off. A waiting call never goes out unseen. */
+    /**
+     * Dialer went to the background, such as the screen turning off or the phone's call screen
+     * covering it. A waiting call never goes out unseen, and the next tap after a call counts again.
+     */
     fun onLeft() {
+        placing?.cancel()
+        placing = null
         if (_state.value !is CallState.Idle) stop()
     }
 
@@ -89,9 +104,20 @@ class CallFlow(
         wait = null
         val started = placeCall(person)
         _state.value = CallState.Idle(lastCallFailed = !started)
+        // A call that couldn't start can be tried again straight away.
+        if (started) {
+            placing?.cancel()
+            placing = scope.launch {
+                delay(placingMillis)
+                placing = null
+            }
+        }
     }
 
     companion object {
         const val WAIT_MILLIS = 3_000L
+
+        /** How long taps are ignored after a call goes out, if Dialer stays in front. */
+        const val PLACING_MILLIS = 2_000L
     }
 }

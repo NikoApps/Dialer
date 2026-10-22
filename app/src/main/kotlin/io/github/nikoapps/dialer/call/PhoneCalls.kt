@@ -18,12 +18,9 @@ object PhoneCalls {
     fun hasCallPermission(context: Context): Boolean =
         ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
 
+    /** Asks the phone whether [number] is an emergency number, which can be slow, so call it off the main thread. */
     fun actionFor(context: Context, number: String): CallAction =
         callActionFor(number) { isEmergencyNumber(it, systemSaysEmergency(context, it)) }
-
-    /** True when calling [number] needs the call permission and Dialer doesn't have it yet. */
-    fun needsPermission(context: Context, number: String): Boolean =
-        actionFor(context, number) is CallAction.Call && !hasCallPermission(context)
 
     /** Starts the call. Returns false if it couldn't, such as on a tablet with no phone. */
     fun start(context: Context, action: CallAction): Boolean {
