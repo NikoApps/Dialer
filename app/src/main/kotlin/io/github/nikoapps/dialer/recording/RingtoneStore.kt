@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import io.github.nikoapps.dialer.people.DialerPermissions
 import java.io.File
 
 /**
@@ -39,6 +40,20 @@ object RingtoneStore {
         context.contentResolver.query(uri.toUri(), arrayOf(MediaStore.MediaColumns.DISPLAY_NAME, DATA), null, null, null)?.use { c ->
             c.moveToFirst() && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || isLegacyOurs(c.getString(1)))
         } ?: false
+    }.getOrDefault(false)
+
+    /**
+     * True only when [uri] surely points at a sound that's no longer on the phone. Dialer can only
+     * tell for the phone's own sounds, and on Android 8 and 9 with storage allowed. From Android 10
+     * it can't see sounds other apps added, so those never count as gone.
+     */
+    fun isGone(context: Context, uri: String): Boolean = runCatching {
+        val parsed = uri.toUri()
+        if (parsed.scheme != "content" || parsed.authority != MediaStore.AUTHORITY) return@runCatching false
+        val internal = parsed.pathSegments.firstOrNull() == "internal"
+        val canSeeAll = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && DialerPermissions.hasStorage(context)
+        if (!internal && !canSeeAll) return@runCatching false
+        context.contentResolver.query(parsed, arrayOf(MediaStore.MediaColumns._ID), null, null, null)?.use { !it.moveToFirst() } ?: false
     }.getOrDefault(false)
 
     /** Deletes a ringtone item Dialer added. Anything else is left alone. */
