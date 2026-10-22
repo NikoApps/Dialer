@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
     <string name="app_name">Niko Dialer</string>
 
     <!-- Main screen -->
@@ -13,6 +14,7 @@
     <string name="hint_call_permission">Calls aren\'t allowed yet. Tap a face, then choose Allow.</string>
     <string name="hint_call_blocked">Calls are turned off for Niko Dialer. A helper can turn them on in the phone\'s settings.</string>
     <string name="hint_call_failed">The call didn\'t start. Try again in a moment.</string>
+    <string name="hint_needs_attention">Calls may stop working later. A helper can fix this in Settings.</string>
 
     <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
     <string name="calling_name">Calling %1$s</string>
@@ -20,7 +22,82 @@
     <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
     <string name="voice_test_name">Mum</string>
 
+    <!-- Settings groups -->
+    <string name="section_needs_attention">Needs attention</string>
+    <string name="section_people">People</string>
+    <string name="section_screen">Screen</string>
+    <string name="section_voice">Voice</string>
+    <string name="section_helper">Helper</string>
+    <string name="section_calls">Calls</string>
+    <string name="section_phone">Phone</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">The face on the screen</string>
+    <string name="place_top">Top</string>
+    <string name="place_bottom">Bottom</string>
+    <string name="place_top_left">Top left</string>
+    <string name="place_top_right">Top right</string>
+    <string name="place_middle_left">Middle left</string>
+    <string name="place_middle_right">Middle right</string>
+    <string name="place_bottom_left">Bottom left</string>
+    <string name="place_bottom_right">Bottom right</string>
+    <string name="place_empty">Empty</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">People on screen</string>
+    <plurals name="people_count">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
+    <string name="info_people_on_screen">How many faces the main screen has room for. Nobody moves when this changes. People who don\'t fit come back when there is room again.</string>
+    <string name="setting_wait">Wait before calling</string>
+    <string name="wait_call_now">Call straight away</string>
+    <string name="wait_3s">Wait 3 seconds</string>
+    <string name="wait_ask">Ask first</string>
+    <string name="info_wait">After a face is tapped, the name is spoken. Wait 3 seconds leaves time to press Stop before the call goes out. Ask first shows a big Call button to press.</string>
+    <string name="setting_theme">Theme</string>
+    <string name="theme_phone">Same as phone</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
     <!-- Helper settings -->
-    <string name="back">Back</string>
-    <string name="settings_coming">Settings for helpers come in the next version.</string>
+    <string name="info_pin">A 4-number PIN stops people and settings being changed by accident. Calling always works without it.</string>
+    <string name="setup_again">Set up step by step</string>
+    <string name="setup_again_value">Go through the main settings again</string>
+    <string name="info_phone_maker">Some phones stop apps they think are unused and take their permissions away. That can stop calls. Keep Niko Dialer allowed in the phone maker\'s settings.</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">Phone calls</string>
+    <string name="health_calls_value">Allow %1$s to make phone calls</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">Add a person</string>
+    <string name="editor_change_title">Change a person</string>
+    <string name="editor_from_contacts">Choose from contacts</string>
+    <string name="editor_name">Name</string>
+    <string name="editor_number">Phone number</string>
+    <string name="editor_name_missing">Add a name, so it can be shown and spoken.</string>
+    <string name="editor_number_missing">Add a phone number to call.</string>
+    <string name="editor_emergency">This is an emergency number. Tapping the face opens the phone\'s dialer with the number ready, because Android doesn\'t let other apps call it directly.</string>
+    <string name="editor_place">Place on the screen</string>
+    <string name="editor_place_taken">That place has someone in it now. Choose another place.</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_remove">Remove from the screen</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">Remove %1$s from the screen?</string>
+    <string name="editor_remove_confirm">Remove %1$s</string>
+    <string name="editor_keep">Keep %1$s</string>
+    <string name="editor_contact_unreadable">That contact couldn\'t be read. Try again, or type the name and number.</string>
+    <string name="editor_no_contacts_app">This phone has no contacts app to choose from. Type the name and number instead.</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">Tap a place to add someone to it.</string>
+    <string name="setup_calls_reason">Niko Dialer needs to be allowed to make phone calls, so a tap on a face starts the call.</string>
+    <string name="setup_calls_allow">Allow calls</string>
+    <string name="calls_allowed">Allowed</string>
+    <string name="calls_not_allowed">Not allowed yet. Tap to allow.</string>
+    <string name="calls_turned_off">Turned off. Tap to open the phone\'s settings for Niko Dialer.</string>
+    <string name="setup_phone_ok">These settings are fine.</string>
+    <string name="setup_sim">Calling SIM</string>
+    <string name="setup_sim_value">If the phone has two SIMs, choose one for calls, so the phone doesn\'t ask which one each time.</string>
 </resources>
