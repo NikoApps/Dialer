@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,9 +53,12 @@ import io.github.nikoapps.commons.ui.SolidButton
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.call.CallAction
 import io.github.nikoapps.dialer.call.PhoneCalls
+import io.github.nikoapps.dialer.people.ContactEdit
+import io.github.nikoapps.dialer.people.ContactLink
 import io.github.nikoapps.dialer.people.EditorProblem
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonPhotos
+import io.github.nikoapps.dialer.people.PersonEdit
 import io.github.nikoapps.dialer.people.PhotoEdit
 import io.github.nikoapps.dialer.people.PickPhoneNumber
 import io.github.nikoapps.dialer.people.editorProblems
@@ -72,15 +76,16 @@ import io.github.nikoapps.commons.R as CommonsR
  * Adds a person at [place], or changes the person already there: name, number, photo and place.
  * Recorded names come later. This helper screen may scroll; the main screen never does.
  *
- * [onSave] gets the trimmed name and number, what to do with the photo and the chosen place, and
- * only once they're valid. A new photo is cropped here and only kept once the person is saved.
+ * [onSave] gets the trimmed name and number, what to do with the photo and the contact, and the
+ * chosen place, and only once they're valid. A new photo is cropped here and only kept once the
+ * person is saved. A contact picked here stays linked while its number is the one to call.
  */
 @Composable
 fun PersonEditorScreen(
     people: List<Person>,
     place: Int,
     peopleOnScreen: Int,
-    onSave: (id: String?, name: String, number: String, place: Int, photo: PhotoEdit) -> Unit,
+    onSave: (PersonEdit) -> Unit,
     onRemove: (Person) -> Unit,
     onBack: () -> Unit,
 ) {
@@ -104,6 +109,10 @@ fun PersonEditorScreen(
     // The photo being cropped. While set, the crop screen shows instead of the form.
     var cropSource by rememberSaveable { mutableStateOf<String?>(null) }
     var photoMessage by rememberSaveable { mutableStateOf<Int?>(null) }
+    // The contact picked here, if any, and the number it was picked with.
+    var pickedKey by rememberSaveable { mutableStateOf<String?>(null) }
+    var pickedId by rememberSaveable { mutableLongStateOf(0L) }
+    var linkedNumber by rememberSaveable { mutableStateOf(existing?.number.orEmpty()) }
 
     val editing = people.firstOrNull { it.id == editingId }
     val choices = remember(people, editingId, peopleOnScreen) {
@@ -126,6 +135,9 @@ fun PersonEditorScreen(
                 if (picked.name.isNotEmpty()) name = picked.name
                 number = picked.number
                 contactPhoto = photo?.path
+                pickedKey = picked.link?.lookupKey.orEmpty()
+                pickedId = picked.link?.contactId ?: 0L
+                linkedNumber = picked.number
             }
         }
     }
@@ -144,11 +156,19 @@ fun PersonEditorScreen(
         else -> PhotoEdit.Keep
     }
 
+    val contactEdit = when {
+        // A number typed or changed by hand: the old contact's ringtone isn't this number's.
+        number.trim() != linkedNumber.trim() -> ContactEdit.Unlink
+        pickedKey == null -> ContactEdit.Keep
+        pickedKey.isNullOrEmpty() -> ContactEdit.Unlink
+        else -> ContactEdit.Link(ContactLink(pickedId, pickedKey!!))
+    }
+
     val save = {
         when {
             problems.isNotEmpty() -> showProblems = true
             chosenPlace !in choices -> message = R.string.editor_place_taken
-            else -> onSave(editingId, name.trim(), number.trim(), chosenPlace, photoEdit)
+            else -> onSave(PersonEdit(editingId, name.trim(), number.trim(), chosenPlace, photoEdit, contactEdit))
         }
     }
 
@@ -393,7 +413,7 @@ private fun PersonEditorPreview() {
                 people = listOf(Person(id = "a", name = "Mum", number = "9800000001", place = 0)),
                 place = 0,
                 peopleOnScreen = 4,
-                onSave = { _, _, _, _, _ -> },
+                onSave = {},
                 onRemove = {},
                 onBack = {},
             )

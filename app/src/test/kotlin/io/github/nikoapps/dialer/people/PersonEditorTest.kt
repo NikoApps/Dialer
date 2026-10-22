@@ -100,4 +100,32 @@ class PersonEditorTest {
         val people = listOf(mum.copy(photoVersion = 2))
         assertEquals(2, savePerson(people, id = "m", name = "Ma", number = "1", place = 2).single().photoVersion)
     }
+
+    @Test
+    fun `a contact link follows the editor`() {
+        val old = ContactLink(1, "old")
+        val new = ContactLink(2, "new")
+        assertEquals(old, contactAfter(old, ContactEdit.Keep))
+        assertEquals(new, contactAfter(old, ContactEdit.Link(new)))
+        assertEquals(null, contactAfter(old, ContactEdit.Unlink))
+        assertEquals(null, contactAfter(null, ContactEdit.Keep))
+    }
+
+    @Test
+    fun `linking one person leaves everyone else alone`() {
+        val people = listOf(mum, ram.copy(contactLookupKey = "r", contactId = 5))
+        val linked = setContact(people, "m", ContactLink(7, "k"))
+        assertEquals(ContactLink(7, "k"), linked[0].contactLink)
+        assertEquals(people[1], linked[1])
+        assertEquals(null, setContact(linked, "m", null)[0].contactLink)
+    }
+
+    @Test
+    fun `saving keeps the contact and the recording`() {
+        val people = listOf(mum.copy(contactLookupKey = "k", contactId = 3, recordingVersion = 2, ringtoneUri = "content://x"))
+        val saved = savePerson(people, id = "m", name = "Ma", number = "9800000001", place = 0).single()
+        assertEquals(ContactLink(3, "k"), saved.contactLink)
+        assertEquals(2, saved.recordingVersion)
+        assertEquals("content://x", saved.ringtoneUri)
+    }
 }

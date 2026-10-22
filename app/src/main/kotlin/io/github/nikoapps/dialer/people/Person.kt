@@ -21,6 +21,27 @@ data class Person(
      * id, and this goes up by one each time it changes, so the face shows the new one.
      */
     val photoVersion: Int = 0,
+    /**
+     * The phone contact this person is linked to, so their recorded name can be set as that
+     * contact's ringtone. Empty when they aren't linked, such as a typed person saved while
+     * contacts weren't allowed. The lookup key keeps working when the contact's id changes.
+     */
+    val contactLookupKey: String = "",
+    /** The contact's id when it was linked, 0 when unknown. Only a hint: [contactLookupKey] decides. */
+    val contactId: Long = 0,
+    /**
+     * 0 when there's no recorded name. Otherwise the master recording is in Dialer's own files
+     * under the person's id, and this goes up by one each time it's recorded again.
+     */
+    val recordingVersion: Int = 0,
+    /**
+     * The phone's ringtone item Dialer last set as the contact's ringtone, as a content uri.
+     * Empty when none is set. Kept so Dialer can tell its own ringtone from one chosen in the
+     * contacts app, even after moving to a new phone, where this uri no longer exists.
+     */
+    val ringtoneUri: String = "",
 ) {
     val hasPhoto: Boolean get() = photoVersion > 0
+    val hasRecording: Boolean get() = recordingVersion > 0
+    val hasContact: Boolean get() = contactLookupKey.isNotEmpty()
 }

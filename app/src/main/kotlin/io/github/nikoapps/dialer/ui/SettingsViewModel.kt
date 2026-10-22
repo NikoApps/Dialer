@@ -5,8 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.nikoapps.dialer.people.PeopleRepository
 import io.github.nikoapps.dialer.people.Person
+import io.github.nikoapps.dialer.people.PersonEdit
 import io.github.nikoapps.dialer.people.PersonPhotos
 import io.github.nikoapps.dialer.people.PhotoEdit
+import io.github.nikoapps.dialer.people.contactAfter
+import io.github.nikoapps.dialer.people.contactLink
+import io.github.nikoapps.dialer.people.setContact
 import io.github.nikoapps.dialer.people.removePerson as withoutPerson
 import io.github.nikoapps.dialer.people.savePerson as withPersonSaved
 import io.github.nikoapps.dialer.people.setPhoto
@@ -54,8 +58,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
      * A new photo is put in place before the person is saved, so the face never points at a
      * missing file. If a new person can't be saved after all, their photo is deleted again.
      */
-    fun savePerson(id: String?, name: String, number: String, place: Int, photo: PhotoEdit) {
+    fun savePerson(edit: PersonEdit) {
         val app = getApplication<Application>()
+        val (id, name, number, place, photo) = edit
         viewModelScope.launch {
             val personId = id ?: UUID.randomUUID().toString()
             val photoSaved = withContext(Dispatchers.IO) {
@@ -68,7 +73,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             if (photo != PhotoEdit.Keep) PhotoCache.forget(personId)
             var saved = false
             peopleRepository.update { people ->
+                val before = people.firstOrNull { it.id == personId }?.contactLink
+                // withPersonSaved hands back the same list when the person can't be saved there.
                 val updated = withPersonSaved(people, personId, name, number, place, newId = { personId })
+                    .let { if (it === people) it else setContact(it, personId, contactAfter(before, edit.contact)) }
                 saved = updated.any { it.id == personId }
                 when {
                     photoSaved -> setPhoto(updated, personId, hasPhoto = true)

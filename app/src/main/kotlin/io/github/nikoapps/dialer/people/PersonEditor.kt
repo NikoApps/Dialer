@@ -94,3 +94,46 @@ fun setPhoto(people: List<Person>, id: String, hasPhoto: Boolean): List<Person> 
         else -> it.copy(photoVersion = 0)
     }
 }
+
+/** What the editor does to a person's link to a phone contact when they're saved. */
+sealed interface ContactEdit {
+    /** Keep the link the person has, if any. */
+    data object Keep : ContactEdit
+
+    /** Link to this contact, picked from contacts or just saved on the phone. */
+    data class Link(val link: ContactLink) : ContactEdit
+
+    /** The number was typed or changed by hand, so the old contact no longer matches. */
+    data object Unlink : ContactEdit
+}
+
+/**
+ * Everything the editor hands over on Save. [id] is null for a new person. Name and number are
+ * already trimmed and valid.
+ */
+data class PersonEdit(
+    val id: String?,
+    val name: String,
+    val number: String,
+    val place: Int,
+    val photo: PhotoEdit = PhotoEdit.Keep,
+    val contact: ContactEdit = ContactEdit.Keep,
+)
+
+/**
+ * The link a person keeps after [edit], given the link they had ([current], null for none).
+ * A typed number drops the link, so a recorded name never plays for someone else's number.
+ */
+fun contactAfter(current: ContactLink?, edit: ContactEdit): ContactLink? = when (edit) {
+    ContactEdit.Keep -> current
+    is ContactEdit.Link -> edit.link
+    ContactEdit.Unlink -> null
+}
+
+/** Links one person to [link], or unlinks them when it's null. Nobody else changes. */
+fun setContact(people: List<Person>, id: String, link: ContactLink?): List<Person> = people.map {
+    if (it.id != id) it else it.copy(contactLookupKey = link?.lookupKey.orEmpty(), contactId = link?.contactId ?: 0)
+}
+
+/** The person's contact link, or null when they have none. */
+val Person.contactLink: ContactLink? get() = if (hasContact) ContactLink(contactId, contactLookupKey) else null
