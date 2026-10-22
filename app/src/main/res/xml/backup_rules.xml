@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 8 to 11 only, where allowBackup="false" already turns off cloud backup and transfer
+     alike (Hub ADR 0033). Excluding every place as well keeps nothing leaving the phone if a
+     phone maker's backup reads these rules anyway. Android 12+ uses data_extraction_rules.xml. -->
+<full-backup-content>
+    <exclude domain="root" path="." />
+    <exclude domain="file" path="." />
+    <exclude domain="database" path="." />
+    <exclude domain="sharedpref" path="." />
+    <exclude domain="external" path="." />
+</full-backup-content>
