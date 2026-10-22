@@ -38,6 +38,7 @@ private object Keys {
     val theme = stringPreferencesKey("theme")
     val voiceLanguage = stringPreferencesKey("voice_language")
     val speechRate = floatPreferencesKey("speech_rate")
+    val onlySavedContacts = booleanPreferencesKey("only_saved_contacts")
     val setupDone = booleanPreferencesKey("setup_done")
     val pinHash = stringPreferencesKey("helper_pin_hash")
 }
@@ -53,6 +54,7 @@ internal fun Preferences.toSettings(): DialerSettings {
         theme = this[Keys.theme]?.let { name -> ThemeChoice.entries.firstOrNull { it.name == name } } ?: d.theme,
         voiceLanguage = this[Keys.voiceLanguage],
         speechRate = this[Keys.speechRate]?.takeIf { it > 0f } ?: d.speechRate,
+        onlySavedContacts = this[Keys.onlySavedContacts] ?: d.onlySavedContacts,
         setupDone = this[Keys.setupDone] ?: d.setupDone,
         helperPinHash = this[Keys.pinHash],
     )
@@ -64,6 +66,7 @@ internal fun MutablePreferences.write(s: DialerSettings) {
     this[Keys.theme] = s.theme.name
     if (s.voiceLanguage == null) remove(Keys.voiceLanguage) else this[Keys.voiceLanguage] = s.voiceLanguage
     this[Keys.speechRate] = s.speechRate
+    this[Keys.onlySavedContacts] = s.onlySavedContacts
     this[Keys.setupDone] = s.setupDone
     if (s.helperPinHash == null) remove(Keys.pinHash) else this[Keys.pinHash] = s.helperPinHash
 }

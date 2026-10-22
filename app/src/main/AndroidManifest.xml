@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Never the internet permission. Niko Dialer works fully offline. -->
-    <!-- Contacts, microphone and call screening come with the features that need them (Hub spec). -->
+    <!-- Contacts and microphone come with the features that need them (Hub spec). -->
+    <!-- Call screening is a role granted in a system dialog, not a permission. -->
     <!-- Never CAMERA: photos come from the camera app and the photo picker, which need no permission.
          Declaring it would make the camera app need it too. -->
 
@@ -47,5 +48,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/photo_paths" />
         </provider>
+
+        <!-- Silences calls from numbers not saved in the phone, while "Only ring for saved contacts"
+             is on. Only the system can bind it, and only while Dialer holds the call screening role. -->
+        <service
+            android:name=".screening.SilenceService"
+            android:exported="true"
+            android:permission="android.permission.BIND_SCREENING_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

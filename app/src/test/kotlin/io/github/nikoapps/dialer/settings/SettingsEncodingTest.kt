@@ -21,6 +21,7 @@ class SettingsEncodingTest {
         assertNull(s.voiceLanguage)
         assertEquals(SpeechSpeed.Normal, s.speechSpeed)
         assertNull(s.helperPinHash)
+        assertEquals(false, s.onlySavedContacts)
     }
 
     @Test
@@ -31,6 +32,7 @@ class SettingsEncodingTest {
             theme = ThemeChoice.Dark,
             voiceLanguage = "en",
             speechRate = SpeechSpeed.Slow.rate,
+            onlySavedContacts = true,
             setupDone = true,
             helperPinHash = DialerHelperPin.hash("1234"),
         )
