@@ -96,6 +96,7 @@ fun RecordedNameSection(
         message = null
         val target = RecordedNames.newRecordingFile(context, "new-${UUID.randomUUID()}.wav")
         state = ClipState.Recording
+        recorder.reset()
         job = scope.launch {
             try {
                 when (recorder.record(target)) {

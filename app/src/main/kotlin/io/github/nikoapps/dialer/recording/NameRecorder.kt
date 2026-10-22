@@ -33,7 +33,15 @@ sealed interface RecordResult {
 class NameRecorder {
     private val stopRequested = AtomicBoolean(false)
 
-    /** Ends the recording in progress and keeps it. */
+    /**
+     * Clears an earlier Stop. Call it right before launching [record], not inside the coroutine,
+     * so a Stop tapped straight after Record, before the recording is under way, still counts.
+     */
+    fun reset() {
+        stopRequested.set(false)
+    }
+
+    /** Ends the recording in progress, or the one about to start, and keeps what was said. */
     fun stop() {
         stopRequested.set(true)
     }
@@ -41,7 +49,6 @@ class NameRecorder {
     // Callers check the microphone permission first; a missing one ends as Failed.
     @SuppressLint("MissingPermission")
     suspend fun record(target: File): RecordResult = withContext(Dispatchers.IO) {
-        stopRequested.set(false)
         // 44.1 kHz works on every Android phone; 16 kHz is plenty for a voice if it doesn't.
         val rate = SAMPLE_RATES.firstOrNull { minBuffer(it) > 0 } ?: return@withContext RecordResult.Failed
         // About a tenth of a second per read, so Stop is quick.
