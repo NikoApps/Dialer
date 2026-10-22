@@ -90,7 +90,9 @@ fun SetupScreen(
             CallingSimRow()
         },
     )
-    SetupFrame(steps = steps, step = step, onStep = onStep, onFinish = onFinish)
+    // The saved step is only a number. If an update changed the steps, it may point past the end,
+    // so it is kept in range here, before Back counts down from it.
+    SetupFrame(steps = steps, step = step.coerceIn(0, steps.lastIndex), onStep = onStep, onFinish = onFinish)
 }
 
 /** Asks for a photo of each person on screen who has none, with a button that opens their editor. */
