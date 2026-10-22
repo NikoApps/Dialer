@@ -97,4 +97,24 @@ class HintTest {
             hintFor(hasPeople = false, canCall = true, callsBlocked = false, lastCallFailed = false, silencingLost = true),
         )
     }
+
+    @Test
+    fun `recorded names come after calls, voice and silencing, before other phone settings`() {
+        assertEquals(
+            Hint.RecordedNames,
+            hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, recordedNames = true, needsAttention = true),
+        )
+        assertEquals(
+            Hint.SilencingLost,
+            hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, silencingLost = true, recordedNames = true),
+        )
+        assertEquals(
+            Hint.CallPermission,
+            hintFor(hasPeople = true, canCall = false, callsBlocked = false, lastCallFailed = false, recordedNames = true),
+        )
+        assertEquals(
+            Hint.Voice,
+            hintFor(hasPeople = true, canCall = true, callsBlocked = false, lastCallFailed = false, voice = VoiceStatus.NoVoice, recordedNames = true),
+        )
+    }
 }

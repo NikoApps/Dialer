@@ -15,6 +15,7 @@
     <string name="hint_call_blocked">Calls are turned off for Niko Dialer. A helper can turn them on in the phone\'s settings.</string>
     <string name="hint_call_failed">The call didn\'t start. Try again in a moment.</string>
     <string name="hint_silencing_lost">Calls from unsaved numbers ring again. A helper can fix this in Settings.</string>
+    <string name="hint_recorded_names">Recorded names may not play when people call. A helper can fix this in Settings.</string>
     <string name="hint_needs_attention">Calls may stop working later. A helper can fix this in Settings.</string>
 
     <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
@@ -31,6 +32,7 @@
     <string name="section_helper">Helper</string>
     <string name="section_calls">Calls</string>
     <string name="section_phone">Phone</string>
+    <string name="section_recorded_names">Recorded names</string>
 
     <!-- Places on the grid, as a helper sees them on the main screen -->
     <string name="place_only">The face on the screen</string>
@@ -72,6 +74,12 @@
     <string name="health_calls_value">Allow %1$s to make phone calls</string>
     <string name="health_silencing">Only ring for saved contacts</string>
     <string name="health_silencing_value">Calls from unsaved numbers ring again. Allow %1$s to silence them.</string>
+    <string name="health_recorded_contacts">Contacts for recorded names</string>
+    <string name="health_recorded_contacts_value">Allow %1$s to use contacts, so recorded names play when people call</string>
+    <string name="health_ringer">Ringer</string>
+    <string name="health_ringer_value">The ringer is silent, on vibrate or turned down, so recorded names can\'t be heard. Turn the ring volume up.</string>
+    <string name="health_recorded_not_set">Recorded name ringtones</string>
+    <string name="health_recorded_not_set_value">A recorded name isn\'t set as the ringtone for its contact. Tap to set it again.</string>
 
     <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
     <string name="setting_silence">Only ring for saved contacts</string>
@@ -191,6 +199,10 @@
     <string name="setup_photos_info">A photo helps. A face is easier to find than a name. These people have no photo yet.</string>
     <!-- %1$s is the name the helper typed. -->
     <string name="setup_add_photo">Add a photo of %1$s</string>
+    <string name="setup_record_info">A recorded name plays when that person calls, instead of the ringtone, in a voice the person knows. Tap someone to record their name. This can also be done later in Settings.</string>
+    <string name="setup_record_no_people">Add people in the step before, then record their names here.</string>
+    <string name="setup_recorded">Recorded</string>
+    <string name="setup_not_recorded">Not recorded yet. Tap to record.</string>
     <string name="setup_calls_reason">Niko Dialer needs to be allowed to make phone calls, so a tap on a face starts the call.</string>
     <string name="setup_calls_allow">Allow calls</string>
     <string name="calls_allowed">Allowed</string>

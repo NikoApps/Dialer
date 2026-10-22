@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.nikoapps.commons.health.HealthCheck
 import io.github.nikoapps.commons.health.PhoneHealth
 import io.github.nikoapps.commons.speech.VoiceStatus
 import io.github.nikoapps.commons.theme.NikoTheme
@@ -41,6 +42,7 @@ import io.github.nikoapps.dialer.call.CallState
 import io.github.nikoapps.dialer.call.CallViewModel
 import io.github.nikoapps.dialer.call.PhoneCalls
 import io.github.nikoapps.dialer.health.DialerHealth
+import io.github.nikoapps.dialer.people.DialerPermissions
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.gridShape
 import io.github.nikoapps.dialer.people.placesOnScreen
@@ -94,6 +96,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
     val people by settingsViewModel.people.collectAsStateWithLifecycle()
     val lastSilencedAt by settingsViewModel.lastSilencedAt.collectAsStateWithLifecycle()
+    val recordedNameNotSet by settingsViewModel.recordedNameNotSet.collectAsStateWithLifecycle()
     val call by callViewModel.state.collectAsStateWithLifecycle()
     val voice by callViewModel.voice.collectAsStateWithLifecycle()
     var screen by rememberSaveable { mutableStateOf(Screen.Main) }
@@ -115,7 +118,11 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     // setting in the phone's settings, and after the permission question closes.
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     var healthCheckRun by remember { mutableIntStateOf(0) }
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { callViewModel.onResume() }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        callViewModel.onResume()
+        // Puts back recorded name ringtones that went missing, such as after moving to a new phone.
+        settingsViewModel.checkRecordedNames()
+    }
 
     // Asked by a helper from settings or setup. Once the phone won't ask again, app info is the
     // only place to allow calls.
@@ -129,6 +136,29 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             openPage(context, PhoneHealth.appInfo(context))
         } else {
             askForCalls.launch(Manifest.permission.CALL_PHONE)
+        }
+    }
+
+    // Contacts for recorded names, asked from settings. Once the phone won't ask again, app info is
+    // the only place to allow them. Granted, the ringtones are put back quietly.
+    var contactsBlocked by rememberSaveable { mutableStateOf(false) }
+    val askForContacts = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        val granted = DialerPermissions.hasContacts(context)
+        contactsBlocked = !granted && activity != null &&
+            DialerPermissions.contacts.none { ActivityCompat.shouldShowRequestPermissionRationale(activity, it) }
+        if (granted) settingsViewModel.checkRecordedNames()
+        healthCheckRun++
+    }
+    // Android 8 and 9 need storage to put a recorded name in Ringtones; asked when fixing one.
+    val askForStorage = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        settingsViewModel.checkRecordedNames(fix = true)
+        healthCheckRun++
+    }
+    val fixRecordedNames = {
+        if (DialerPermissions.hasStorage(context)) {
+            settingsViewModel.checkRecordedNames(fix = true)
+        } else {
+            askForStorage.launch(DialerPermissions.STORAGE)
         }
     }
 
@@ -170,7 +200,9 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
 
     val current = settings ?: return
     val everyone = people ?: return
-    val problems = remember(lifecycle, healthCheckRun, current.onlySavedContacts) { DialerHealth.problems(context, current) }
+    val problems = remember(lifecycle, healthCheckRun, current.onlySavedContacts, everyone, recordedNameNotSet) {
+        DialerHealth.problems(context, current, everyone, recordedNameNotSet)
+    }
     val canCall = DialerHealth.CallPermission !in problems
     val silencing = SilencingState(
         support = remember { CallScreening.support(context) },
@@ -194,6 +226,17 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
         screen = Screen.EditPerson
     }
     val removePin = { settingsViewModel.update { it.copy(helperPinHash = null) } }
+    // Problems the app fixes itself; the rest open the phone's page that fixes them.
+    val fixProblem: (HealthCheck) -> Unit = { check ->
+        when {
+            check === DialerHealth.CallPermission -> allowCalls()
+            check === DialerHealth.Silencing -> turnOnSilencing()
+            check === DialerHealth.RecordedNamesContacts && contactsBlocked -> openPage(context, PhoneHealth.appInfo(context))
+            check === DialerHealth.RecordedNamesContacts -> askForContacts.launch(DialerPermissions.contacts.toTypedArray())
+            check === DialerHealth.RecordedNameNotSet -> fixRecordedNames()
+            else -> openPage(context, check.fixIntent(context), PhoneHealth.appInfo(context))
+        }
+    }
 
     when (screen) {
         Screen.Main -> when (val state = call) {
@@ -211,6 +254,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
                         lastCallFailed = state.lastCallFailed,
                         voice = voice.voice,
                         silencingLost = DialerHealth.Silencing in problems,
+                        recordedNames = problems.any { it in DialerHealth.recordedNameChecks },
                         needsAttention = problems.isNotEmpty(),
                     ),
                     voice = voice.voice,
@@ -238,15 +282,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             lastSilencedAt = lastSilencedAt,
             onTurnOnSilencing = turnOnSilencing,
             onUpdate = settingsViewModel::update,
-            onFix = { check ->
-                if (check === DialerHealth.CallPermission) {
-                    allowCalls()
-                } else if (check === DialerHealth.Silencing) {
-                    turnOnSilencing()
-                } else {
-                    openPage(context, check.fixIntent(context), PhoneHealth.appInfo(context))
-                }
-            },
+            onFix = fixProblem,
             onEditPlace = { place -> editPerson(place, Screen.Settings) },
             onTestVoice = callViewModel::onTestVoice,
             onSetPin = { pinReturn = Screen.Settings; screen = Screen.SetPin },
@@ -272,6 +308,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             onAllowCalls = allowCalls,
             onSetPin = { pinReturn = Screen.Setup; screen = Screen.SetPin },
             onRemovePin = removePin,
+            onFix = fixProblem,
             onFinish = finishSetup,
         )
         Screen.SetPin -> SetPinScreen(
