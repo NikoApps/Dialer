@@ -44,6 +44,8 @@
     <string name="place_bottom_left">Kiri bawah</string>
     <string name="place_bottom_right">Kanan bawah</string>
     <string name="place_empty">Kosong</string>
+    <string name="place_off_screen">Tidak di layar sekarang</string>
+    <string name="people_count_hiding">%1$s. Tidak di layar: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">Orang di layar</string>

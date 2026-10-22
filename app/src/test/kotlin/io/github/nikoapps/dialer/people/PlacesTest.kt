@@ -96,4 +96,18 @@ class PlacesTest {
         assertEquals(mum, placesOnScreen(clash, 4)[0])
         assertNull(placesOnScreen(clash, 4)[1])
     }
+
+    @Test
+    fun `people past a smaller grid are listed, lowest place first`() {
+        assertEquals(listOf(sita, doctor), peopleOffScreen(everyone.reversed(), 2))
+        assertEquals(listOf(doctor), peopleOffScreen(everyone, 4))
+        assertEquals(emptyList<Person>(), peopleOffScreen(everyone, 6))
+    }
+
+    @Test
+    fun `a place past the grid is off screen`() {
+        assertEquals(false, isOffScreen(3, 4))
+        assertEquals(true, isOffScreen(4, 4))
+        assertEquals(true, isOffScreen(1, 1))
+    }
 }

@@ -44,6 +44,8 @@
     <string name="place_bottom_left">নিচে বাঁয়ে</string>
     <string name="place_bottom_right">নিচে ডানে</string>
     <string name="place_empty">খালি</string>
+    <string name="place_off_screen">এখন স্ক্রিনে নেই</string>
+    <string name="people_count_hiding">%1$s। স্ক্রিনে নেই: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">স্ক্রিনে কতজন</string>

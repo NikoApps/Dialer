@@ -1,10 +1,12 @@
 package io.github.nikoapps.dialer.ui
 
 import android.content.Intent
+import android.icu.text.ListFormatter
 import android.provider.Settings
 import android.telecom.TelecomManager
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -16,6 +18,8 @@ import io.github.nikoapps.commons.ui.openPage
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PlacePosition
+import io.github.nikoapps.dialer.people.isOffScreen
+import io.github.nikoapps.dialer.people.peopleOffScreen
 import io.github.nikoapps.dialer.people.placePosition
 import io.github.nikoapps.dialer.people.placesOnScreen
 import io.github.nikoapps.dialer.settings.DialerSettings
@@ -30,28 +34,58 @@ import io.github.nikoapps.commons.R as CommonsR
 /** Whether Dialer may place calls, as the helper sees it. */
 enum class CallsAllowed { Yes, NotYet, TurnedOff }
 
-/** One row per place on screen, in grid order: who is there, or Empty. Each opens the people editor for that place. */
+/**
+ * One row per place on screen, in grid order: who is there, or Empty. Then anyone kept past the
+ * grid, as not on the screen now, so they can still be changed or removed. Each opens the people
+ * editor for that place.
+ */
 @Composable
 fun PeopleRows(people: List<Person>, peopleOnScreen: Int, onEditPlace: (Int) -> Unit) {
     val chevron = painterResource(CommonsR.drawable.ic_chevron_right)
     placesOnScreen(people, peopleOnScreen).forEachIndexed { place, person ->
         ValueRow(
-            title = stringResource(placeLabel(placePosition(place, peopleOnScreen))),
+            title = placeName(place, peopleOnScreen),
             value = person?.name ?: stringResource(R.string.place_empty),
             trailing = chevron,
             onClick = { onEditPlace(place) },
         )
     }
+    peopleOffScreen(people, peopleOnScreen).forEach { person ->
+        ValueRow(
+            title = stringResource(R.string.place_off_screen),
+            value = person.name,
+            trailing = chevron,
+            onClick = { onEditPlace(person.place) },
+        )
+    }
 }
 
+/** Where [place] is, as a helper sees it on the main screen, or not on the screen now. */
 @Composable
-fun PeopleOnScreenRow(settings: DialerSettings, onUpdate: ((DialerSettings) -> DialerSettings) -> Unit) {
+fun placeName(place: Int, peopleOnScreen: Int): String =
+    if (isOffScreen(place, peopleOnScreen)) stringResource(R.string.place_off_screen) else stringResource(placeLabel(placePosition(place, peopleOnScreen)))
+
+/**
+ * Each choice says who it leaves off the screen, such as "2 people. Not on the screen: Sita and
+ * Doctor", so lowering the number never hides someone without saying so.
+ */
+@Composable
+fun PeopleOnScreenRow(settings: DialerSettings, people: List<Person>, onUpdate: ((DialerSettings) -> DialerSettings) -> Unit) {
+    val locale = LocalConfiguration.current.locales[0]
     ChoiceRow(
         title = stringResource(R.string.setting_people_on_screen),
         info = stringResource(R.string.info_people_on_screen),
         options = PEOPLE_ON_SCREEN_CHOICES,
         selected = settings.peopleOnScreen,
-        optionLabel = { pluralStringResource(R.plurals.people_count, it, it) },
+        optionLabel = { count ->
+            val label = pluralStringResource(R.plurals.people_count, count, count)
+            val hidden = peopleOffScreen(people, count)
+            if (hidden.isEmpty()) {
+                label
+            } else {
+                stringResource(R.string.people_count_hiding, label, ListFormatter.getInstance(locale).format(hidden.map { it.name }))
+            }
+        },
         onSelect = { count -> onUpdate { it.copy(peopleOnScreen = count) } },
         cancelLabel = stringResource(CommonsR.string.cancel),
     )

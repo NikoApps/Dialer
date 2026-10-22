@@ -44,6 +44,8 @@
     <string name="place_bottom_left">नीचे बाएँ</string>
     <string name="place_bottom_right">नीचे दाएँ</string>
     <string name="place_empty">ख़ाली</string>
+    <string name="place_off_screen">अभी स्क्रीन पर नहीं</string>
+    <string name="people_count_hiding">%1$s। स्क्रीन पर नहीं: %2$s</string>
 
     <!-- Screen settings -->
     <string name="setting_people_on_screen">स्क्रीन पर लोग</string>
