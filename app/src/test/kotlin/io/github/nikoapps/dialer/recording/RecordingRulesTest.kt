@@ -41,21 +41,40 @@ class RecordingRulesTest {
     }
 
     @Test
-    fun `the contact ringtone is set when it's ours now`() {
-        assertEquals(RingtoneState.Set, ringtoneState("content://new", "content://new", setOf("content://new")))
+    fun `the contact ringtone is set when it's ours and still on the phone`() {
+        assertEquals(RingtoneState.Set, ringtoneState("content://ours", "content://ours", oursExists = true, contactRingtoneGone = false))
     }
 
     @Test
-    fun `no ringtone, or an old one of ours, is set again quietly`() {
-        assertEquals(RingtoneState.NeedsSetting, ringtoneState(null, "content://new", setOf("content://old", "content://new")))
-        assertEquals(RingtoneState.NeedsSetting, ringtoneState("", "content://new", setOf("content://new")))
-        // After moving to a new phone: the contact still points at the old phone's item.
-        assertEquals(RingtoneState.NeedsSetting, ringtoneState("content://old", "content://new", setOf("content://old", "content://new")))
+    fun `a first ringtone is set quietly`() {
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState(null, "", oursExists = false, contactRingtoneGone = false))
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState("", "", oursExists = false, contactRingtoneGone = false))
+    }
+
+    @Test
+    fun `after a move or repair, when Dialer's own ringtone is gone, it is set again quietly`() {
+        // The contact still points at the old phone's item, or lost its ringtone with the move.
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState("content://ours", "content://ours", oursExists = false, contactRingtoneGone = false))
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState(null, "content://ours", oursExists = false, contactRingtoneGone = false))
+    }
+
+    @Test
+    fun `choosing the phone's default ringtone is left alone`() {
+        assertEquals(RingtoneState.ChosenElsewhere, ringtoneState(null, "content://ours", oursExists = true, contactRingtoneGone = false))
+        assertEquals(RingtoneState.ChosenElsewhere, ringtoneState("", "content://ours", oursExists = true, contactRingtoneGone = false))
     }
 
     @Test
     fun `a ringtone chosen in the contacts app isn't ours`() {
-        assertEquals(RingtoneState.ChosenElsewhere, ringtoneState("content://media/internal/audio/media/12", "content://new", setOf("content://new")))
+        val chosen = "content://media/internal/audio/media/12"
+        assertEquals(RingtoneState.ChosenElsewhere, ringtoneState(chosen, "content://ours", oursExists = true, contactRingtoneGone = false))
+        assertEquals(RingtoneState.ChosenElsewhere, ringtoneState(chosen, "", oursExists = false, contactRingtoneGone = false))
+    }
+
+    @Test
+    fun `a contact ringtone that's no longer on the phone is set again quietly`() {
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState("content://old", "content://ours", oursExists = true, contactRingtoneGone = true))
+        assertEquals(RingtoneState.NeedsSetting, ringtoneState("content://old", "content://ours", oursExists = false, contactRingtoneGone = true))
     }
 
     @Test

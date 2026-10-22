@@ -45,22 +45,29 @@ enum class RingtoneState {
     /** It's Dialer's recording now. */
     Set,
 
-    /** No ringtone, or an old one of Dialer's, such as after moving to a new phone. Safe to set again quietly. */
+    /**
+     * Never set yet, or Dialer's own ringtone went missing, such as after moving to a new phone, or
+     * the contact's ringtone points at a sound that's gone. Safe to set again quietly.
+     */
     NeedsSetting,
 
-    /** Someone chose another ringtone, such as in the contacts app. Only set again when the helper asks. */
+    /** Someone chose another ringtone, or the phone's default, such as in the contacts app. Only set again when the helper asks. */
     ChosenElsewhere,
 }
 
 /**
- * [contactRingtone] is the contact's ringtone now, null or blank for the phone's default.
- * [current] is Dialer's ringtone item for this person on this phone, [ours] every uri Dialer has
- * set for them, including ones that no longer exist.
+ * [contactRingtone] is the contact's ringtone now, null or blank for the phone's default. [ours]
+ * is the ringtone Dialer last set for this person, blank when it never set one, and [oursExists]
+ * whether that ringtone is still on this phone. [contactRingtoneGone] is true when the contact's
+ * ringtone is known to point at a sound that's no longer on the phone.
+ *
+ * A blank ringtone is only set again quietly when Dialer never set one or its own one is gone too,
+ * as after a move. Otherwise someone chose the phone's default, and that choice stays.
  */
-fun ringtoneState(contactRingtone: String?, current: String, ours: Set<String>): RingtoneState = when {
-    contactRingtone == current -> RingtoneState.Set
-    contactRingtone.isNullOrBlank() -> RingtoneState.NeedsSetting
-    contactRingtone in ours -> RingtoneState.NeedsSetting
+fun ringtoneState(contactRingtone: String?, ours: String, oursExists: Boolean, contactRingtoneGone: Boolean): RingtoneState = when {
+    ours.isNotBlank() && contactRingtone == ours -> if (oursExists) RingtoneState.Set else RingtoneState.NeedsSetting
+    contactRingtone.isNullOrBlank() -> if (ours.isBlank() || !oursExists) RingtoneState.NeedsSetting else RingtoneState.ChosenElsewhere
+    contactRingtoneGone -> RingtoneState.NeedsSetting
     else -> RingtoneState.ChosenElsewhere
 }
 

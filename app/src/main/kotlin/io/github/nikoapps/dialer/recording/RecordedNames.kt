@@ -75,9 +75,9 @@ object RecordedNames {
     /**
      * Makes sure the person's recorded name rings for their contact: the copy in Ringtones exists,
      * and the contact's ringtone points at it. Quietly ([fix] false) it only puts back what's
-     * missing, and leaves a ringtone someone chose in the contacts app alone. When the helper asks
-     * ([fix] true) it also saves the person in contacts if they have no contact, and sets the
-     * recording over another ringtone.
+     * missing, and leaves a ringtone someone chose in the contacts app alone, the phone's default
+     * included. When the helper asks ([fix] true) it also saves the person in contacts if they have
+     * no contact, and sets the recording over another ringtone.
      */
     fun sync(context: Context, person: Person, fix: Boolean): Outcome {
         if (!person.hasRecording) return Outcome.Ready(person)
@@ -88,22 +88,30 @@ object RecordedNames {
         val found = person.contactLink?.let { PhoneContacts.find(context, it) }
             ?: findOrMakeContact(context, person, fix)?.let { PhoneContacts.find(context, it) }
             ?: return Outcome.NotSet(person, Reason.NoContact)
-        var now = person.copy(contactLookupKey = found.link.lookupKey, contactId = found.link.contactId)
+        val now = person.copy(contactLookupKey = found.link.lookupKey, contactId = found.link.contactId)
 
-        val current = if (RingtoneStore.exists(context, person.ringtoneUri)) {
-            person.ringtoneUri
-        } else {
-            if (!DialerPermissions.hasStorage(context)) return Outcome.NotSet(now, Reason.NoStoragePermission)
-            RingtoneStore.add(context, master, title(context, person.name)) ?: return Outcome.NotSet(now, Reason.CopyFailed)
+        // Decided before any copy is made, so a ringtone chosen elsewhere never leaves a stray copy behind.
+        val ours = person.ringtoneUri
+        val oursExists = RingtoneStore.exists(context, ours)
+        val contactRingtone = found.ringtone
+        val gone = contactRingtone != null && contactRingtone != ours && RingtoneStore.isGone(context, contactRingtone)
+        when (ringtoneState(contactRingtone, ours, oursExists, gone)) {
+            RingtoneState.Set -> return Outcome.Ready(now)
+            RingtoneState.ChosenElsewhere -> if (!fix) return Outcome.NotSet(now, Reason.ChosenElsewhere)
+            RingtoneState.NeedsSetting -> Unit
         }
-        val ours = setOf(person.ringtoneUri, current).filter { it.isNotBlank() }.toSet()
-        now = now.copy(ringtoneUri = current)
 
-        return when (ringtoneState(found.ringtone, current, ours)) {
-            RingtoneState.Set -> Outcome.Ready(now)
-            RingtoneState.ChosenElsewhere -> if (fix) setOn(context, now, found.link) else Outcome.NotSet(now, Reason.ChosenElsewhere)
-            RingtoneState.NeedsSetting -> setOn(context, now, found.link)
+        if (oursExists) return setOn(context, now, found.link)
+        if (!DialerPermissions.hasStorage(context)) return Outcome.NotSet(now, Reason.NoStoragePermission)
+        val copy = RingtoneStore.add(context, master, title(context, person.name)) ?: return Outcome.NotSet(now, Reason.CopyFailed)
+        val outcome = setOn(context, now.copy(ringtoneUri = copy), found.link)
+        // The person only keeps a ringtone the contact really has, so Dialer still knows its last
+        // one next time. A copy the contact didn't take goes again.
+        if (outcome is Outcome.NotSet) {
+            RingtoneStore.delete(context, copy)
+            return Outcome.NotSet(now, outcome.reason)
         }
+        return outcome
     }
 
     /**
