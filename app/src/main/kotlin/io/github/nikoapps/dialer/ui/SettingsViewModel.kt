@@ -1,6 +1,9 @@
 package io.github.nikoapps.dialer.ui
 
 import android.app.Application
+import android.app.LocaleManager
+import android.os.Build
+import android.os.LocaleList
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.nikoapps.dialer.people.contactAfter
@@ -66,6 +69,23 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     /** When a call was last silenced, for "Last silenced call". Null until one is. */
     val lastSilencedAt: StateFlow<Instant?> = SilenceLog(application).lastSilencedAt
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    /** Screen text can only follow its own language on Android 13+. */
+    val canChooseScreenLanguage: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+    /** The screen language as a language code ("en", "ne"), or null when it follows the phone. */
+    fun screenLanguage(): String? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return null
+        val locales = getApplication<Application>().getSystemService(LocaleManager::class.java).applicationLocales
+        return if (locales.isEmpty) null else locales[0].language
+    }
+
+    /** Changes only the screen text, not the voice. The activity restarts in the new language. */
+    fun setScreenLanguage(tag: String?) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        getApplication<Application>().getSystemService(LocaleManager::class.java).applicationLocales =
+            if (tag == null) LocaleList.getEmptyLocaleList() else LocaleList.forLanguageTags(tag)
+    }
 
     fun update(transform: (DialerSettings) -> DialerSettings) {
         viewModelScope.launch { settingsRepository.update(transform) }

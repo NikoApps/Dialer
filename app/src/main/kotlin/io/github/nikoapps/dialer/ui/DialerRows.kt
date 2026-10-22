@@ -10,6 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.nikoapps.commons.ui.ChoiceRow
+import io.github.nikoapps.commons.ui.languageName
 import io.github.nikoapps.commons.ui.ValueRow
 import io.github.nikoapps.commons.ui.openPage
 import io.github.nikoapps.dialer.R
@@ -77,6 +78,22 @@ fun ThemeRow(settings: DialerSettings, onUpdate: ((DialerSettings) -> DialerSett
         selected = settings.theme,
         optionLabel = { stringResource(it.label()) },
         onSelect = { theme -> onUpdate { it.copy(theme = theme) } },
+        cancelLabel = stringResource(CommonsR.string.cancel),
+    )
+}
+
+/** Languages the screen text is translated into, the same as Niko Clock. Android still calls Indonesian "in". */
+private val SCREEN_LANGUAGES: List<String?> = listOf(null, "en", "ne", "hi", "bn", "ur", "ar", "es", "pt", "fr", "in")
+
+/** The screen language only, separate from the voice language. Android 13+ only. */
+@Composable
+fun ScreenLanguageRow(selected: String?, onSelect: (String?) -> Unit) {
+    ChoiceRow(
+        title = stringResource(R.string.setting_screen_language),
+        options = SCREEN_LANGUAGES,
+        selected = SCREEN_LANGUAGES.firstOrNull { it == selected?.replace("id", "in") },
+        optionLabel = { languageName(it) },
+        onSelect = onSelect,
         cancelLabel = stringResource(CommonsR.string.cancel),
     )
 }

@@ -43,6 +43,9 @@ fun SettingsScreen(
     problems: List<HealthCheck>,
     silencing: SilencingState,
     lastSilencedAt: Instant?,
+    screenLanguage: String?,
+    canChooseScreenLanguage: Boolean,
+    onScreenLanguage: (String?) -> Unit,
     onTurnOnSilencing: () -> Unit,
     onUpdate: ((DialerSettings) -> DialerSettings) -> Unit,
     onFix: (HealthCheck) -> Unit,
@@ -84,6 +87,7 @@ fun SettingsScreen(
                     PeopleOnScreenRow(settings, onUpdate)
                     WaitBeforeCallingRow(settings, onUpdate)
                     ThemeRow(settings, onUpdate)
+                    if (canChooseScreenLanguage) ScreenLanguageRow(screenLanguage, onScreenLanguage)
                 }
 
                 SettingsGroup(stringResource(R.string.section_calls)) {
