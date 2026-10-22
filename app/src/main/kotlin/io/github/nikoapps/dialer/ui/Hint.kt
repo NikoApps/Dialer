@@ -15,6 +15,9 @@ enum class Hint {
     CallBlocked,
     CallFailed,
 
+    /** "Only ring for saved contacts" is on, but Dialer lost the right to silence calls. */
+    SilencingLost,
+
     /** A phone setting, such as pausing unused apps, may stop calls later. */
     NeedsAttention,
 }
@@ -23,7 +26,8 @@ enum class Hint {
  * [callsBlocked] is when the call permission was refused and the phone won't ask again.
  * With nobody on the grid there's no face to tap, so that comes before the voice and the
  * permission hints. Voice and calls come before other health warnings, as the spec asks.
- * [needsAttention] is any other problem listed in settings.
+ * [silencingLost] comes next, since unsaved numbers ring again. [needsAttention] is any
+ * other problem listed in settings.
  */
 fun hintFor(
     hasPeople: Boolean,
@@ -31,6 +35,7 @@ fun hintFor(
     callsBlocked: Boolean,
     lastCallFailed: Boolean,
     voice: VoiceStatus = VoiceStatus.Ready,
+    silencingLost: Boolean = false,
     needsAttention: Boolean = false,
 ): Hint = when {
     lastCallFailed -> Hint.CallFailed
@@ -38,6 +43,7 @@ fun hintFor(
     !hasPeople -> Hint.NoPeople
     voice.isProblem -> Hint.Voice
     !canCall -> Hint.CallPermission
+    silencingLost -> Hint.SilencingLost
     needsAttention -> Hint.NeedsAttention
     else -> Hint.Ready
 }
@@ -54,5 +60,6 @@ fun hintText(hint: Hint, voice: VoiceStatus): String = when (hint) {
     Hint.CallPermission -> stringResource(R.string.hint_call_permission)
     Hint.CallBlocked -> stringResource(R.string.hint_call_blocked)
     Hint.CallFailed -> stringResource(R.string.hint_call_failed)
+    Hint.SilencingLost -> stringResource(R.string.hint_silencing_lost)
     Hint.NeedsAttention -> stringResource(R.string.hint_needs_attention)
 }

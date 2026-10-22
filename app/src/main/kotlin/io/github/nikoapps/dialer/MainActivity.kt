@@ -1,6 +1,7 @@
 package io.github.nikoapps.dialer
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -43,6 +44,7 @@ import io.github.nikoapps.dialer.health.DialerHealth
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.gridShape
 import io.github.nikoapps.dialer.people.placesOnScreen
+import io.github.nikoapps.dialer.screening.CallScreening
 import io.github.nikoapps.dialer.settings.DialerHelperPin
 import io.github.nikoapps.dialer.settings.ThemeChoice
 import io.github.nikoapps.dialer.ui.CallingScreen
@@ -53,6 +55,7 @@ import io.github.nikoapps.dialer.ui.PersonEditorScreen
 import io.github.nikoapps.dialer.ui.SettingsScreen
 import io.github.nikoapps.dialer.ui.SettingsViewModel
 import io.github.nikoapps.dialer.ui.SetupScreen
+import io.github.nikoapps.dialer.ui.SilencingState
 import io.github.nikoapps.dialer.ui.hintFor
 import io.github.nikoapps.dialer.ui.hintText
 
@@ -90,6 +93,7 @@ private enum class Screen { Main, Unlock, Settings, SetPin, Setup, EditPerson }
 private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewModel = viewModel()) {
     val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
     val people by settingsViewModel.people.collectAsStateWithLifecycle()
+    val lastSilencedAt by settingsViewModel.lastSilencedAt.collectAsStateWithLifecycle()
     val call by callViewModel.state.collectAsStateWithLifecycle()
     val voice by callViewModel.voice.collectAsStateWithLifecycle()
     var screen by rememberSaveable { mutableStateOf(Screen.Main) }
@@ -100,6 +104,9 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
     // The call permission was refused and the phone won't ask again. Kept here so it survives
     // a visit to the calling screen or settings.
     var callsBlocked by rememberSaveable { mutableStateOf(false) }
+    // The last request for the call screening role came back without it, so settings and setup
+    // say so, with the restricted settings steps on Android 15 and newer.
+    var silencingRefused by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
     val activity = LocalActivity.current
@@ -125,6 +132,34 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
         }
     }
 
+    // "Only ring for saved contacts" turns on only once Dialer holds the call screening role.
+    // Turning it off keeps the role: with the setting off, every call rings.
+    val silencingOn = {
+        silencingRefused = false
+        settingsViewModel.update { it.copy(onlySavedContacts = true) }
+    }
+    val askForSilencing = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (CallScreening.hasRole(context)) silencingOn() else silencingRefused = true
+        healthCheckRun++
+    }
+    val turnOnSilencing: () -> Unit = {
+        if (CallScreening.hasRole(context)) {
+            silencingOn()
+        } else {
+            val intent = CallScreening.requestRoleIntent(context)
+            if (intent == null) {
+                silencingRefused = true
+            } else {
+                try {
+                    askForSilencing.launch(intent)
+                } catch (_: ActivityNotFoundException) {
+                    silencingRefused = true
+                }
+            }
+        }
+        healthCheckRun++
+    }
+
     BackHandler(enabled = screen != Screen.Main) {
         screen = when (screen) {
             Screen.SetPin -> pinReturn
@@ -135,8 +170,13 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
 
     val current = settings ?: return
     val everyone = people ?: return
-    val problems = remember(lifecycle, healthCheckRun) { DialerHealth.problems(context) }
+    val problems = remember(lifecycle, healthCheckRun, current.onlySavedContacts) { DialerHealth.problems(context, current) }
     val canCall = DialerHealth.CallPermission !in problems
+    val silencing = SilencingState(
+        support = remember { CallScreening.support(context) },
+        on = current.onlySavedContacts,
+        refused = silencingRefused,
+    )
 
     // First run is for the helper. A phone that already has a PIN is past that, and skipping the
     // PIN for setup would let anyone into settings.
@@ -170,6 +210,7 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
                         callsBlocked = callsBlocked,
                         lastCallFailed = state.lastCallFailed,
                         voice = voice.voice,
+                        silencingLost = DialerHealth.Silencing in problems,
                         needsAttention = problems.isNotEmpty(),
                     ),
                     voice = voice.voice,
@@ -193,10 +234,15 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
             people = everyone,
             voice = voice,
             problems = problems,
+            silencing = silencing,
+            lastSilencedAt = lastSilencedAt,
+            onTurnOnSilencing = turnOnSilencing,
             onUpdate = settingsViewModel::update,
             onFix = { check ->
                 if (check === DialerHealth.CallPermission) {
                     allowCalls()
+                } else if (check === DialerHealth.Silencing) {
+                    turnOnSilencing()
                 } else {
                     openPage(context, check.fixIntent(context), PhoneHealth.appInfo(context))
                 }
@@ -219,6 +265,8 @@ private fun App(settingsViewModel: SettingsViewModel, callViewModel: CallViewMod
                 else -> CallsAllowed.NotYet
             },
             problems = problems,
+            silencing = silencing,
+            onTurnOnSilencing = turnOnSilencing,
             onUpdate = settingsViewModel::update,
             onEditPlace = { place -> editPerson(place, Screen.Setup) },
             onAllowCalls = allowCalls,
