@@ -74,3 +74,31 @@ fun chooseLocalAccount(existing: List<ContactAccount>, platformLocal: ContactAcc
     }
     return NoAccount
 }
+
+/** A contact found with a number, and its name, for [contactForNumber]. */
+data class NumberMatch(val link: ContactLink, val name: String?)
+
+/** What looking a number up in the phone's contacts found. */
+sealed interface ContactByNumber {
+    data object None : ContactByNumber
+
+    data class One(val link: ContactLink) : ContactByNumber
+
+    /** Several contacts have the number, and the name doesn't pick one, so Dialer can't tell which is meant. */
+    data object Several : ContactByNumber
+}
+
+/**
+ * The contact a number belongs to, from every contact with that number ([matches]). One contact
+ * is taken as it is. With several, such as a shared landline, only the one whose name is [name]
+ * is taken, so a recorded name never plays for someone else.
+ */
+fun contactForNumber(matches: List<NumberMatch>, name: String?): ContactByNumber {
+    val contacts = matches.distinctBy { it.link.lookupKey }
+    if (contacts.isEmpty()) return ContactByNumber.None
+    if (contacts.size == 1) return ContactByNumber.One(contacts.single().link)
+    val wanted = name?.trim().orEmpty()
+    if (wanted.isEmpty()) return ContactByNumber.Several
+    val named = contacts.filter { it.name?.trim().equals(wanted, ignoreCase = true) }
+    return if (named.size == 1) ContactByNumber.One(named.single().link) else ContactByNumber.Several
+}

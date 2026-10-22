@@ -38,15 +38,29 @@ object PhoneContacts {
         }
     }.getOrNull()
 
-    /** A saved contact with this number, such as one picked before Dialer kept the link. Null when there's none. */
-    fun findByNumber(context: Context, number: String): ContactLink? = runCatching {
-        if (number.isBlank()) return@runCatching null
+    /**
+     * The saved contact with this number, such as one picked before Dialer kept the link. When
+     * several contacts have it, only the one named [name] counts. See [contactForNumber].
+     */
+    fun findByNumber(context: Context, number: String, name: String?): ContactByNumber = runCatching {
+        if (number.isBlank()) return@runCatching ContactByNumber.None
         val uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number))
-        context.contentResolver.query(uri, arrayOf(PhoneLookup._ID, PhoneLookup.LOOKUP_KEY), null, null, null)?.use { c ->
-            if (!c.moveToFirst()) return@use null
-            c.getString(1)?.takeIf { it.isNotBlank() }?.let { ContactLink(c.getLong(0), it) }
-        }
-    }.getOrNull()
+        val matches = context.contentResolver.query(
+            uri,
+            arrayOf(PhoneLookup._ID, PhoneLookup.LOOKUP_KEY, PhoneLookup.DISPLAY_NAME),
+            null,
+            null,
+            null,
+        )?.use { c ->
+            buildList {
+                while (c.moveToNext()) {
+                    val key = c.getString(1)?.takeIf { it.isNotBlank() } ?: continue
+                    add(NumberMatch(ContactLink(c.getLong(0), key), c.getString(2)))
+                }
+            }
+        }.orEmpty()
+        contactForNumber(matches, name)
+    }.getOrDefault(ContactByNumber.None)
 
     /**
      * Saves [name] and [number] as a new contact on the phone, never on the SIM, so a ringtone can
