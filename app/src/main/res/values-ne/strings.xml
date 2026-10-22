@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings filled with the app's name, here and in Commons, read this through the launcher label. -->
+
+    <!-- Main screen -->
+    <string name="settings_open">सेटिङ</string>
+    <!-- TalkBack label of a face on the grid, and the button on the ask-first calling screen. %1$s is the name the helper typed. -->
+    <string name="call_name">%1$s लाई फोन गर्नुहोस्</string>
+
+    <!-- The hint line under the grid. Always one of these, in the same place. -->
+    <string name="hint_ready">फोन गर्न अनुहारमा छुनुहोस्।</string>
+    <string name="hint_no_people">यहाँ अझै कोही छैन। सहयोगीले सेटिङमा मान्छे थप्न सक्नुहुन्छ।</string>
+    <string name="hint_call_permission">फोन गर्ने अनुमति अझै छैन। अनुहारमा छुनुहोस्, अनि \"अनुमति दिनुहोस्\" छान्नुहोस्।</string>
+    <string name="hint_call_blocked">Niko Dialer का लागि फोन गर्ने सुविधा बन्द छ। सहयोगीले फोनको सेटिङमा खोल्न सक्नुहुन्छ।</string>
+    <string name="hint_call_failed">फोन लागेन। केही बेरमा फेरि प्रयास गर्नुहोस्।</string>
+    <string name="hint_silencing_lost">सेभ नभएका नम्बरबाट आउने फोनमा फेरि घण्टी बज्छ। सहयोगीले सेटिङमा यो मिलाउन सक्नुहुन्छ।</string>
+    <string name="hint_recorded_names">मान्छेले फोन गर्दा रेकर्ड गरेको नाम नबज्न सक्छ। सहयोगीले सेटिङमा यो मिलाउन सक्नुहुन्छ।</string>
+    <string name="hint_needs_attention">पछि फोन गर्न नमिल्न सक्छ। सहयोगीले सेटिङमा यो मिलाउन सक्नुहुन्छ।</string>
+
+    <!-- Calling screen. Spoken aloud as one whole sentence; %1$s is the name the helper typed. -->
+    <string name="calling_name">%1$s लाई फोन गरिँदै छ</string>
+    <string name="stop">रोक्नुहोस्</string>
+    <!-- The name used to test the voice in settings, spoken as "Calling Mum". -->
+    <string name="voice_test_name">आमा</string>
+
+    <!-- Settings groups -->
+    <string name="section_needs_attention">ध्यान दिनुपर्ने</string>
+    <string name="section_people">मान्छे</string>
+    <string name="section_screen">स्क्रिन</string>
+    <string name="section_voice">आवाज</string>
+    <string name="section_helper">सहयोगी</string>
+    <string name="section_calls">फोन कल</string>
+    <string name="section_phone">फोन</string>
+    <string name="section_recorded_names">रेकर्ड गरेका नाम</string>
+
+    <!-- Places on the grid, as a helper sees them on the main screen -->
+    <string name="place_only">स्क्रिनको अनुहार</string>
+    <string name="place_top">माथि</string>
+    <string name="place_bottom">तल</string>
+    <string name="place_top_left">माथि बायाँ</string>
+    <string name="place_top_right">माथि दायाँ</string>
+    <string name="place_middle_left">बीचमा बायाँ</string>
+    <string name="place_middle_right">बीचमा दायाँ</string>
+    <string name="place_bottom_left">तल बायाँ</string>
+    <string name="place_bottom_right">तल दायाँ</string>
+    <string name="place_empty">खाली</string>
+
+    <!-- Screen settings -->
+    <string name="setting_people_on_screen">स्क्रिनमा मान्छे</string>
+    <plurals name="people_count">
+        <item quantity="one">%d जना</item>
+        <item quantity="other">%d जना</item>
+    </plurals>
+    <string name="info_people_on_screen">मुख्य स्क्रिनमा कति अनुहार अट्छन्। यो बदल्दा कोही सर्दैन। नअटेका मान्छे फेरि ठाउँ भएपछि फर्किन्छन्।</string>
+    <string name="setting_wait">फोन गर्नुअघि पर्खने</string>
+    <string name="wait_call_now">तुरुन्तै फोन गर्ने</string>
+    <string name="wait_3s">३ सेकेन्ड पर्खने</string>
+    <string name="wait_ask">पहिले सोध्ने</string>
+    <string name="info_wait">अनुहारमा छोएपछि नाम बोलिन्छ। ३ सेकेन्ड पर्खँदा फोन जानुअघि \"रोक्नुहोस्\" थिच्ने समय हुन्छ। पहिले सोध्दा थिच्नका लागि ठूलो फोन गर्ने बटन देखिन्छ।</string>
+    <string name="setting_theme">थिम</string>
+    <string name="theme_phone">फोन जस्तै</string>
+    <string name="theme_light">उज्यालो</string>
+    <string name="theme_dark">अँध्यारो</string>
+    <string name="setting_screen_language">स्क्रिनको भाषा</string>
+
+    <!-- Helper settings -->
+    <string name="info_pin">४ अङ्कको PIN ले मान्छे र सेटिङ गल्तीले बदलिनबाट जोगाउँछ। फोन गर्न भने PIN बिना सधैँ मिल्छ।</string>
+    <string name="setup_again">एक-एक चरण गरेर सेटअप</string>
+    <string name="setup_again_value">मुख्य सेटिङ फेरि हेर्नुहोस्</string>
+    <string name="info_phone_maker">केही फोनले प्रयोग नभएजस्ता लागेका एप रोक्छन् र तिनका अनुमति हटाउँछन्। यसले फोन गर्न रोक्न सक्छ। फोन कम्पनीका सेटिङमा Niko Dialer लाई अनुमति दिइराख्नुहोस्।</string>
+
+    <!-- Phone health. %1$s is the app's name. -->
+    <string name="health_calls">फोन कल</string>
+    <string name="health_calls_value">%1$s लाई फोन गर्ने अनुमति दिनुहोस्</string>
+    <string name="health_silencing">सेभ भएका सम्पर्कको मात्र घण्टी बजाउने</string>
+    <string name="health_silencing_value">सेभ नभएका नम्बरबाट आउने फोनमा फेरि घण्टी बज्छ। तिनलाई चुप गराउन %1$s लाई अनुमति दिनुहोस्।</string>
+    <string name="health_recorded_contacts">रेकर्ड गरेका नामका लागि सम्पर्क</string>
+    <string name="health_recorded_contacts_value">मान्छेले फोन गर्दा रेकर्ड गरेको नाम बजोस् भनेर %1$s लाई सम्पर्क प्रयोग गर्ने अनुमति दिनुहोस्</string>
+    <string name="health_ringer">घण्टी</string>
+    <string name="health_ringer_value">घण्टी चुप, कम्पनमा वा धेरै सानो छ, त्यसैले रेकर्ड गरेका नाम सुनिँदैनन्। घण्टीको आवाज ठूलो गर्नुहोस्।</string>
+    <string name="health_recorded_not_set">रेकर्ड गरेका नामका रिङटोन</string>
+    <string name="health_recorded_not_set_value">एउटा रेकर्ड गरेको नाम आफ्नो सम्पर्कको रिङटोन बनेको छैन। फेरि राख्न छुनुहोस्।</string>
+
+    <!-- Only ring for saved contacts. Android decides who is saved, using all the phone's contacts. -->
+    <string name="setting_silence">सेभ भएका सम्पर्कको मात्र घण्टी बजाउने</string>
+    <string name="silence_value">फोनमा सेभ नभएका मान्छेको फोनमा घण्टी बज्दैन। ती पनि छुटेका कलमा देखिन्छन्।</string>
+    <string name="info_silence">फोनका सम्पर्कमा सेभ नभएका नम्बरबाट आउने फोनमा घण्टी बज्दैन। ती पनि छुटेका कलमा देखिन्छन्, त्यसैले क्लिनिकबाट आएको फोन हराउँदैन। को सेभ छ भन्ने कुरा फोनले आफ्ना सबै सम्पर्क हेरेर निर्णय गर्छ, Niko Dialer का मान्छे मात्र होइन। लुकाइएका नम्बरमा पनि घण्टी बज्दैन।</string>
+    <string name="silence_needs_android_10">बन्द। यसका लागि Android 10 वा नयाँ चाहिन्छ।</string>
+    <string name="silence_not_on_this_phone">बन्द। यो फोनले एपलाई फोन चुप गराउन दिँदैन।</string>
+    <string name="silence_not_allowed">खुलेको छैन। फोनले Niko Dialer लाई फोन चुप गराउने अनुमति दिएन। फेरि प्रयास गर्न छुनुहोस्।</string>
+    <string name="silence_restricted_steps">फोनले सोधेन, वा सेटिङ प्रतिबन्धित छ भन्यो भने:\n१. तल \"एपको जानकारी खोल्नुहोस्\" मा छुनुहोस्।\n२. माथिका तीन थोप्लामा छुनुहोस्।\n३. Allow restricted settings मा छुनुहोस्।\n४. यहाँ फर्केर यो फेरि खोल्नुहोस्।</string>
+    <string name="open_app_info">एपको जानकारी खोल्नुहोस्</string>
+    <string name="open_app_info_value">Niko Dialer को फोनमा भएको पेज</string>
+    <string name="last_silenced">पछिल्लो चुप गराइएको फोन</string>
+    <string name="last_silenced_none">अहिलेसम्म छैन</string>
+    <!-- %1$s is a time such as 2:00 PM. -->
+    <string name="last_silenced_today">आज, %1$s</string>
+    <string name="last_silenced_yesterday">हिजो, %1$s</string>
+    <!-- %1$s is a date such as Oct 20, 2026, %2$s a time such as 2:00 PM. -->
+    <string name="last_silenced_earlier">%1$s, %2$s</string>
+    <string name="info_last_silenced">फोनमा सेभ नभएको नम्बरबाट पछिल्लो पटक घण्टी नबजी फोन कहिले आयो। समय मात्र राखिन्छ, नम्बर राखिँदैन। को थियो भनेर फोनका छुटेका कलमा हेर्न सकिन्छ।</string>
+
+    <!-- People editor -->
+    <string name="editor_add_title">मान्छे थप्नुहोस्</string>
+    <string name="editor_change_title">मान्छे बदल्नुहोस्</string>
+    <string name="editor_from_contacts">सम्पर्कबाट छान्नुहोस्</string>
+    <string name="editor_name">नाम</string>
+    <string name="editor_number">फोन नम्बर</string>
+    <string name="editor_name_missing">नाम हाल्नुहोस्, ताकि देखाउन र बोल्न सकियोस्।</string>
+    <string name="editor_number_missing">फोन गर्न फोन नम्बर हाल्नुहोस्।</string>
+    <string name="editor_emergency">यो आपत्कालीन नम्बर हो। अनुहारमा छुँदा फोनको डायलर नम्बरसहित खुल्छ, किनकि Android ले अरू एपलाई यो नम्बरमा सिधै फोन गर्न दिँदैन।</string>
+    <string name="editor_place">स्क्रिनमा ठाउँ</string>
+    <string name="editor_place_taken">त्यो ठाउँमा अहिले अर्को मान्छे छ। अर्को ठाउँ छान्नुहोस्।</string>
+    <string name="editor_save">सेभ गर्नुहोस्</string>
+    <string name="editor_remove">स्क्रिनबाट हटाउनुहोस्</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="editor_remove_question">%1$s लाई स्क्रिनबाट हटाउने हो?</string>
+    <string name="editor_remove_confirm">%1$s लाई हटाउनुहोस्</string>
+    <string name="editor_keep">%1$s लाई राख्नुहोस्</string>
+    <string name="editor_contact_unreadable">त्यो सम्पर्क पढ्न सकिएन। फेरि प्रयास गर्नुहोस्, वा नाम र नम्बर टाइप गर्नुहोस्।</string>
+    <string name="editor_no_contacts_app">यो फोनमा छान्ने सम्पर्क एप छैन। बरु नाम र नम्बर टाइप गर्नुहोस्।</string>
+
+    <!-- The phone's contacts in the people editor. %1$s is the name the helper typed. -->
+    <!-- Used in place of the name while none is typed. -->
+    <string name="editor_this_person">यो मान्छे</string>
+    <string name="editor_typed_note">Niko Dialer ले %1$s लाई फोनका सम्पर्कमा पनि सेभ गर्छ, SIM मा होइन, फोनमै। त्यसपछि %1$s ले फोन गर्दा रेकर्ड गरेको नाम बज्न सक्छ, र \"सेभ भएका सम्पर्कको मात्र घण्टी बजाउने\" खुला हुँदा पनि घण्टी बज्छ।</string>
+    <string name="editor_typed_note_ask">Niko Dialer ले %1$s लाई फोनका सम्पर्कमा पनि सेभ गर्छ, SIM मा होइन, फोनमै। त्यसपछि %1$s ले फोन गर्दा रेकर्ड गरेको नाम बज्न सक्छ, र \"सेभ भएका सम्पर्कको मात्र घण्टी बजाउने\" खुला हुँदा पनि घण्टी बज्छ। सेभ गरेपछि फोनले सम्पर्कको अनुमति माग्छ।</string>
+    <string name="editor_sim_note">%1$s SIM कार्डमा सेभ छ। SIM को सम्पर्कको आफ्नै रिङटोन हुन सक्दैन, त्यसैले %1$s ले फोन गर्दा रेकर्ड गरेको नाम बज्दैन। यो मिलाउन %1$s लाई फोनमा कपी गर्नुहोस्।</string>
+    <string name="editor_sim_copy">फोनमा कपी गर्नुहोस्</string>
+    <string name="editor_sim_copied">%1$s अब फोनमा सेभ छ।</string>
+    <string name="editor_sim_copy_failed">%1$s लाई फोनमा कपी गर्न सकिएन। फेरि प्रयास गर्नुहोस्।</string>
+    <string name="editor_sim_needs_contacts">कपी गर्न फोनका सम्पर्क चाहिन्छ। \"फोनमा कपी गर्नुहोस्\" मा छुनुहोस्, अनि \"अनुमति दिनुहोस्\" छान्नुहोस्।</string>
+    <string name="editor_saved_title">%1$s सेभ भयो</string>
+    <string name="editor_saved_no_contacts">%1$s Niko Dialer मा छ, तर फोनका सम्पर्कमा छैन। सम्पर्कमा भए मात्र %1$s ले फोन गर्दा रेकर्ड गरेको नाम बज्छ। \"सेभ भएका सम्पर्कको मात्र घण्टी बजाउने\" ले पनि उहाँको फोनमा घण्टी नबजाउन सक्छ। यो बदल्न %1$s लाई फेरि खोल्नुहोस्, \"सेभ गर्नुहोस्\" मा छुनुहोस् र \"अनुमति दिनुहोस्\" छान्नुहोस्।</string>
+
+    <!-- Photo in the people editor. The photo is only kept in Niko Dialer, never put in the phone's contacts. -->
+    <string name="editor_photo">फोटो</string>
+    <string name="editor_photo_missing">फोटोले मद्दत गर्छ। नामभन्दा अनुहार चिन्न सजिलो हुन्छ।</string>
+    <!-- TalkBack label of the photo shown in the editor. -->
+    <string name="editor_photo_label">अनुहारमा भएको फोटो</string>
+    <string name="editor_photo_take">फोटो खिच्नुहोस्</string>
+    <string name="editor_photo_choose">फोटो छान्नुहोस्</string>
+    <string name="editor_photo_contact">सम्पर्कको फोटो प्रयोग गर्नुहोस्</string>
+    <string name="editor_photo_remove">फोटो हटाउनुहोस्</string>
+    <string name="editor_photo_unreadable">त्यो फोटो खुलेन। अर्को फोटो छान्नुहोस्।</string>
+    <string name="editor_no_camera_app">यो फोनमा फोटो खिच्ने क्यामेरा एप छैन। बरु फोटो छान्नुहोस्।</string>
+    <string name="editor_no_photo_app">यो फोनमा फोटो छान्ने एप छैन। बरु फोटो खिच्नुहोस्।</string>
+
+    <!-- Recorded name in the people editor. The helper records the caller's name in their own voice,
+         and it plays as that contact's ringtone. %1$s is the name the helper typed. -->
+    <string name="editor_recording">रेकर्ड गरेको नाम</string>
+    <string name="editor_recording_how">%1$s ले फोन गर्दा फोनले रिङटोनको सट्टा यो बजाउँछ। \"रेकर्ड गर्नुहोस्\" मा छुनुहोस् र आफ्नै शब्द र भाषामा \"%1$s ले फोन गर्दै हुनुहुन्छ\" भन्नुहोस्। ५ सेकेन्डपछि आफैँ रोकिन्छ।</string>
+    <string name="editor_recording_kept">रेकर्डिङ फोनको रिङटोन सूचीमा देखिन्छ, र Niko Dialer हटाए पनि फोनमै रहन्छ।</string>
+    <string name="editor_recording_none">अहिलेसम्म रेकर्डिङ छैन।</string>
+    <string name="editor_recording_ready">रेकर्ड भयो। सुन्न \"बजाउनुहोस्\" मा छुनुहोस्।</string>
+    <string name="editor_recording_new">रेकर्ड भयो। \"सेभ गर्नुहोस्\" मा छुँदा राखिन्छ।</string>
+    <string name="editor_recording_removed">\"सेभ गर्नुहोस्\" मा छुँदा रेकर्डिङ हट्छ।</string>
+    <string name="editor_recording_now">रेकर्ड हुँदै छ। शब्द भन्नुहोस्, अनि \"रोक्नुहोस्\" मा छुनुहोस्।</string>
+    <string name="editor_recording_too_short">केही रेकर्ड भएन। \"रेकर्ड गर्नुहोस्\" मा छुनुहोस्, एकछिन पर्खनुहोस्, अनि बोल्नुहोस्।</string>
+    <string name="editor_recording_failed">माइक्रोफोन चलाउन सकिएन। यसलाई चलाइरहेका हुन सक्ने अरू एप बन्द गर्नुहोस्, अनि फेरि प्रयास गर्नुहोस्।</string>
+    <string name="editor_recording_needs_mic">रेकर्ड गर्न माइक्रोफोन चाहिन्छ। \"रेकर्ड गर्नुहोस्\" मा छुनुहोस्, अनि \"अनुमति दिनुहोस्\" छान्नुहोस्।</string>
+    <string name="editor_recording_mic_off">Niko Dialer का लागि माइक्रोफोन बन्द छ। फोनको सेटिङमा Niko Dialer का लागि यसलाई खोल्नुहोस्।</string>
+    <string name="editor_recording_needs_contacts">रेकर्डिङ राखिएको छ, तर सम्पर्कको अनुमति नदिएसम्म यो %1$s का लागि बज्दैन।</string>
+    <string name="editor_recording_needs_storage">रेकर्डिङ राखिएको छ, तर स्टोरेजको अनुमति नदिएसम्म यो फोनका रिङटोनमा जान सक्दैन।</string>
+    <!-- One plain sentence per permission, shown before the phone asks for it. -->
+    <string name="editor_recording_ask_mic">रेकर्ड गर्न फोनले माइक्रोफोनको अनुमति माग्छ।</string>
+    <string name="editor_recording_ask_contacts">रेकर्डिङलाई %1$s को रिङटोन बनाउन यसले सम्पर्कको अनुमति माग्छ।</string>
+    <string name="editor_recording_ask_storage">रेकर्डिङलाई फोनका रिङटोनसँग राख्न यसले स्टोरेजको अनुमति माग्छ।</string>
+    <string name="editor_record">रेकर्ड गर्नुहोस्</string>
+    <string name="editor_record_stop">रोक्नुहोस्</string>
+    <string name="editor_record_play">बजाउनुहोस्</string>
+    <string name="editor_record_stop_playing">बजाउन रोक्नुहोस्</string>
+    <string name="editor_record_again">फेरि रेकर्ड गर्नुहोस्</string>
+    <string name="editor_record_delete">रेकर्डिङ मेटाउनुहोस्</string>
+
+    <!-- The recording's name in the phone's ringtone list. %1$s is the person's name, never their number; %2$s is the app's name. -->
+    <string name="ringtone_title">%1$s ले फोन गर्दै हुनुहुन्छ - %2$s</string>
+    <!-- Used in the ringtone's name when the person's name can't be used. -->
+    <string name="ringtone_someone">कोही</string>
+
+    <!-- Cropping a photo to the square face -->
+    <string name="crop_title">अनुहार कोठाभित्र मिलाउनुहोस्</string>
+    <string name="crop_opening">फोटो खुल्दै छ।</string>
+    <!-- TalkBack label of the square showing the photo. -->
+    <string name="crop_preview">अनुहारमा फोटो यस्तो देखिन्छ</string>
+    <string name="crop_help">फोटो सार्न तान्नुहोस्, ठूलो-सानो गर्न दुई औँलाले चिम्टनुहोस्। बटनले पनि यही गर्छन्।</string>
+    <string name="crop_zoom_in">ठूलो गर्नुहोस्</string>
+    <string name="crop_zoom_out">सानो गर्नुहोस्</string>
+    <string name="crop_move_left">बायाँ सार्नुहोस्</string>
+    <string name="crop_move_right">दायाँ सार्नुहोस्</string>
+    <string name="crop_move_up">माथि सार्नुहोस्</string>
+    <string name="crop_move_down">तल सार्नुहोस्</string>
+    <string name="crop_fit_whole">पूरै फोटो मिलाउनुहोस्</string>
+    <string name="crop_use">यो फोटो प्रयोग गर्नुहोस्</string>
+    <string name="crop_save_failed">फोटो सेभ गर्न सकिएन। फेरि प्रयास गर्नुहोस्।</string>
+
+    <!-- First-run setup -->
+    <string name="setup_people_info">कसैलाई थप्न ठाउँमा छुनुहोस्।</string>
+    <string name="setup_photos_info">फोटोले मद्दत गर्छ। नामभन्दा अनुहार चिन्न सजिलो हुन्छ। यी मान्छेको अझै फोटो छैन।</string>
+    <!-- %1$s is the name the helper typed. -->
+    <string name="setup_add_photo">%1$s को फोटो थप्नुहोस्</string>
+    <string name="setup_record_info">त्यो मान्छेले फोन गर्दा रिङटोनको सट्टा चिनेको आवाजमा रेकर्ड गरेको नाम बज्छ। नाम रेकर्ड गर्न कसैमा छुनुहोस्। यो पछि सेटिङमा पनि गर्न सकिन्छ।</string>
+    <string name="setup_record_no_people">अघिल्लो चरणमा मान्छे थप्नुहोस्, अनि यहाँ उनीहरूको नाम रेकर्ड गर्नुहोस्।</string>
+    <string name="setup_recorded">रेकर्ड भयो</string>
+    <string name="setup_not_recorded">अझै रेकर्ड भएको छैन। रेकर्ड गर्न छुनुहोस्।</string>
+    <string name="setup_calls_reason">अनुहारमा छुँदा फोन लागोस् भनेर Niko Dialer लाई फोन गर्ने अनुमति चाहिन्छ।</string>
+    <string name="setup_calls_allow">फोन गर्ने अनुमति दिनुहोस्</string>
+    <string name="calls_allowed">अनुमति छ</string>
+    <string name="calls_not_allowed">अझै अनुमति छैन। अनुमति दिन छुनुहोस्।</string>
+    <string name="calls_turned_off">बन्द छ। Niko Dialer का लागि फोनको सेटिङ खोल्न छुनुहोस्।</string>
+    <string name="setup_silence_reason">अपरिचित मान्छेको फोन चुप राख्न सकिन्छ, ताकि फोनमा सेभ भएका मान्छेको मात्र घण्टी बजोस्। Niko Dialer लाई फोन चुप गराउन दिन फोनले एक पटक सोध्छ। यो पछि सेटिङमा बदल्न सकिन्छ।</string>
+    <string name="setup_phone_ok">यी सेटिङ ठीक छन्।</string>
+    <string name="setup_sim">फोन गर्ने SIM</string>
+    <string name="setup_sim_value">फोनमा दुईवटा SIM छन् भने फोन गर्न एउटा छान्नुहोस्, ताकि फोनले हरेक पटक कुन भनेर नसोधोस्।</string>
+</resources>
