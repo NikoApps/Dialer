@@ -61,6 +61,11 @@ object PersonPhotos {
     /** The camera's picture, as a plain file uri for opening it again. */
     fun cameraPicture(context: Context): Uri = Uri.fromFile(cameraFile(context))
 
+    /** The camera's picture is only needed until it's cropped. */
+    fun deleteCameraPicture(context: Context) {
+        cameraFile(context).delete()
+    }
+
     /**
      * Copies a contact's photo while the contacts app still allows reading it. Returns the copy,
      * or null when the contact has no photo or it can't be read.
