@@ -31,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -145,9 +144,6 @@ fun PersonEditorScreen(
 
     // Once Save hands the new photo and recording over, the view model moves them into place.
     var saved by remember { mutableStateOf(false) }
-    val leftovers by rememberUpdatedState(
-        listOfNotNull(contactPhoto, newPhoto.takeUnless { saved }, newRecording.takeUnless { saved }),
-    )
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     // Leaving the editor: the camera's picture, the contact's photo and anything not saved go, so
     // they don't pile up in the cache. While the activity is only being made again, such as when
@@ -155,7 +151,10 @@ fun PersonEditorScreen(
     DisposableEffect(Unit) {
         onDispose {
             if (lifecycle.currentState == Lifecycle.State.DESTROYED) return@onDispose
-            leftovers.forEach { File(it).delete() }
+            // Read now, not at the last recomposition: Save closes the editor straight after
+            // setting saved, and the view model still needs the new photo and recording then.
+            listOfNotNull(contactPhoto, newPhoto.takeUnless { saved }, newRecording.takeUnless { saved })
+                .forEach { File(it).delete() }
             PersonPhotos.deleteCameraPicture(context)
         }
     }
