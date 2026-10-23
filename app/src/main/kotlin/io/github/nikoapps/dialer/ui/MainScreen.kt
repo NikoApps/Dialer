@@ -107,7 +107,8 @@ private fun TitleBar(onOpenSettings: () -> Unit) {
                     textAlign = TextAlign.Center,
                 ),
                 maxLines = 1,
-                autoSize = TextAutoSize.StepBased(minFontSize = 14.sp, maxFontSize = MaterialTheme.typography.titleLarge.fontSize),
+                // Small enough that "Niko Dialer" still fits on one line at 200% font size.
+                autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = MaterialTheme.typography.titleLarge.fontSize),
                 modifier = Modifier.semantics { heading() },
             )
             SettingsButton(onClick = onOpenSettings)
@@ -242,7 +243,8 @@ private fun HintLine(text: String, modifier: Modifier = Modifier) {
             text = text,
             style = shrinkingLines(style).copy(color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center),
             maxLines = 2,
-            autoSize = TextAutoSize.StepBased(minFontSize = 12.sp, maxFontSize = style.fontSize),
+            // At 200% font size the longest hints only fit two lines this small (16dp letters).
+            autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = style.fontSize),
             modifier = Modifier.fillMaxWidth().semantics { liveRegion = LiveRegionMode.Polite },
         )
     }

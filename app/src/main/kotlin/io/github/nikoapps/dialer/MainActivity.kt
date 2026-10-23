@@ -3,8 +3,10 @@ package io.github.nikoapps.dialer
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -72,6 +75,13 @@ class MainActivity : ComponentActivity() {
                 ThemeChoice.Light -> false
                 ThemeChoice.Dark -> true
                 ThemeChoice.Phone, null -> isSystemInDarkTheme()
+            }
+            // The status bar and navigation bar icons follow Dialer's theme, not the phone's, so
+            // they stay readable when a helper picks Light on a dark phone or Dark on a light one.
+            DisposableEffect(dark) {
+                val style = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) { dark }
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+                onDispose {}
             }
             NikoTheme(darkTheme = dark, accent = io.github.nikoapps.commons.theme.NikoAccent.Dialer) {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
