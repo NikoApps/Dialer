@@ -1,1 +1,7 @@
-First test release of Niko Dialer. Tap a face to call: the phone says the name, waits 3 seconds with a big Stop button, then calls. A helper sets it up behind a PIN: up to 6 people with photos, a recorded name that plays when that person calls, and an option to only ring for saved contacts. Works offline. No ads, no tracking.
+* Tap a face to call. The phone says the name first
+* 3 seconds to press Stop before the call starts
+* Up to 6 people, each with a photo and a name
+* A recorded name plays when that person calls
+* Only ring for people saved in the phone, if you want
+* A helper sets it up, and a PIN keeps settings safe
+* Works offline. No ads, no tracking
