@@ -8,6 +8,7 @@ lifecycle = "2.11.0"
 junit = "4.13.2"
 datastore = "1.2.1"
 exifinterface = "1.4.2"
+icu4j = "78.3"
 # Matches the coroutines version AndroidX already brings in.
 kotlinxCoroutines = "1.9.0"
 
@@ -24,6 +25,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
 junit = { module = "junit:junit", version.ref = "junit" }
+icu4j = { module = "com.ibm.icu:icu4j", version.ref = "icu4j" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 [plugins]
