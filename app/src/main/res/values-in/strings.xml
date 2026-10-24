@@ -182,19 +182,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">Atur wajah agar pas di dalam kotak</string>
-    <string name="crop_opening">Membuka foto.</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">Foto seperti yang akan terlihat di wajah</string>
-    <string name="crop_help">Geser foto untuk memindahkannya, dan cubit untuk memperbesar. Tombol-tombolnya juga bisa melakukan hal yang sama.</string>
-    <string name="crop_zoom_in">Perbesar</string>
-    <string name="crop_zoom_out">Perkecil</string>
-    <string name="crop_move_left">Geser ke kiri</string>
-    <string name="crop_move_right">Geser ke kanan</string>
-    <string name="crop_move_up">Geser ke atas</string>
-    <string name="crop_move_down">Geser ke bawah</string>
-    <string name="crop_fit_whole">Tampilkan seluruh foto</string>
-    <string name="crop_use">Pakai foto ini</string>
-    <string name="crop_save_failed">Foto tidak bisa disimpan. Coba lagi.</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">Ketuk sebuah tempat untuk menambahkan orang di situ.</string>

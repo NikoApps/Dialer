@@ -184,19 +184,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">Placez le visage dans le carré</string>
-    <string name="crop_opening">Ouverture de la photo.</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">La photo telle qu\'elle sera sur le visage</string>
-    <string name="crop_help">Faites glisser la photo pour la déplacer, et pincez pour zoomer. Les boutons font la même chose.</string>
-    <string name="crop_zoom_in">Agrandir</string>
-    <string name="crop_zoom_out">Réduire</string>
-    <string name="crop_move_left">Déplacer à gauche</string>
-    <string name="crop_move_right">Déplacer à droite</string>
-    <string name="crop_move_up">Déplacer vers le haut</string>
-    <string name="crop_move_down">Déplacer vers le bas</string>
-    <string name="crop_fit_whole">Voir toute la photo</string>
-    <string name="crop_use">Utiliser cette photo</string>
-    <string name="crop_save_failed">La photo n\'a pas pu être enregistrée. Réessayez.</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">Touchez une place pour y ajouter quelqu\'un.</string>

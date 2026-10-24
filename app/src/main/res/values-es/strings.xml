@@ -184,19 +184,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">Ponga la cara dentro del cuadrado</string>
-    <string name="crop_opening">Abriendo la foto.</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">La foto como se verá en la cara</string>
-    <string name="crop_help">Arrastre la foto para moverla y junte o separe dos dedos para acercar o alejar. Los botones hacen lo mismo.</string>
-    <string name="crop_zoom_in">Acercar</string>
-    <string name="crop_zoom_out">Alejar</string>
-    <string name="crop_move_left">Mover a la izquierda</string>
-    <string name="crop_move_right">Mover a la derecha</string>
-    <string name="crop_move_up">Mover arriba</string>
-    <string name="crop_move_down">Mover abajo</string>
-    <string name="crop_fit_whole">Ver la foto entera</string>
-    <string name="crop_use">Usar esta foto</string>
-    <string name="crop_save_failed">No se pudo guardar la foto. Inténtelo de nuevo.</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">Toque un lugar para poner a alguien en él.</string>

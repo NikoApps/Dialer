@@ -1,6 +1,7 @@
 package io.github.nikoapps.dialer.recording
 
 import android.content.Context
+import io.github.nikoapps.commons.files.copyIntoPlace
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.people.ContactByNumber
 import io.github.nikoapps.dialer.people.ContactLink
@@ -28,17 +29,8 @@ object RecordedNames {
         File(File(context.cacheDir, "recordings").apply { mkdirs() }, name)
 
     /** Moves a new recording into place as the person's master. Written to a temporary file first. */
-    fun saveMaster(context: Context, personId: String, recording: File): Boolean = runCatching {
-        val target = masterFile(context, personId)
-        target.parentFile?.mkdirs()
-        val temp = File(target.parentFile, target.name + ".tmp")
-        recording.inputStream().use { input -> temp.outputStream().use { input.copyTo(it) } }
-        if (!temp.renameTo(target)) {
-            temp.delete()
-            return@runCatching false
-        }
-        true
-    }.getOrDefault(false)
+    fun saveMaster(context: Context, personId: String, recording: File): Boolean =
+        copyIntoPlace(recording, masterFile(context, personId))
 
     /** How far a person's recorded name got. */
     sealed interface Outcome {

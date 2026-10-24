@@ -183,19 +183,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">چہرے کو چوکور میں لائیں</string>
-    <string name="crop_opening">تصویر کھل رہی ہے۔</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">چہرے پر تصویر ایسی دکھے گی</string>
-    <string name="crop_help">تصویر ہٹانے کے لیے اسے انگلی سے کھینچیں، اور بڑا چھوٹا کرنے کے لیے دو انگلیوں سے چٹکی کریں۔ بٹن بھی یہی کرتے ہیں۔</string>
-    <string name="crop_zoom_in">بڑا کریں</string>
-    <string name="crop_zoom_out">چھوٹا کریں</string>
-    <string name="crop_move_left">بائیں ہٹائیں</string>
-    <string name="crop_move_right">دائیں ہٹائیں</string>
-    <string name="crop_move_up">اوپر ہٹائیں</string>
-    <string name="crop_move_down">نیچے ہٹائیں</string>
-    <string name="crop_fit_whole">پوری تصویر دکھائیں</string>
-    <string name="crop_use">یہ تصویر استعمال کریں</string>
-    <string name="crop_save_failed">تصویر محفوظ نہیں ہو سکی۔ دوبارہ کوشش کریں۔</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">کسی جگہ کو چھو کر وہاں کسی کو شامل کریں۔</string>

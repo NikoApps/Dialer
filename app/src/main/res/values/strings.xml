@@ -186,19 +186,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">Fit the face in the square</string>
-    <string name="crop_opening">Opening the photo.</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">The photo as it will look on the face</string>
-    <string name="crop_help">Drag the photo to move it, and pinch to zoom. The buttons do the same.</string>
-    <string name="crop_zoom_in">Zoom in</string>
-    <string name="crop_zoom_out">Zoom out</string>
-    <string name="crop_move_left">Move left</string>
-    <string name="crop_move_right">Move right</string>
-    <string name="crop_move_up">Move up</string>
-    <string name="crop_move_down">Move down</string>
-    <string name="crop_fit_whole">Fit whole photo</string>
-    <string name="crop_use">Use this photo</string>
-    <string name="crop_save_failed">The photo couldn\'t be saved. Try again.</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">Tap a place to add someone to it.</string>

@@ -51,6 +51,8 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.nikoapps.commons.health.PhoneHealth
+import io.github.nikoapps.commons.photo.PhotoCropScreen
+import io.github.nikoapps.commons.photo.Photos
 import io.github.nikoapps.commons.theme.NikoTheme
 import io.github.nikoapps.commons.ui.ChoiceRow
 import io.github.nikoapps.commons.ui.ProvideInfoStrings
@@ -155,7 +157,7 @@ fun PersonEditorScreen(
             // setting saved, and the view model still needs the new photo and recording then.
             listOfNotNull(contactPhoto, newPhoto.takeUnless { saved }, newRecording.takeUnless { saved })
                 .forEach { File(it).delete() }
-            PersonPhotos.deleteCameraPicture(context)
+            Photos.deleteCameraPicture(context)
         }
     }
 
@@ -198,7 +200,7 @@ fun PersonEditorScreen(
     }
 
     val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { taken ->
-        if (taken) cropSource = PersonPhotos.cameraPicture(context).toString()
+        if (taken) cropSource = Photos.cameraPicture(context).toString()
     }
     // Uses the phone's photo picker, or the older document picker on phones without it.
     val choosePhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -277,6 +279,8 @@ fun PersonEditorScreen(
     cropSource?.let { source ->
         PhotoCropScreen(
             source = source,
+            title = stringResource(R.string.crop_title),
+            previewLabel = stringResource(R.string.crop_preview),
             onCropped = { file ->
                 newPhoto?.let { File(it).delete() }
                 newPhoto = file.path
@@ -381,7 +385,7 @@ fun PersonEditorScreen(
                     onTake = {
                         photoMessage = null
                         try {
-                            takePhoto.launch(PersonPhotos.cameraUri(context))
+                            takePhoto.launch(Photos.cameraUri(context))
                         } catch (_: ActivityNotFoundException) {
                             photoMessage = R.string.editor_no_camera_app
                         }
