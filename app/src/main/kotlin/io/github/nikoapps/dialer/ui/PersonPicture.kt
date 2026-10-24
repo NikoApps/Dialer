@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import io.github.nikoapps.commons.photo.Photos
 import io.github.nikoapps.dialer.people.Person
 import io.github.nikoapps.dialer.people.PersonPhotos
 import io.github.nikoapps.dialer.people.personColor
@@ -47,7 +48,7 @@ object PhotoCache {
 fun rememberPhoto(key: String, file: () -> File): ImageBitmap? {
     val photo by produceState(PhotoCache[key], key) {
         value = PhotoCache[key] ?: withContext(Dispatchers.IO) {
-            PersonPhotos.load(file())?.asImageBitmap()?.also { PhotoCache.put(key, it) }
+            Photos.load(file())?.asImageBitmap()?.also { PhotoCache.put(key, it) }
         }
     }
     return photo
@@ -68,7 +69,7 @@ fun PersonPicture(person: Person, modifier: Modifier = Modifier) {
     val key = PhotoCache.key(person)
     val loaded by produceState<PhotoLoad>(PhotoCache[key]?.let(PhotoLoad::Ready) ?: PhotoLoad.Loading, key) {
         value = PhotoCache[key]?.let(PhotoLoad::Ready) ?: withContext(Dispatchers.IO) {
-            PersonPhotos.load(PersonPhotos.file(context, person.id))?.asImageBitmap()
+            Photos.load(PersonPhotos.file(context, person.id))?.asImageBitmap()
                 ?.also { PhotoCache.put(key, it) }
                 ?.let(PhotoLoad::Ready)
                 ?: PhotoLoad.Missing

@@ -187,19 +187,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">ضع الوجه داخل المربع</string>
-    <string name="crop_opening">جارٍ فتح الصورة.</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">الصورة كما ستظهر على الوجه</string>
-    <string name="crop_help">اسحب الصورة لتحريكها، وباعد بين إصبعين للتكبير. الأزرار تفعل الشيء نفسه.</string>
-    <string name="crop_zoom_in">تكبير</string>
-    <string name="crop_zoom_out">تصغير</string>
-    <string name="crop_move_left">تحريك لليسار</string>
-    <string name="crop_move_right">تحريك لليمين</string>
-    <string name="crop_move_up">تحريك للأعلى</string>
-    <string name="crop_move_down">تحريك للأسفل</string>
-    <string name="crop_fit_whole">إظهار الصورة كاملة</string>
-    <string name="crop_use">استخدام هذه الصورة</string>
-    <string name="crop_save_failed">تعذّر حفظ الصورة. حاول مرة أخرى.</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">المس مكانًا لإضافة شخص إليه.</string>

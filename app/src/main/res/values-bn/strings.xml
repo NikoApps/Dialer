@@ -183,19 +183,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">মুখটি চৌকোর মধ্যে আনুন</string>
-    <string name="crop_opening">ছবিটি খুলছে।</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">মুখে ছবিটি যেমন দেখাবে</string>
-    <string name="crop_help">ছবি সরাতে টেনে আনুন, আর বড়-ছোট করতে দুই আঙুলে চিমটি কাটুন। বোতামগুলোও একই কাজ করে।</string>
-    <string name="crop_zoom_in">বড় করুন</string>
-    <string name="crop_zoom_out">ছোট করুন</string>
-    <string name="crop_move_left">বাঁয়ে সরান</string>
-    <string name="crop_move_right">ডানে সরান</string>
-    <string name="crop_move_up">উপরে সরান</string>
-    <string name="crop_move_down">নিচে সরান</string>
-    <string name="crop_fit_whole">পুরো ছবি দেখান</string>
-    <string name="crop_use">এই ছবিটি ব্যবহার করুন</string>
-    <string name="crop_save_failed">ছবিটি সেভ করা গেল না। আবার চেষ্টা করুন।</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">কাউকে যোগ করতে একটি জায়গায় ছুঁয়ে দিন।</string>

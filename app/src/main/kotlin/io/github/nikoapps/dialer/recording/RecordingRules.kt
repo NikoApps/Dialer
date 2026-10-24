@@ -1,6 +1,6 @@
 package io.github.nikoapps.dialer.recording
 
-import io.github.nikoapps.dialer.people.personFileStem
+import io.github.nikoapps.commons.files.safeFileStem
 
 // The recorded name rules, without Android, so they're tested on the JVM: how long a recording
 // is, what its files are called, and whether the contact's ringtone is Dialer's.
@@ -15,7 +15,7 @@ const val SILENCE_MS = 1_500
 const val MIN_RECORDING_MS = 300
 
 /** The master recording's file name in Dialer's own files, from the person's id. */
-fun recordingFileName(personId: String): String = personFileStem(personId) + ".wav"
+fun recordingFileName(personId: String): String = safeFileStem(personId) + ".wav"
 
 /** Characters file systems or the ringtone list don't take, and line breaks. */
 private val unsafe = Regex("[\\\\/:*?\"<>|\\p{Cntrl}]")

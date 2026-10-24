@@ -183,19 +183,8 @@
 
     <!-- Cropping a photo to the square face -->
     <string name="crop_title">अनुहार कोठाभित्र मिलाउनुहोस्</string>
-    <string name="crop_opening">फोटो खुल्दै छ।</string>
     <!-- TalkBack label of the square showing the photo. -->
     <string name="crop_preview">अनुहारमा फोटो यस्तो देखिन्छ</string>
-    <string name="crop_help">फोटो सार्न तान्नुहोस्, ठूलो-सानो गर्न दुई औँलाले चिम्टनुहोस्। बटनले पनि यही गर्छन्।</string>
-    <string name="crop_zoom_in">ठूलो गर्नुहोस्</string>
-    <string name="crop_zoom_out">सानो गर्नुहोस्</string>
-    <string name="crop_move_left">बायाँ सार्नुहोस्</string>
-    <string name="crop_move_right">दायाँ सार्नुहोस्</string>
-    <string name="crop_move_up">माथि सार्नुहोस्</string>
-    <string name="crop_move_down">तल सार्नुहोस्</string>
-    <string name="crop_fit_whole">पूरै फोटो मिलाउनुहोस्</string>
-    <string name="crop_use">यो फोटो प्रयोग गर्नुहोस्</string>
-    <string name="crop_save_failed">फोटो सेभ गर्न सकिएन। फेरि प्रयास गर्नुहोस्।</string>
 
     <!-- First-run setup -->
     <string name="setup_people_info">कसैलाई थप्न ठाउँमा छुनुहोस्।</string>

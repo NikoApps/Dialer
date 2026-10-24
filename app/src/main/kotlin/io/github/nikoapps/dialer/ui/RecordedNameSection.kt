@@ -30,15 +30,18 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import io.github.nikoapps.commons.health.PhoneHealth
+import io.github.nikoapps.commons.recording.RecordResult
+import io.github.nikoapps.commons.recording.VoiceRecorder
 import io.github.nikoapps.commons.ui.SecondaryButton
 import io.github.nikoapps.commons.ui.SolidButton
 import io.github.nikoapps.commons.ui.openPage
 import io.github.nikoapps.dialer.R
 import io.github.nikoapps.dialer.people.AskFor
 import io.github.nikoapps.dialer.people.DialerPermissions
-import io.github.nikoapps.dialer.recording.NameRecorder
-import io.github.nikoapps.dialer.recording.RecordResult
+import io.github.nikoapps.dialer.recording.MAX_RECORDING_MS
+import io.github.nikoapps.dialer.recording.MIN_RECORDING_MS
 import io.github.nikoapps.dialer.recording.RecordedNames
+import io.github.nikoapps.dialer.recording.SILENCE_MS
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
@@ -69,7 +72,7 @@ fun RecordedNameSection(
     val context = LocalContext.current
     val activity = LocalActivity.current
     val scope = rememberCoroutineScope()
-    val recorder = remember { NameRecorder() }
+    val recorder = remember { VoiceRecorder(maxMs = MAX_RECORDING_MS, silenceMs = SILENCE_MS, minMs = MIN_RECORDING_MS) }
     val player = remember { ClipPlayer() }
     var state by remember { mutableStateOf(ClipState.Idle) }
     var job by remember { mutableStateOf<Job?>(null) }
