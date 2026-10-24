@@ -64,18 +64,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Lets the camera app write one new photo for a face. Not exported, and no camera permission:
-             the camera app takes the photo, Dialer only gets the file. -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.photos"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/photo_paths" />
-        </provider>
-
         <!-- Silences calls from numbers not saved in the phone, while "Only ring for saved contacts"
              is on. Only the system can bind it, and only while Dialer holds the call screening role. -->
         <service
